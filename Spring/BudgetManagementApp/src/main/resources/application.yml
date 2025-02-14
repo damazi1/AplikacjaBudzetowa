@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://damazi:zaq1%40WSX@cluster0.qca2t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: BudgetManagement

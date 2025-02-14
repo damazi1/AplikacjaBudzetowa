@@ -1,0 +1,89 @@
+\documentclass[a4paper,11pt,twoside]{mgr}
+
+%**************************************************************************
+% Dane do strony tytułowej
+%
+
+% Autor
+\autor{Dawid Ziora}
+
+% Rodzaj pracy - wpisać LICENCJACKA, INŻYNIERSKA lub MAGISTERSKA
+\rodzajPracy{INŻYNIERSKA}
+
+% Tytuł pracy magisterskiej/inżynierskiej
+\tytul{Aplikacja klient-serwer}
+
+% Tytuł pracy magisterskiej w języku angielskim
+\tytulAng{client-server application}
+
+% Promotor
+\promotor{dr inż. Bartosz Kowalczyk}
+
+% Rok
+\rok{2024}
+
+% Kierunek
+\kierunek{Informatyka}
+
+% Studia stacjonarne lub niestacjonarne (wpisać jakie)
+\studia{stacjonarne}
+
+% Poziom studiów wpisać I lub II
+\poziomStudiow{I}
+
+% Numer albumu
+\numerAlbumu{136700}
+
+%
+%**************************************************************************
+
+% Styl dla wtrąceń anglojęzycznych
+\newcommand{\eng}[1]{(\emph{#1})}
+%\renewcommand{\baselinestretch}{1}
+\renewcommand\lstlistlistingname{Spis listingów}
+
+\begin{document}
+
+\pagestyle{empty}
+\stronaTytulowa
+\cleardoublepage
+
+\tableofcontents
+
+\pagestyle{fancy}
+
+\addcontentsline{toc}{chapter}{Wstęp}
+\chapter*{Wstęp}
+Aplikacje webowe są bardzo powszechnie używanymi aplikacjami naszych czasów. Coraz częściej chcemy aby na naszych urządzeniach nie pojawiało się wiele różnego rodzaju aplikacji, tylko by wszystko mogło zostać upakowane w przeglądarke internetową z której prosto i szybko uzyskamy dostęp do programów i aplikacji których potrzebujemy. 
+W tej pracy postaram skupić się na aplikacji typu fintech, czyli aplikacji związanej z usługami finansowymi.
+\section*{cel pracy}
+Celem mojej pracy będzie uzyskanie działającej aplikacji bankowej w której klient będzie porozumiewał się z serwerem przy pomocy różnego rodzaju zapytań.
+\section*{zakres pracy}
+Językiem z którego skorzystam podczas pisania pracy będzie Java oraz Spring (Do logiki serwerowej - Backendu), baza danych MongoDB do obsługi bazy danych oraz Angular i npm do obsługi frontendu.
+\section*{opisówka}
+\chapter{Technologie, z których korzysta aplikacjia}
+\input{source/spring_boot}
+\section{Angular}
+Jest to framework który pozwala nam zająć się tworzenie frontendu aplikacji
+\section{MongoDB}
+\chapter{Wymagania i diagramy}
+\section{wymagania funkcjonalne}
+\section{wymagania niefunkcjonalne}
+\section{Diagramy przypadków użycia}
+\section{Diagramy sekwencji}
+\chapter{Kod, funkcje, itd. CORE}
+\chapter{podsumowanie oraz wnioski}
+\addcontentsline{toc}{chapter}{Zakończenie}
+\addcontentsline{toc}{section}{Co osiągnąłem}
+\section*{Co osiągnąłem}
+\addcontentsline{toc}{chapter}{Streszczenie}
+
+\bibliography{zrodla}
+
+\listoffigures
+
+\listoftables
+
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{\lstlistlistingname}
+\end{document}
