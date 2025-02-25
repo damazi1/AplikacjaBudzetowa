@@ -1,1 +1,13 @@
-<p>user-list works!</p>
+<h2> user list</h2>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr *ngFor = "let user of users">
+      <td>{{user.userName}}</td>
+    </tr>
+  </tbody>
+</table>
