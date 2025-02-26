@@ -88,7 +88,9 @@
 	frame=single,
 	rulecolor=\color{black}, 
 	numbers=left,
-	numberstyle=\tiny\color{black}
+	numberstyle=\tiny\color{black},
+	mathescape=true,
+	 escapeinside={(*@}{@*)}
 }
 
 %\usepackage[pdftex]{graphicx}

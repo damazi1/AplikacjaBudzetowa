@@ -1,0 +1,54 @@
+\section{angular}
+Ważne komendy:
+\begin{itemize}
+	\item Tworzenie komponentów
+	\\ng g c [nazwa]
+	\\ng generate component [nazwa]
+	\\ng generate component sciezka/[nazwa]
+	\item sprawdzenie co wykona komenda
+	\\ --dry-run
+	\item DataBinding - tworzenie zmiennych w tekst tak jakby
+	\\ {{ zmienna }} - tradycyjny sposob
+	\\ {{ funkcja () }} - signal
+	\item Routing - bardzo ważna rzecz
+	\\ służy do tworzenia strony na jednej stronie
+	\\ Wszystko w app.routes
+	\\ W templatce podajemy  <routing> i wtedy w zaleznosci od adresu przenosi nas na odpowiednią strone
+	\\item Tworzenie klas 
+	\\ng g class [nazwa]
+	\\item Tworzenie serwisów
+	\\ng g s [nazwa]
+	\item łączenie się z serverem - Tworzymy serwis o jakiejś nazwie następnie w środku serwisu umieczsamy adress http z którego skorzystamy oraz prywatny adres klienta
+	\begin{lstlisting}[language=Java, caption=Łączenie z serwerem]
+@Injectable({
+ providedIn: 'root'
+})
+export class ServiceName {
+  //bazowy adres serwera
+  private baseUrl = 'http://localhost:8080/list';
+
+  constructor(private  httpClient: HttpClient) { }
+	
+  getUsersList(): Observable<User[]>{
+    return this.httpClient.get<User[]>(`$\textdollar${this.baseUrl}`);
+  }
+}
+	\end{lstlisting}
+	\item Wstrzykiwanie zależności jest możliwe poprzez polecenie @Injactible oraz narzędzia dostarczania usług (providers). Tworzymy usługe w niej właśnie znajduje się możliwość wstrzyknięcia tejże usługi. Następnie w jakimś komponencie może zostać wstrzyknięta usługa.
+	\begin{lstlisting}[language=Java, caption=Wstrzyknięcie serwisu]
+export class NazwaKomponentu implements OnInit {
+ constructor(private userService: UserService) {
+  //Wstrzykiwanie uslugi
+ }
+ //Dalsza przykladowa funkcjonalnosc 
+ ngOnInit() {
+  this.getUsers();
+ }
+ getUsers() {
+  this.userService.getUsersList().subscribe(data => {
+   this.users = data;
+  });
+}
+	\end{lstlisting}
+	
+\end{itemize}
