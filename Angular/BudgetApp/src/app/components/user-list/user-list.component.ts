@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../../classes/user/user';
 import {CommonModule} from '@angular/common';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
   selector: 'app-user-list',
@@ -11,14 +12,16 @@ import {CommonModule} from '@angular/common';
 export class UserListComponent implements OnInit {
   users: User[];
 
-  constructor() {
+  constructor(private userService: UserService) {
+
   }
 
   ngOnInit() {
-    this.users = [
-      {id: '1', userName: 'user1'},
-      {id: '2', userName: 'user2'},
-      {id: '3', userName: 'user3'}
-      ];
+    this.getUsers();
+  }
+  getUsers() {
+    this.userService.getUsersList().subscribe(data => {
+      this.users = data;
+    });
   }
 }
