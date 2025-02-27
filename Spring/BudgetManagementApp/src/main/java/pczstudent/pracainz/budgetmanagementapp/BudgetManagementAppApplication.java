@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-@CrossOrigin
 public class BudgetManagementAppApplication {
 
     public static void main(String[] args)

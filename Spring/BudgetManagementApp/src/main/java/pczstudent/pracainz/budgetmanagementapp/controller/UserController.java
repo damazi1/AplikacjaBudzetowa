@@ -7,7 +7,6 @@ import pczstudent.pracainz.budgetmanagementapp.model.User;
 import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
 
 @RestController
-@CrossOrigin
 public class UserController {
 
     @Autowired
