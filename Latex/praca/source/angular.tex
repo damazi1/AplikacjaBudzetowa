@@ -50,6 +50,13 @@ export class NazwaKomponentu implements OnInit {
   });
 }
 	\end{lstlisting}
-	\item 
+	\item obietnice (promise) - to taki asynchroniczny element, który pozwala odroczyć wczytanie pewnej zależności w czasie i wczytać ją dopiero wtedy gdy będzie potrzebna.
+	\begin{lstlisting}[language=Java, caption=Promise]
+{path: 'home',
+ loadComponent: async () => {
+  const m = await import('./home/home.component');
+  return m.HomeComponent;}},
+	\end{lstlisting}
+	Wczytuje komponent home tylko jeśli zostanie wywołana ścieżka home. (Przynajmniej na ten moment tak to rozumiem).
 	
 \end{itemize}

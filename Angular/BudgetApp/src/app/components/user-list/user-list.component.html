@@ -1,3 +1,6 @@
+@if (!users().length) {
+  <p> No Users found</p>
+}
 <h2> user list</h2>
 <table class="table table-striped">
     <thead>
@@ -6,7 +9,7 @@
       </tr>
     </thead>
   <tbody>
-    <tr *ngFor = "let user of users">
+    <tr *ngFor = "let user of users()">
       <td>{{user.username}}</td>
     </tr>
   </tbody>

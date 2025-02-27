@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from '../../classes/user/user';
+import {Component, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
+import {catchError} from 'rxjs';
+import {User} from '../../model/user.type';
 
 @Component({
   selector: 'app-user-list',
@@ -10,7 +11,7 @@ import {UserService} from '../../services/user/user.service';
   styleUrl: './user-list.component.css',
 })
 export class UserListComponent implements OnInit {
-  users: User[];
+  users = signal<Array<User>>([])
 
   constructor(private userService: UserService) {
 
@@ -20,8 +21,14 @@ export class UserListComponent implements OnInit {
     this.getUsers();
   }
   getUsers() {
-    this.userService.getUsersList().subscribe(data => {
-      this.users = data;
+    this.userService.getUsersList()
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          throw err;
+        })
+        ).subscribe(data => {
+      this.users.set(data);
     });
   }
 }
