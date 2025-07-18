@@ -1,0 +1,32 @@
+/* Nawigacja */
+body {
+    background-color: #23272f  ;
+    color: #fff;
+}
+
+.ant-layout {
+    background: transparent; /* pozwala pokazać tło z body */
+}
+
+.ant-tabs-nav {
+    background: #111 !important;
+}
+
+.ant-tabs-tab {
+    color: #fff !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #40a9ff !important;
+}
+.ant-tabs-tab-btn:hover {
+    color: #40a9ff !important;
+    text-shadow: 0 2px 8px rgba(64, 169, 255, 0.4);
+}
+/* Stopka */
+footer{
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

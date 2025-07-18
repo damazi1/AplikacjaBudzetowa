@@ -1,0 +1,21 @@
+/* Home.css */
+.ant-home-card {
+    background: #18191a ;
+    color: #fff !important;
+    border-radius: 16px;
+    border: 2px solid #223355;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    min-height: 120px;
+    text-align: center;
+    transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+}
+
+.ant-home-card:hover {
+    box-shadow: 0 8px 32px rgba(64,169,255,0.25);
+    border-color: #40a9ff;
+    transform: translateY(-8px) scale(1.03);
+}
+.home-ant-container {
+    padding: 40px 16px;
+    flex-direction: column;
+}
