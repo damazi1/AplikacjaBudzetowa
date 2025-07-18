@@ -1,17 +1,10 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {HomeOutlined, UserOutlined} from "@ant-design/icons";
-import {Layout, Menu} from "antd";
-import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {UserOutlined} from "@ant-design/icons";
+import {Dropdown, Layout, message} from "antd";
+import React from "react";
 
 // Ścieżki odpowiadające kluczom zakładek
-const tabKeyToPath: Record<string, string> = {
-    '1': '/',
-    '2': '/auth',
-};
-const pathToTabKey: Record<string, string> = {
-    '/': '1',
-    '/auth': '2',
-};
+
 
 // Destrukturyzacja komponentów Layout z Ant Design
 const { Header } = Layout;
@@ -19,34 +12,35 @@ const { Header } = Layout;
 // Komponent Navbar
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [selectedKey, setSelectedKey] = useState<string>('');
-    React.useEffect(() => {
-        setSelectedKey(pathToTabKey[location.pathname]);
-    }, [location.pathname]);
+    const login = localStorage.getItem('login');
 
-    // Definicja elementów menu
-    const items = [
-        { key: '1', label: (<span><HomeOutlined /> Strona Główna</span>) },
-        { key: '2', label: (<span><UserOutlined /> Login</span>) },
-    ];
-
-    // Funkcja obsługująca kliknięcia w menu
-    const handleMenuClick = (e: { key: string }) => {
-        setSelectedKey(e.key);
-        const path = tabKeyToPath[e.key];
-        if (path) navigate(path);
+    const logout = () => {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("login");
+        localStorage.removeItem("role");
+        // Przekierowanie na stronę logowania
+        message.success("Pomyślnie wylogowano");
+        navigate("/");
+        window.location.reload();
     };
+
+
     return (
-        <Header style={{ display: 'flex', alignItems: 'center' }}>
-            <Menu
-                theme="dark"
-                mode="horizontal"
-                selectedKeys={[selectedKey]}
-                items={items}
-                style={{minWidth: 0, flex: 1,  justifyContent: 'flex-end'}}
-                onClick={handleMenuClick}
-            />
+        <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Dropdown menu={{ items:  [
+                login ?
+                    {  key: "details", label: <span onClick={() => navigate(`details/${login}`)}>
+                            Szczegóły konta</span>}
+                    : {key: '1', label: <span onClick={() => navigate('/auth')}>
+                            Zaloguj</span>},
+                ...(login
+                    ? [{ key: 'logout', label: (<span onClick={logout}><UserOutlined /> Wyloguj</span>) }]
+                    : [])
+            ] }} placement="bottom">
+                    <span style={{ color: "#fff", cursor: "pointer" }}>
+                        <UserOutlined />
+                    </span>
+            </Dropdown>
         </Header>
     );
 }
