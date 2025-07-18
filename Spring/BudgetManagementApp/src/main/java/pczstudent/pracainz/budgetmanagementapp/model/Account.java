@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public class Account {
     private String id;
     private String name;
     @Size(min = 25, max = 25)
+    @Indexed(unique = true)
     private String number;
     private Currency currency;
     private String userId;

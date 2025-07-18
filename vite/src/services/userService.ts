@@ -25,3 +25,21 @@ export const fetchUserDetails = async (login: string): Promise<any> => {
         throw new Error(error.response?.data?.error || error.message);
     }
 }
+
+export const fetchUserId = async (): Promise<string> => {
+    const login = localStorage.getItem('login');
+    if (!login) {
+        throw new Error("Brak loginu użytkownika");
+    }
+    try {
+        const response = await axios.get(`http://localhost:8080/getId/${login}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}

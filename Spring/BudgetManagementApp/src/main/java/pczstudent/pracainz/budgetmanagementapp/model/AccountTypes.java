@@ -1,5 +1,8 @@
 package pczstudent.pracainz.budgetmanagementapp.model;
 
+import lombok.Getter;
+
+@Getter
 public enum AccountTypes {
     CHECKING("Checking Account"),
     SAVINGS("Savings Account"),
@@ -13,7 +16,4 @@ public enum AccountTypes {
         this.fullName = fullName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
 }

@@ -52,6 +52,12 @@ public class UserController {
     public Iterable<User> getUser() {
         return userRepository.findAll();
     }
+    @GetMapping("/getId/{login}")
+    public String getUserIdByLogin(@PathVariable String login) {
+        return userRepository.findByLogin(login)
+                .map(User::getId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
     @GetMapping("/details/{login}")
     public Optional<User> getUserByLogin(@PathVariable String login) {
         return userRepository.findByLogin(login);

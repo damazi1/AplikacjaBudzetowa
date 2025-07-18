@@ -1,5 +1,8 @@
 package pczstudent.pracainz.budgetmanagementapp.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Currency {
     USD("United States Dollar"),
     EUR("Euro"),
@@ -19,7 +22,4 @@ public enum Currency {
         this.fullName = fullName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
 }
