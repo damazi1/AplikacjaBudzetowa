@@ -1,19 +1,17 @@
 import {Row, Col, Typography, Card, message} from 'antd';
 import '../styles/Home.css';
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
-
+import {fetchUsers} from "../services/userService.ts";
 const { Title } = Typography;
 
 const Home: React.FC = () => {
-    const [data, setData] = useState<string | null>(null);
+    const [data, setUsernames] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/list');
-                const usernames = response.data.map((user: { username: string }) => user.username);
-                setData(usernames.join('\n'));
+                const users = await fetchUsers();
+                setUsernames(users.join('\n'));
             } catch (err: any) {
                 message.error(err.response?.data?.error || err.message);
             }
