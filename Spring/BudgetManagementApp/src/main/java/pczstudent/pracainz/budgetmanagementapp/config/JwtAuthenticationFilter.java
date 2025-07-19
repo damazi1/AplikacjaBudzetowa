@@ -25,9 +25,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-        } else if (!request.getRequestURI().startsWith("/login")
-                && !request.getRequestURI().startsWith("/register")
-                && !request.getRequestURI().startsWith("/list")
+        } else if (!request.getRequestURI().startsWith("/User/login")
+                && !request.getRequestURI().startsWith("/User/register")
+                && !request.getRequestURI().startsWith("/User/list")
                 && !request.getRequestURI().startsWith("/Account/create")
                 && !request.getRequestURI().startsWith("/Account/get/")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

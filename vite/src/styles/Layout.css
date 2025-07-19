@@ -23,10 +23,3 @@ body {
     color: #40a9ff !important;
     text-shadow: 0 2px 8px rgba(64, 169, 255, 0.4);
 }
-/* Stopka */
-footer{
-    height: 5vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

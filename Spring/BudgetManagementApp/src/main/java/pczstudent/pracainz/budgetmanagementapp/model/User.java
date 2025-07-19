@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Setter
@@ -14,14 +15,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
+    @Indexed(unique = true)
     private String login;
-    @JsonIgnore
     private String password;
-    private String role;
+    private UserRoles role;
 
     public User() {}
 
-    public User(String username, String password, String role) {
+    public User(String username, String password, UserRoles role) {
         this.login = username;
         this.password = password;
         this.role = role;

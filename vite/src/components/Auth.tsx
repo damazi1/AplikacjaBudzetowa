@@ -5,6 +5,7 @@ import type { FormProps } from 'antd';
 import '../styles/Auth.css'; // Import CSS for styling
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import {useNavigate} from "react-router-dom";
+import {loginUser} from "../services/userService.ts";
 
 type FieldType = {
     login?: string;
@@ -17,27 +18,11 @@ const Auth: React.FC = () => {
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         try {
-            const response = await fetch('http://localhost:8080/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    login: values.login,
-                    password: values.password,
-                }),
-            });
-
-            const data = await response.json();
-            if (response.ok && data.token) {
-                localStorage.setItem('jwt', data.token);
-                localStorage.setItem('login', values.login as string); // zapisz login
-                localStorage.setItem('role', data.role); // zapisz rolę
-                message.success('Zalogowano pomyślnie!');
-                navigate('/'); // Redirect to home page after successful login
-            } else {
-                message.error(data.message || 'Błąd logowania');
-            }
+            await loginUser(values.login, values.password);
+            message.success('Login successful');
+            navigate('/');
         } catch (error) {
-            message.error('Błąd połączenia z serwerem');
+            message.error(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     };
     return (

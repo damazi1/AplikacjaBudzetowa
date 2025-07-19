@@ -4,15 +4,16 @@ package pczstudent.pracainz.budgetmanagementapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pczstudent.pracainz.budgetmanagementapp.config.JwtUtil;
-import pczstudent.pracainz.budgetmanagementapp.model.LoginRequest;
 import pczstudent.pracainz.budgetmanagementapp.model.User;
 import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
+import jakarta.validation.Valid;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 @RestController
+@RequestMapping("/User")
 public class UserController {
 
     @Autowired
@@ -21,24 +22,31 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Rejestracja użytkownika.
+     * @param user Obiekt użytkownika zawierający dane do rejestracji w formacie JSON.
+     *             Wymagane pola: login, password, role.
+     */
     @PostMapping("/register")
-    public String register(@RequestParam String login, @RequestParam String password, @RequestParam String role) {
-        if (userRepository.findByLogin(login).isPresent()) {
-            return "Użytkownik o takim loginie już istnieje";
-        }
-        String hashedPassword = passwordEncoder.encode(password);
-        userRepository.insert(new User(login, hashedPassword, role));
+    public String register(@Valid @RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.insert(user);
         return "Rejestracja udana";
     }
 
+    /**
+     * Logowanie użytkownika.
+     * @param user Obiekt użytkownika zawierający login i hasło w formacie JSON.
+     * @return Map zawierająca token JWT i rolę użytkownika lub komunikat o błędzie.
+     */
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
-        Optional<User> userOpt = userRepository.findByLogin(loginRequest.getLogin());
+    public Map<String, String> login(@RequestBody User user) {
+        Optional<User> userOpt = userRepository.findByLogin(user.getLogin());
         Map<String, String> response = new HashMap<>();
-        if (userOpt.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), userOpt.get().getPassword())) {
+        if (userOpt.isPresent() && passwordEncoder.matches(user.getPassword(), userOpt.get().getPassword())) {
             try {
                 response.put("token", JwtUtil.generateToken(userOpt.get().getLogin()));
-                response.put("role", userOpt.get().getRole());
+                response.put("role", userOpt.get().getRole().name());
             } catch (Exception e) {
                 response.put("error", "Błąd podczas generowania tokena: " + e.getMessage());
             }
