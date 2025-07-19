@@ -10,4 +10,5 @@ class BudgetManagementAppApplicationTests {
     void contextLoads() {
     }
 
+
 }
