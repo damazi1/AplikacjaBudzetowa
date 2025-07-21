@@ -31,6 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 && !request.getRequestURI().startsWith("/Account/create")
                 && !request.getRequestURI().startsWith("/Account/get/")
                 && !request.getRequestURI().startsWith("/Transaction/create/transfer")
+                && !request.getRequestURI().startsWith("/Transaction/create/deposit")
+                && !request.getRequestURI().startsWith("/Transaction/create/withdrawal")
                 && !request.getRequestURI().startsWith("/Transfer/all/")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;

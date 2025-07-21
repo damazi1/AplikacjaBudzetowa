@@ -19,7 +19,7 @@ public class Transaction {
     @CreatedDate
     private Date date; // Consider using LocalDate for better date handling
     private TransactionTypes transactionType;
-
+    private TransactionStatus transactionStatus;
     public Transaction() {
         // Default constructor
     }
