@@ -18,6 +18,7 @@ public class Transaction {
     private String description;
     @CreatedDate
     private Date date; // Consider using LocalDate for better date handling
+    private double amount;
     private TransactionTypes transactionType;
     private TransactionStatus transactionStatus;
     public Transaction() {

@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar.tsx";
 import Sidebar from "./components/Sidebar.tsx";
 import Auth from "./components/Auth.tsx";
 import Details from "./components/Details.tsx";
+import Account from "./components/Account.tsx";
 
 // Destrukturyzacja komponentów Layout z Ant Design
 // aby uprościć kod i uniknąć powtarzania Layout.
@@ -27,6 +28,7 @@ const App: React.FC = () => {
                             <Route path="/"  element={<Home/>} />
                             <Route path="/auth"  element={<Auth/>} />
                             <Route path="/details/:login" element={<Details/>} />
+                            <Route path="/account/:accountNumber" element={<Account/>} />
                         </Routes>
                     </Content>
                 </Layout>

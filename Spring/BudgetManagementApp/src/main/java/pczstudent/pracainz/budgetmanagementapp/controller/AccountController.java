@@ -31,5 +31,8 @@ public class AccountController {
     public List<Account> getAccountsByUserId(@PathVariable String userId) {
         return accountRepository.findByUserId(userId);
     }
-
+    @GetMapping("/details/{number}")
+    public Account getAccountDetails(@PathVariable String number) {
+        return accountRepository.findByNumber(number).orElse(null);
+    }
 }

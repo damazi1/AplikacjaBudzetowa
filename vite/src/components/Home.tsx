@@ -10,6 +10,7 @@ import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę
 const Home: React.FC = () => {
     const [loginData, setLogin] = useState<string | null>(null);
     const [AccountData, setAccounts] = useState<Account[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
         const fetchLoginData = async () => {
@@ -22,20 +23,34 @@ const Home: React.FC = () => {
         };
         fetchLoginData();
     }, []);
+    useEffect(() => {
+        if (localStorage.getItem('loginSuccess')) {
+            message.success('Login successful');
+            localStorage.removeItem('loginSuccess');
+        }
+    }, []);
+
+    const role = localStorage.getItem('role');
+    const login = localStorage.getItem('login');
+    const token = localStorage.getItem('jwt');
 
     useEffect(() => {
-        const fetchAccountData = async () => {
-            try{
-                const accounts = await fetchAccounts();
-                setAccounts(accounts);
-            } catch (err: any) {
-                message.error(err.response?.data?.error || err.message);
-            }
-        };
-        fetchAccountData();
-    }, []);
-    const login = localStorage.getItem('login');
-    const role = localStorage.getItem('role');
+        if (login && token) {
+            const fetchAccountData = async () => {
+                try {
+                    const accounts = await fetchAccounts();
+                    setAccounts(accounts);
+                } catch (err: any) {
+                    message.error(err.response?.data?.error || err.message);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchAccountData();
+        } else {
+            setIsLoading(false);
+        }
+    }, [login, token] );
     if (role === null) {
         return (
             <div className="home-ant-container">
@@ -60,22 +75,26 @@ const Home: React.FC = () => {
                     </Card>
                 </Col>
                 <Col xs={24} md={8}>
-                    {AccountData
-                        ? AccountData.length > 0
-                            ? AccountData.map(account => (
-                                <Card key={account.number} className="ant-home-card" variant="outlined">
-                                    <p><strong>name:</strong> {account.name}</p>
-                                    <p><strong>balance:</strong> {account.balance} {account.currency}</p>
-                                    <p><strong>Type:</strong> {account.type}</p>
-                                </Card>
-                            ))
-                            : <Card className="ant-home-card" variant="outlined">
-                                <strong>Nie znaleziono kont</strong>
-                            </Card>
-                        : <Card className="ant-home-card" variant="outlined">
+                    {isLoading ? (
+                        <Card className="ant-home-card" variant="outlined">
                             <strong>Ładowanie kont...</strong>
                         </Card>
-                    }
+                    ) : AccountData && AccountData.length > 0 ? (
+                        AccountData.map(account => (
+                            <Card
+                                key={account.number} className="ant-home-card" variant="outlined"
+                                onClick={() => navigate(`/account/${account.number}`)}
+                                style={{cursor: 'pointer'}}>
+                                <p><strong>name:</strong> {account.name}</p>
+                                <p><strong>balance:</strong> {account.balance} {account.currency}</p>
+                                <p><strong>Type:</strong> {account.type}</p>
+                            </Card>
+                        ))
+                    ) : (
+                        <Card className="ant-home-card" variant="outlined">
+                            <strong>Nie znaleziono kont</strong>
+                        </Card>
+                    )}
                 </Col>
                 <Col xs={24} md={8}>
                     <Card className="ant-home-card" variant="outlined">

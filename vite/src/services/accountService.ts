@@ -22,3 +22,21 @@ export const fetchAccounts = async(): Promise<Account[]> => {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");
     }
 }
+
+export const fetchAccountDetails = async (id: string): Promise<Account> => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+        throw new Error("Brak tokenu autoryzacji");
+    }
+    try {
+        const response = await axios.get(`http://localhost:8080/Account/details/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas pobierania szczegółów konta");
+    }
+}

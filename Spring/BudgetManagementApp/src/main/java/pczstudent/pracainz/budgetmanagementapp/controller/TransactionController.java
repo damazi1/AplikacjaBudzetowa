@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pczstudent.pracainz.budgetmanagementapp.model.*;
 import pczstudent.pracainz.budgetmanagementapp.repository.*;
 
+import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/Transaction")
@@ -37,7 +38,7 @@ public class TransactionController {
         transaction.setTransactionType(TransactionTypes.TRANSFER);
         transaction.setAccountId(transfer.getFromAccountNumber());
         transaction.setTransactionStatus(TransactionStatus.PENDING);
-
+        transaction.setAmount(transfer.getAmount());
         transaction.setDescription("Transfer to account " + transfer.getToAccountNumber());
 
         transactionRepository.save(transaction);
@@ -82,6 +83,7 @@ public class TransactionController {
         transaction.setTransactionType(TransactionTypes.DEPOSIT);
         transaction.setAccountId(deposit.getAccountNumber());
         transaction.setTransactionStatus(TransactionStatus.PENDING);
+        transaction.setAmount(deposit.getAmount());
         transaction.setDescription("Deposit to account " + deposit.getAccountNumber());
 
         transactionRepository.save(transaction);
@@ -118,6 +120,7 @@ public class TransactionController {
         transaction.setTransactionType(TransactionTypes.WITHDRAWAL);
         transaction.setAccountId(withdrawal.getAccountNumber());
         transaction.setTransactionStatus(TransactionStatus.PENDING);
+        transaction.setAmount(withdrawal.getAmount());
         transaction.setDescription("Withdrawal from account " + withdrawal.getAccountNumber());
 
         transactionRepository.save(transaction);
@@ -132,5 +135,10 @@ public class TransactionController {
         transactionRepository.save(transaction);
 
         return "Withdrawal created successfully";
+    }
+
+    @GetMapping("/get/{accountNumber}")
+    public List<Transaction> getTransactionByAccountNumber(@PathVariable String accountNumber) {
+        return transactionRepository.findByAccountId(accountNumber);
     }
 }

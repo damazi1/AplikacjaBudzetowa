@@ -1,6 +1,7 @@
 package pczstudent.pracainz.budgetmanagementapp.model;
 
 
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Deposit {
     private String transactionId;
     private String accountNumber;
+    @Positive
     private double amount;
     private String description;
 

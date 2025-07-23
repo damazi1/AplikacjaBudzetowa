@@ -4,7 +4,6 @@ import React from 'react';
 import type { FormProps } from 'antd';
 import '../styles/Auth.css'; // Import CSS for styling
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import {useNavigate} from "react-router-dom";
 import {loginUser} from "../services/userService.ts";
 
 type FieldType = {
@@ -14,13 +13,12 @@ type FieldType = {
 };
 
 const Auth: React.FC = () => {
-    const navigate = useNavigate();
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         try {
             await loginUser(values.login, values.password);
-            message.success('Login successful');
-            navigate('/');
+            localStorage.setItem('loginSuccess', 'true');
+            window.location.href="/"; // przekierowanie do strony głównej
         } catch (error) {
             message.error(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
