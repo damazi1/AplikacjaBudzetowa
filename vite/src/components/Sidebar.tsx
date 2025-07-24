@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <div className="demo-logo-vertical" />
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={handleMenuClick} />
+            <Menu theme={"dark"} defaultSelectedKeys={['1']} mode="inline" items={items} onClick={handleMenuClick} />
         </Sider>
     )
 

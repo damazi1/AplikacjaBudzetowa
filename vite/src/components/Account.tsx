@@ -2,14 +2,14 @@ import React, {useEffect} from "react";
 import { message, Layout, Card, Row, Col, Segmented } from "antd";
 import {fetchAccountDetails} from "../services/accountService.ts";
 import { useParams } from "react-router-dom";
-import type {Account} from "../models/Accounts.ts";
+import type {Accounts} from "../models/Accounts.ts";
 import {fetchTransactions} from "../services/transactionService.ts";
 import type {Transaction} from "../models/Transactions.ts";
 const { Content } = Layout;
 import {LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer} from "recharts";
 
 const Account: React.FC = () => {
-    const [accountData, setAccountData] = React.useState<Account | null>(null); // Typowanie można dostosować do modelu konta
+    const [accountData, setAccountData] = React.useState<Accounts | null>(null); // Typowanie można dostosować do modelu konta
     const [transactionData, setTransactionData] = React.useState<Transaction[] | null>(null); // Typowanie można dostosować do modelu konta
     const { accountNumber } = useParams<{ accountNumber: string }>();
     const [viewMode, setViewMode] = React.useState<"all" | "weekly">("all");
@@ -127,19 +127,17 @@ const Account: React.FC = () => {
     };
     console.log(viewMode, "ViewMode");
     return (
-        <Content style={{ color: "#fff", padding: "20px" }}>
-            <h1>Account Page</h1>
+        <Content style={{ padding: "20px", overflowX: "hidden", maxWidth: "100%" }}>
+        <h1>Account Page</h1>
             <p>This is the account page where you can manage your account details.</p>
             {accountData ? (
                 <p>Numer konta to: {accountData.number}</p>
             ) : (
                 <p>Ładowanie danych konta...</p>
             )}
-            <Segmented<"all" | "weekly">
-                options={[
-                    { label: "Wszystkie transakcje", value: "all" },
-                    { label: "Wpłaty i Wydatki", value: "weekly" }
-                ]}
+            <Segmented
+                style={{ outline: "1px solid", outlineOffset: "2px", padding: "2px", marginBottom: "20px"}}
+                options={["all", "weekly"]}
                 value={viewMode}
                 onChange={setViewMode}>
             </Segmented>
@@ -164,7 +162,7 @@ const Account: React.FC = () => {
                                 if (!active || !payload || !payload.length) return null;
                                 const data = payload[0].payload;
                                 return (
-                                    <div style={{ background: "#fff", border: "1px solid #ccc", padding: 10, color: "#000" }}>
+                                    <div style={{ background: "#777", border: "1px solid #ccc", padding: 10}}>
                                         <div style={{ fontWeight: "bold", marginBottom: 8 }}>{label}</div>
                                         <div>
                                             <span style={{ color: "green", fontWeight: 500 }}>PRZYCHODY:</span>{" "}

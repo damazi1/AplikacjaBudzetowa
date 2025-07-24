@@ -35,7 +35,7 @@ import React, { useEffect, useState } from "react";
         }, [login]);
 
         return (
-            <Content style={{color: "#fff", padding: "20px"}}>
+            <Content style={{ padding: "20px"}}>
                 {loading && <Spin/>}
                 {error && <Alert type="error" message={error}/>}
                 {userDetails && (

@@ -5,7 +5,7 @@ const { Footer } = Layout;
 
 const MyFooter: React.FC = () => {
            return(
-               <Footer style={{ textAlign: 'center', backgroundColor: '#001529', color: '#a9a9a9' }}>
+               <Footer style={{ textAlign: 'center', borderTop: '1px solid'}}>
                    Budget Management ©{new Date().getFullYear()} Created by Dawid Ziora
                </Footer>
            );

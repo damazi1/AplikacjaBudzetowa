@@ -3,13 +3,13 @@ import '../styles/Home.css';
 import React, {useEffect, useState} from 'react';
 import {fetchUsers} from "../services/userService.ts";
 import {useNavigate} from "react-router-dom";
-import type {Account} from "../models/Accounts.ts";
+import type {Accounts} from "../models/Accounts.ts";
 const { Title } = Typography;
 import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
 
 const Home: React.FC = () => {
     const [loginData, setLogin] = useState<string | null>(null);
-    const [AccountData, setAccounts] = useState<Account[] | null>(null);
+    const [AccountData, setAccounts] = useState<Accounts[] | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
@@ -54,17 +54,17 @@ const Home: React.FC = () => {
     if (role === null) {
         return (
             <div className="home-ant-container">
-                <Title level={1} style={{textAlign: 'center', color: '#fff', marginBottom: 32}}>
+                <Title level={1} style={{textAlign: 'center', marginBottom: 32}}>
                     Witaj {login ? login : "Użytkowniku"}!
                 </Title>
-                <h2 style={{color: '#fff', textAlign: 'center'}}>Aby skorzystać ze strony musisz być zalogowany</h2>
-                <h2 style={{color: '#fff', textAlign: 'center'}}><a  onClick={() => navigate('/auth')}>Kliknij tutaj, aby zalogować</a></h2>
+                <h2 style={{ textAlign: 'center'}}>Aby skorzystać ze strony musisz być zalogowany</h2>
+                <h2 style={{textAlign: 'center'}}><a  onClick={() => navigate('/auth')}>Kliknij tutaj, aby zalogować</a></h2>
             </div>
         )
     }
     return (
         <div className="home-ant-container">
-            <Title level={1} style={{textAlign: 'center', color: '#fff', marginBottom: 32}}>
+            <Title level={1} style={{textAlign: 'center', marginBottom: 32}}>
                 Witaj {login ? login : "Użytkowniku"}!
             </Title>
 

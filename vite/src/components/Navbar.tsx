@@ -1,7 +1,8 @@
 import {useNavigate} from "react-router-dom";
-import {UserOutlined} from "@ant-design/icons";
-import {Dropdown, Layout, message} from "antd";
-import React from "react";
+import {SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {Drawer, Dropdown, Layout, message, Segmented} from "antd";
+import React, {useState} from "react";
+import {useTheme} from "../theme/ThemeContext.tsx";
 
 // Ścieżki odpowiadające kluczom zakładek
 
@@ -13,6 +14,8 @@ const { Header } = Layout;
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const login = localStorage.getItem('login');
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const { toggleTheme, theme } = useTheme();
 
     const logout = () => {
         localStorage.removeItem("jwt");
@@ -26,21 +29,49 @@ const Navbar: React.FC = () => {
 
 
     return (
-        <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Dropdown menu={{ items:  [
-                login ?
-                    {  key: "details", label: <span onClick={() => navigate(`details/${login}`)}>
-                            Szczegóły konta</span>}
-                    : {key: '1', label: <span onClick={() => navigate('/auth')}>
-                            Zaloguj</span>},
-                ...(login
-                    ? [{ key: 'logout', label: (<span onClick={logout}><UserOutlined /> Wyloguj</span>) }]
-                    : [])
-            ] }} placement="bottom">
-                    <span style={{ color: "#fff", cursor: "pointer" }}>
-                        <UserOutlined />
+        <Header style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
+                <span
+                    style={{color: "#fff", cursor: "pointer", marginRight: '16px', fontSize: '20px'}}
+                    onClick={() => setSettingsOpen(true)}
+                >
+        <SettingOutlined/>
+    </span>
+            <Dropdown menu={{
+                items: [
+                    login ?
+                        {
+                            key: "details", label: <span onClick={() => navigate(`details/${login}`)}>
+                            Szczegóły konta</span>
+                        }
+                        : {
+                            key: '1', label: <span onClick={() => navigate('/auth')}>
+                            Zaloguj</span>
+                        },
+                    ...(login
+                        ? [{key: 'logout', label: (<span onClick={logout}><UserOutlined/> Wyloguj</span>)}]
+                        : [])
+                ]
+            }} placement="bottom">
+                    <span style={{color: "#fff", cursor: "pointer", fontSize: '20px'}}>
+                        <UserOutlined/>
                     </span>
             </Dropdown>
+            <Drawer
+                title="Ustawienia"
+                placement="right"
+                onClose={() => setSettingsOpen(false)}
+                open={settingsOpen}
+            >
+                <p>Motyw: </p>
+                {
+                    <Segmented
+                        options={["dark", "light"]}
+                        onChange={(value) => toggleTheme(value as "dark" | "light")}
+                        defaultValue={theme}
+                    />
+                }
+
+            </Drawer>
         </Header>
     );
 }
