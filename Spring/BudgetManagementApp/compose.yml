@@ -22,6 +22,8 @@ services:
       - "27017:27017"
     networks:
         - default
+    volumes:
+      - ./mongo_data:/data/db
 
 networks:
     default:
