@@ -1,6 +1,6 @@
 import axios from "axios";
+import type {User} from "../models/User.ts";
 
-const token = localStorage.getItem('jwt');
 const url = 'http://localhost:8080/User';
 export const fetchUsers = async (): Promise<string[]> => {
     try {
@@ -15,8 +15,8 @@ export const fetchUserDetails = async (login: string): Promise<any> => {
         const response = await axios.get(
             `${url}/details/${login}`,
             {
+                withCredentials: true,
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -26,15 +26,11 @@ export const fetchUserDetails = async (login: string): Promise<any> => {
     }
 }
 
-export const fetchUserId = async (): Promise<string> => {
-    const login = localStorage.getItem('login');
-    if (!login) {
-        throw new Error("Brak loginu użytkownika");
-    }
+export const fetchUserId = async (): Promise<User> => {
     try {
-        const response = await axios.get(`${url}/getId/${login}`, {
+        const response = await axios.get(`${url}/me`, {
+            withCredentials: true,
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -46,20 +42,15 @@ export const fetchUserId = async (): Promise<string> => {
 
 export const loginUser = async (login: string | undefined, password: string | undefined): Promise<void> => {
     try {
-        const response = await axios.post(`${url}/login`, { login, password }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        const response = await axios.post(`${url}/login`, { login, password },
+        {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true // <-- tutaj, poza headers!
         });
-        if(response.data.error){
-            throw new Error(response.data.error);
+        console.log(response);
+        if(!response.status){
+            throw new Error("Nie udało się zalogować. Sprawdź login i hasło.");
         }
-        if (!response.data || !response.data.token) {
-            throw new Error(response.data.error);
-        }
-        localStorage.setItem('jwt', response.data.token);
-        localStorage.setItem('login', login!.toString());
-        localStorage.setItem('role', response.data.role);
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
     }

@@ -3,15 +3,10 @@ import axios from "axios";
 
 
 export const fetchTransactions = async (id: number): Promise<Transaction[]> => {
-    const token = localStorage.getItem('jwt');
-
-    if(!token){
-        throw new Error("Brak tokenu autoryzacji");
-    }
     try {
         const response = await axios.get(`http://localhost:8080/Transaction/get/${id}`, {
+            withCredentials: true,
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });

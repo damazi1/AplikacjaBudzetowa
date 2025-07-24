@@ -1,27 +1,30 @@
 import React, {useEffect} from "react";
 import { message, Layout, Card, Row, Col, Segmented } from "antd";
 import {fetchAccountDetails} from "../services/accountService.ts";
-import { useParams } from "react-router-dom";
 import type {Accounts} from "../models/Accounts.ts";
 import {fetchTransactions} from "../services/transactionService.ts";
 import type {Transaction} from "../models/Transactions.ts";
 const { Content } = Layout;
 import {LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer} from "recharts";
+import {useParams} from "react-router-dom";
 
 const Account: React.FC = () => {
     const [accountData, setAccountData] = React.useState<Accounts | null>(null); // Typowanie można dostosować do modelu konta
     const [transactionData, setTransactionData] = React.useState<Transaction[] | null>(null); // Typowanie można dostosować do modelu konta
-    const { accountNumber } = useParams<{ accountNumber: string }>();
     const [viewMode, setViewMode] = React.useState<"all" | "weekly">("all");
+    const { accountNumber } = useParams<{ accountNumber: string }>();
 
-    if (!accountNumber) return;
 
-    console.log("accountNumber", accountNumber);
     useEffect(() => {
         const fetchAccountData = async () => {
+            if (!accountNumber) {
+                message.error("Nie podano numeru konta.");
+                return;
+            }
             try {
                 const account = await fetchAccountDetails(accountNumber);
                 setAccountData(account);
+                console.log("Fetched account data:", accountNumber);
             } catch (error: any) {
                 if (error.response && error.response.status === 404) {
                     message.error("Nie znaleziono konta o podanym numerze.");
@@ -31,7 +34,7 @@ const Account: React.FC = () => {
             }
         };
         fetchAccountData();
-    }, [accountNumber]);
+    }, []);
 
     useEffect(() => {
         if (!accountData) return;
@@ -125,7 +128,6 @@ const Account: React.FC = () => {
             </div>
         );
     };
-    console.log(viewMode, "ViewMode");
     return (
         <Content style={{ padding: "20px", overflowX: "hidden", maxWidth: "100%" }}>
         <h1>Account Page</h1>

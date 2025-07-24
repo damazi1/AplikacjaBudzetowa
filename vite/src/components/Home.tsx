@@ -6,10 +6,13 @@ import {useNavigate} from "react-router-dom";
 import type {Accounts} from "../models/Accounts.ts";
 const { Title } = Typography;
 import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
+import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę jeśli inna
+import type { User } from "../models/User.ts"; // popraw ścieżkę jeśli inna
 
 const Home: React.FC = () => {
     const [loginData, setLogin] = useState<string | null>(null);
-    const [AccountData, setAccounts] = useState<Accounts[] | null>(null);
+    const [AccountData, setAccounts] = useState<Accounts [] | null>(null);
+    const [UserData, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
@@ -30,15 +33,11 @@ const Home: React.FC = () => {
         }
     }, []);
 
-    const role = localStorage.getItem('role');
-    const login = localStorage.getItem('login');
-    const token = localStorage.getItem('jwt');
-
     useEffect(() => {
-        if (login && token) {
             const fetchAccountData = async () => {
                 try {
                     const accounts = await fetchAccounts();
+                    console.log(accounts);
                     setAccounts(accounts);
                 } catch (err: any) {
                     message.error(err.response?.data?.error || err.message);
@@ -47,15 +46,24 @@ const Home: React.FC = () => {
                 }
             };
             fetchAccountData();
-        } else {
-            setIsLoading(false);
-        }
-    }, [login, token] );
-    if (role === null) {
+    }, [] );
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const user = await fetchUserId();
+                setUser(user);
+            } catch (err: any) {
+                message.error(err.response?.data?.error || err.message);
+            }
+        };
+        fetchUserData();
+    }, [] );
+    if (UserData === null) {
         return (
             <div className="home-ant-container">
                 <Title level={1} style={{textAlign: 'center', marginBottom: 32}}>
-                    Witaj {login ? login : "Użytkowniku"}!
+                    Witaj "Użytkowniku"!
                 </Title>
                 <h2 style={{ textAlign: 'center'}}>Aby skorzystać ze strony musisz być zalogowany</h2>
                 <h2 style={{textAlign: 'center'}}><a  onClick={() => navigate('/auth')}>Kliknij tutaj, aby zalogować</a></h2>
@@ -65,7 +73,7 @@ const Home: React.FC = () => {
     return (
         <div className="home-ant-container">
             <Title level={1} style={{textAlign: 'center', marginBottom: 32}}>
-                Witaj {login ? login : "Użytkowniku"}!
+                Witaj {UserData ? UserData.login : "Użytkowniku"}!
             </Title>
 
             <Row gutter={[24, 24]} justify="center">

@@ -1,7 +1,9 @@
 package pczstudent.pracainz.budgetmanagementapp.controller;
 
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pczstudent.pracainz.budgetmanagementapp.config.JwtUtil;
 import pczstudent.pracainz.budgetmanagementapp.model.User;
@@ -40,22 +42,45 @@ public class UserController {
      * @return Map zawierająca token JWT i rolę użytkownika lub komunikat o błędzie.
      */
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user, jakarta.servlet.http.HttpServletResponse servletResponse) {
         Optional<User> userOpt = userRepository.findByLogin(user.getLogin());
         Map<String, String> response = new HashMap<>();
         if (userOpt.isPresent() && passwordEncoder.matches(user.getPassword(), userOpt.get().getPassword())) {
             try {
-                response.put("token", JwtUtil.generateToken(userOpt.get().getLogin()));
-                response.put("role", userOpt.get().getRole().name());
+                String token = JwtUtil.generateToken(userOpt.get().getLogin());
+
+                Cookie tokenCookie = new Cookie("jwt", token);
+                tokenCookie.setHttpOnly(true);
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(60 * 60 * 24); // Token ważny przez 1 dzień
+                tokenCookie.setSecure(false);
+                servletResponse.addCookie(tokenCookie);
             } catch (Exception e) {
                 response.put("error", "Błąd podczas generowania tokena: " + e.getMessage());
             }
         } else {
             response.put("error", "Błędny login lub hasło");
         }
-        return response;
+        return ResponseEntity.ok(response);
     }
-
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@CookieValue(value = "jwt", required = true) String token) {
+        System.out.println("Odebrany token JWT: " + token); // Wyświetli token w konsoli
+        if (token == null) {
+            return ResponseEntity.status(401).body("Brak tokena");
+        }
+        try {
+            String login = JwtUtil.validateTokenAndGetLogin(token);
+            Optional<User> userOpt = userRepository.findByLogin(login);
+            if (userOpt.isPresent()) {
+                return ResponseEntity.ok(userOpt.get());
+            } else {
+                return ResponseEntity.status(404).body("Użytkownik nie znaleziony");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Nieprawidłowy token");
+        }
+    }
     @GetMapping("/list")
     public Iterable<User> getUser() {
         return userRepository.findAll();

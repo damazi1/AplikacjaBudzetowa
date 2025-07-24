@@ -1,37 +1,27 @@
-import type {Account} from "../models/Accounts.ts";
+import type {Accounts} from "../models/Accounts.ts";
 import axios from "axios";
 import {fetchUserId} from "./userService.ts";
 
-export const fetchAccounts = async(): Promise<Account[]> => {
-    const token = localStorage.getItem('jwt');
+export const fetchAccounts= async (): Promise<Accounts[]> =>{
     const id = await fetchUserId();
-    console.log(id);
-    if (!token) {
-        throw new Error("Brak tokenu autoryzacji");
-    }
     try {
-        const response = await axios.get(`http://localhost:8080/Account/get/${id}`, {
+        const response = await axios.get(`http://localhost:8080/Account/get/${id.id}`, {
+            withCredentials: true,
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
-        console.log(response.data);
         return await response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");
     }
 }
 
-export const fetchAccountDetails = async (id: string): Promise<Account> => {
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-        throw new Error("Brak tokenu autoryzacji");
-    }
+export const fetchAccountDetails = async (account: string): Promise<Accounts> => {
     try {
-        const response = await axios.get(`http://localhost:8080/Account/details/${id}`, {
+        const response = await axios.get(`http://localhost:8080/Account/details/${account}`, {
+            withCredentials: true,
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });

@@ -1,42 +1,87 @@
-import React, {useState} from 'react';
-import {Layout, Menu} from "antd";
-import {useNavigate} from "react-router-dom";
-import {HomeOutlined, UserOutlined} from "@ant-design/icons";
+import React, {useEffect, useState} from 'react';
+import {Layout, Menu, message} from "antd";
+import {useNavigate, useLocation} from "react-router-dom";
+import { HomeOutlined, UserOutlined } from "@ant-design/icons";
+import { fetchAccounts} from "../services/accountService.ts";
+import type {Accounts} from "../models/Accounts.ts";
 
-// Ścieżki odpowiadające kluczom zakładek
-const tabKeyToPath: Record<string, string> = {
-    '1': '/',
-    '2': '/test',
-};
-
-// Destrukturyzacja komponentów Layout z Ant Design
+/**
+ * Komponent Sidebar wyświetlający menu boczne.
+ * Zawiera linki do stron (aktualnie Strona Główna i Konta Bankowe).
+ * Korzysta z destrukturyzacji komponentów Layout z Ant Design.
+ */
 const { Sider } = Layout;
 
-// Komponent Sidebar
 const Sidebar: React.FC = () => {
-    // ustawienie stanu dla złożoności paska bocznego
     const [collapsed, setCollapsed] = useState(false);
-
     const navigate = useNavigate();
+    const location = useLocation();
+    const [accounts, setAccounts] = useState<Accounts[] | null>(null);
 
-    // Definicja elementów menu
-    const items = [
-        { key: '1', icon: <HomeOutlined/>, label: 'Strona Główna' },
-        { key: '2', icon: <UserOutlined />, label: 'Tescik' },
+    // Dane konta
+        useEffect(() => {
+            const fetchAccountss = async () => {
+                try {
+                    const accounts = await fetchAccounts();
+                    setAccounts(accounts);
+                } catch (err: any) {
+                    message.error(err.response?.data?.error || err.message);
+                    return [];
+                }
+            };
+            fetchAccountss();
+        }, []);
+
+    const menuItems = [
+        {
+            key: 'home',
+            icon: <HomeOutlined />,
+            label: 'Strona Główna',
+            onClick: () => navigate('/'),
+        },
+        ...([{
+                key: 'accounts',
+                icon: <UserOutlined/>,
+                label: 'Konta Bankowe',
+                children: accounts
+                    ? accounts.length > 0
+                        ? accounts.map((account) => ({
+                            key: `/account/${account.number}`,
+                            label: account.name,
+                            onClick: () => navigate(`/account/${account.number}`),
+                        }))
+                        : [{
+                            key: 'no-accounts',
+                            label: 'Nie znaleziono kont',
+                            disabled: true,
+                        }]
+                    : [{
+                        key: 'loading',
+                        label: 'Ładowanie kont...',
+                        disabled: true,
+                    }],
+            }]
+        ),
     ];
-    // Funkcja obsługująca kliknięcia w menu
-    const handleMenuClick = (e: { key: string }) => {
-        const path = tabKeyToPath[e.key];
-        if (path) navigate(path);
-    };
 
+
+    /**
+     * Renderuje komponent Sidebar.
+     * To ten śmieszny pasek po lewej stronie, który zawiera linki do różnych stron.
+     * Można go zwinąć lub rozwinąć strzałką w lewym dolnym rogu.
+     *
+     * W środku tego cudeńka znajduje się menu, które prowadzi do różnych stron
+     * każda strona to osobny menu item.
+     */
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-            <div className="demo-logo-vertical" />
-            <Menu theme={"dark"} defaultSelectedKeys={['1']} mode="inline" items={items} onClick={handleMenuClick} />
+        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+            <Menu theme="dark"
+                  selectedKeys={[location.pathname]}
+                  mode="inline"
+                items={menuItems}
+            />
         </Sider>
-    )
-
-}
+    );
+};
 
 export default Sidebar;

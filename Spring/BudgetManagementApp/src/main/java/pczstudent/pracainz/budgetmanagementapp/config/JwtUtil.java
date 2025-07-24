@@ -37,4 +37,17 @@ public static boolean validateToken(String token) {
         return false;
     }
 }
+
+public static String validateTokenAndGetLogin(String token) throws Exception {
+    SignedJWT signedJWT = SignedJWT.parse(token);
+    JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
+    if (!signedJWT.verify(verifier)) {
+        throw new Exception("Nieprawidłowy podpis tokena");
+    }
+    Date expiration = signedJWT.getJWTClaimsSet().getExpirationTime();
+    if (expiration == null || expiration.before(new Date())) {
+        throw new Exception("Token wygasł");
+    }
+    return signedJWT.getJWTClaimsSet().getSubject();
+}
 }
