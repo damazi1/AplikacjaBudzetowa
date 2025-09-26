@@ -11,6 +11,7 @@ import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,6 +86,10 @@ public class UserController {
     public Iterable<User> getUser() {
         return userRepository.findAll();
     }
+    @GetMapping("/search")
+    public List<User> searchUsers(@RequestParam String query) {
+        return userRepository.findByLoginContainingIgnoreCase(query);
+    }
     @GetMapping("/getId/{login}")
     public String getUserIdByLogin(@PathVariable String login) {
         return userRepository.findByLogin(login)
@@ -105,4 +110,16 @@ public class UserController {
         user.setLogin(login);
         userRepository.save(user);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(jakarta.servlet.http.HttpServletResponse servletResponse) {
+        Cookie tokenCookie = new Cookie("jwt", null);
+        tokenCookie.setHttpOnly(true);
+        tokenCookie.setPath("/");
+        tokenCookie.setMaxAge(0); // Usuń ciasteczko
+        tokenCookie.setSecure(false);
+        servletResponse.addCookie(tokenCookie);
+        return ResponseEntity.ok("Wylogowano pomyślnie");
+    }
+
 }

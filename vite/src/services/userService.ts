@@ -47,10 +47,54 @@ export const loginUser = async (login: string | undefined, password: string | un
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true // <-- tutaj, poza headers!
         });
-        console.log(response);
         if(!response.status){
             throw new Error("Nie udało się zalogować. Sprawdź login i hasło.");
         }
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}
+
+export const logoutUser = async (): Promise<void> => {
+    try {
+        await axios.post(`${url}/logout`, {}, {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true // <-- tutaj, poza headers!
+        });
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}
+
+export const registerUser = async (data : { login: string; password: string; role: string }): Promise<void> => {
+    try {
+        await axios.post(`${url}/register`, data, {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true // <-- tutaj, poza headers!
+        });
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}
+
+export const searchUsers = async (query: string): Promise<string[]> => {
+    try {
+        const response = await axios.get(`${url}/search?query=${query}`);
+        return response.data.map((user: { id: string, login: string }) => ({
+            id: user.id,
+            login: user.login
+        }));
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}
+
+export const deleteUser = async (id: string): Promise<void> => {
+    try {
+        await axios.delete(`${url}/delete/${id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true // <-- tutaj, poza headers!
+        });
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
     }

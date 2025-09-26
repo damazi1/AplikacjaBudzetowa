@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
-import { message, Layout, Card, Row, Col, Segmented } from "antd";
+import React, {useEffect, useState} from "react";
+import { message, Layout, Card, Row, Col, Segmented, Modal, Button, Form, InputNumber, Input } from "antd";
 import {fetchAccountDetails} from "../services/accountService.ts";
 import type {Accounts} from "../models/Accounts.ts";
-import {fetchTransactions} from "../services/transactionService.ts";
+import {fetchTransactions, newPayment} from "../services/transactionService.ts";
 import type {Transaction} from "../models/Transactions.ts";
 const { Content } = Layout;
 import {LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer} from "recharts";
@@ -14,6 +14,27 @@ const Account: React.FC = () => {
     const [viewMode, setViewMode] = React.useState<"all" | "weekly">("all");
     const { accountNumber } = useParams<{ accountNumber: string }>();
 
+
+    // ...w komponencie Account:
+    const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+    const [depositLoading, setDepositLoading] = useState(false);
+
+    const showDepositModal = () => setIsDepositModalOpen(true);
+    const handleDepositCancel = () => setIsDepositModalOpen(false);
+
+    const handleDeposit = async (values: { amount: number; description: string }) => {
+        setDepositLoading(true);
+        try {
+            await newPayment(accountData!.number, values.amount, values.description);
+            message.success("Wpłata zakończona sukcesem");
+            setIsDepositModalOpen(false);
+            // odśwież dane konta/transakcji jeśli trzeba
+        } catch (err: any) {
+            message.error(err.message || "Błąd podczas wpłaty");
+        } finally {
+            setDepositLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchAccountData = async () => {
@@ -217,7 +238,37 @@ const Account: React.FC = () => {
                         ) : (
                             <h2>Ładowanie danych konta...</h2>
                         )}
-
+                    <Button type="primary" onClick={showDepositModal} style={{ marginBottom: 16 }}>
+                        Wpłać
+                    </Button>
+                    <Modal
+                        title="Wpłata na konto"
+                        open={isDepositModalOpen}
+                        onCancel={handleDepositCancel}
+                        footer={null}
+                    >
+                        <Form layout="vertical" onFinish={handleDeposit}>
+                            <Form.Item
+                                label="Kwota"
+                                name="amount"
+                                rules={[{ required: true, message: "Podaj kwotę wpłaty" }]}
+                            >
+                                <InputNumber min={0.01} step={0.01} style={{ width: "100%" }} />
+                            </Form.Item>
+                            <Form.Item
+                                label="Opis"
+                                name="description"
+                                rules={[{ required: true, message: "Podaj opis" }]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" loading={depositLoading}>
+                                    Wpłać
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                 </Col>
             </Row>
 

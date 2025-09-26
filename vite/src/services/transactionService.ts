@@ -16,3 +16,15 @@ export const fetchTransactions = async (id: number): Promise<Transaction[]> => {
     }
 
 }
+export const newPayment = async (accountNumber: number, amount: number, description: string): Promise<void> => {
+    try {
+        await axios.post(`http://localhost:8080/Transaction/create/deposit`, {accountNumber, amount, description}, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas realizacji płatności");
+    }
+}

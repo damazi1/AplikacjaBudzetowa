@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Layout, Menu, message} from "antd";
+import {Layout, Menu} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 import { fetchAccounts} from "../services/accountService.ts";
@@ -25,8 +25,7 @@ const Sidebar: React.FC = () => {
                     const accounts = await fetchAccounts();
                     setAccounts(accounts);
                 } catch (err: any) {
-                    message.error(err.response?.data?.error || err.message);
-                    return [];
+                    setAccounts([]);
                 }
             };
             fetchAccountss();

@@ -13,10 +13,10 @@ public class SecurityConfig {
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/User/register", "/User/login", "/User/list", "/Account/create",
-                        "/Account/get/**", "/Transaction/create/transfer",
-                        "/Transfer/all/**", "/Transaction/create/deposit",
-                        "/Transaction/create/withdrawal").permitAll() // pozwól na dostęp do /register
+                .requestMatchers("/User/register", "/User/login", "/User/list","/User/delete/", "/User/logout", "/User/search",
+                        "/Account/create", "/Account/get/**",
+                        "/Transaction/create/transfer",  "/Transaction/create/deposit", "/Transaction/create/withdrawal",
+                        "/Transfer/all/**").permitAll() // pozwól na dostęp do /register
                 .anyRequest().authenticated()
         )
             .addFilterBefore(new JwtAuthenticationFilter(), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)

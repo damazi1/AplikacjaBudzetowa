@@ -30,3 +30,17 @@ export const fetchAccountDetails = async (account: string): Promise<Accounts> =>
         throw new Error(error.message || "Wystąpił błąd podczas pobierania szczegółów konta");
     }
 }
+
+export const createAccount = async (payload: Accounts): Promise<void> => {
+    try {
+        await axios.post(`http://localhost:8080/Account/create`, payload, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas tworzenia konta");
+    }
+}
+

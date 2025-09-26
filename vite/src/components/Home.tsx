@@ -40,7 +40,6 @@ const Home: React.FC = () => {
                     console.log(accounts);
                     setAccounts(accounts);
                 } catch (err: any) {
-                    message.error(err.response?.data?.error || err.message);
                 } finally {
                     setIsLoading(false);
                 }
@@ -54,7 +53,6 @@ const Home: React.FC = () => {
                 const user = await fetchUserId();
                 setUser(user);
             } catch (err: any) {
-                message.error(err.response?.data?.error || err.message);
             }
         };
         fetchUserData();
