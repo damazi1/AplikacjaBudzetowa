@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import './Styles/Layout.css';
 import {ConfigProvider, Layout, theme as antdTheme} from "antd";
 import MyFooter from "./components/MyFooter.tsx";
@@ -10,6 +10,11 @@ import Auth from "./components/Auth.tsx";
 import Details from "./components/Details.tsx";
 import Account from "./components/Account.tsx";
 import {ThemeProvider, useTheme } from "./theme/ThemeContext.tsx";
+import Signup from "./components/Signup.tsx";
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { useLocation } from 'react-router-dom';
+
+
 
 // Destrukturyzacja komponentów Layout z Ant Design
 // aby uprościć kod i uniknąć powtarzania Layout.
@@ -37,29 +42,43 @@ const ThemeWrapper: React.FC<{children: React.ReactNode}> = ({children}) => {
 };
 
 const App: React.FC = () => {
+    const location = useLocation();
+    const nodeRef = useRef(null);
 
     return (
         <ThemeProvider>
             <ThemeWrapper>
-                <BrowserRouter>
-                    <Layout style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+                    <Layout style={{ minHeight: "100vh", display: "flex", flexDirection: "column",  overflow: "hidden" }}>
                         <Navbar/>
                         <Layout>
-                            <Sidebar/>
+                            {/*<Sidebar/>*/}
                             <Layout style={{ width: "100%" }}>
                             <Content style={{flex: 1, minHeight: 0}}>
-                                <Routes>
-                                    <Route path="/"  element={<Home/>} />
-                                    <Route path="/auth"  element={<Auth/>} />
-                                    <Route path="/details/:login" element={<Details/>} />
-                                    <Route path="/account/:accountNumber" element={<Account/>} />
-                                </Routes>
+                                <SwitchTransition>
+                                    <CSSTransition
+                                        key={location.pathname}
+                                        timeout={300}
+                                        classNames="fade"
+                                        unmountOnExit
+                                        nodeRef={nodeRef}
+                                    >
+                                        <div ref={nodeRef}>
+                                            <Routes>
+                                                <Route path="/" element={<Home/>}/>
+                                                <Route path="/auth/login" element={<Auth/>}/>
+                                                <Route path="/auth/signup" element={<Signup/>}/>
+                                                <Route path="/details/:login" element={<Details/>}/>
+                                                <Route path="/account/:accountNumber" element={<Account/>}/>
+                                            </Routes>
+                                        </div>
+                                    </CSSTransition>
+                                </SwitchTransition>
+
                             </Content>
                             <MyFooter/>
                             </Layout>
                         </Layout>
                     </Layout>
-                </BrowserRouter>
             </ThemeWrapper>
         </ThemeProvider>
 

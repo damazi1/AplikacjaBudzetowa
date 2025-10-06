@@ -1,12 +1,13 @@
 import {useNavigate} from "react-router-dom";
-import {HomeOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {HomeOutlined, SettingOutlined, UserOutlined, FlagOutlined} from "@ant-design/icons";
 import {Drawer, Dropdown, Layout, Segmented} from "antd";
 import React, {useEffect, useState} from "react";
 import {useTheme} from "../theme/ThemeContext.tsx";
 import {fetchUserId, logoutUser} from "../services/userService.ts";
 import type { User } from "../models/User.ts";
+import { Select } from "antd";// Ścieżki odpowiadające kluczom zakładek
+import { useTranslation } from "react-i18next";
 
-// Ścieżki odpowiadające kluczom zakładek
 
 
 // Destrukturyzacja komponentów Layout z Ant Design
@@ -36,6 +37,11 @@ const Navbar: React.FC = () => {
         window.location.reload();
     };
 
+    const { i18n } = useTranslation();
+
+    const toggleCollapsed = () => {
+        setCollapsed(!collapsed);
+    };
     return (
         <Header style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
     <span style={{color: "#fff", fontWeight: "bold", fontSize: "22px",cursor: "pointer"}}
@@ -49,26 +55,35 @@ const Navbar: React.FC = () => {
         >
             <SettingOutlined/>
         </span>
-                <Dropdown menu={{
-                    items: [
-                        user?.login ?
-                            {
-                                key: "details", label: <span onClick={() => navigate(`details/${user?.login}`)}>
-                        Szczegóły konta</span>
-                            }
-                            : {
-                                key: '1', label: <span onClick={() => navigate('/auth')}>
-                        Zaloguj</span>
-                            },
-                        ...(user?.login
-                            ? [{key: 'logout', label: (<span onClick={handleLogout}><UserOutlined/> Wyloguj</span>)}]
-                            : [])
-                    ]
-                }} placement="bottom">
-            <span style={{color: "#fff", cursor: "pointer", fontSize: '20px'}}>
-                <UserOutlined/>
-            </span>
-                </Dropdown>
+{user?.login && (
+    <Dropdown
+        menu={{
+            items: [
+                {
+                    key: "details",
+                    label: (
+                        <span onClick={() => navigate(`details/${user?.login}`)}>
+                            Szczegóły konta
+                        </span>
+                    ),
+                },
+                {
+                    key: 'logout',
+                    label: (
+                        <span onClick={handleLogout}>
+                            <UserOutlined /> Wyloguj
+                        </span>
+                    ),
+                },
+            ],
+        }}
+        placement="bottom"
+    >
+        <span style={{ color: "#fff", cursor: "pointer", fontSize: '20px' }}>
+            <UserOutlined />
+        </span>
+    </Dropdown>
+)}
                 <Drawer
                     title="Ustawienia"
                     placement="right"
@@ -80,6 +95,16 @@ const Navbar: React.FC = () => {
                         options={["dark", "light"]}
                         onChange={(value) => toggleTheme(value as "dark" | "light")}
                         defaultValue={theme}
+                    />
+                    <p>Język: </p>
+                    <Select
+                        defaultValue={i18n.language}
+                        style={{ width: 120 }}
+                        onChange={lng => i18n.changeLanguage(lng)}
+                        options={[
+                            { value: "pl", label: "Polski" },
+                            { value: "en", label: "English" }
+                        ]}
                     />
                 </Drawer>
             </div>

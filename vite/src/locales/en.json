@@ -1,0 +1,15 @@
+{
+  "welcome": "Witaj",
+  "Username": "Username",
+  "loginMessage": "<strong>Login</strong> to E-wallet",
+  "logout": "logout",
+  "Don't have an account yet?": "Don't have an account yet?",
+  "Sign Up here": "Sign Up here",
+  "Please input your password!" : "Please input your password!",
+  "Please input your login!" : "Please input your login!",
+  "Password is too short!" : "Password is too short!",
+  "Enter your password" : "Enter your password",
+  "Password" : "Password",
+  "Remember me": "Remember me",
+  "Created by": "Created by"
+}

@@ -1,0 +1,56 @@
+\chapter*{Wstęp}
+\markboth{Wstęp}{Wstęp}
+\addcontentsline{toc}{chapter}{Wstęp}
+Aplikacje webowe są coraz bardziej powszechnie używane. W artykule \cite{AcademyBank} zauważono, że 83.1\% osób śledzi swoje wydatki, z czego 45.3\% używa do tego narzędzi cyfrowych. Jednym z rozwiązań jest korzystanie z aplikacji budżetowych. W badaniach użycie tych narzędzi zadeklarowało 20.9\% ludzi. Z biegiem czasu te liczby będą tylko rosły, ponieważ na rynku będzie pojawiać się coraz więcej narzędzi umożliwiających proste zarządzanie własnymi finansami. Niemal 80\% osób korzystających z platform do zarządzania budżetem deklaruje, że korzysta z nich przynajmniej raz w tygodniu. 
+
+W publikacji \cite{PFMApp} dowiadujemy się, że aplikacje te wpływają na wzrost wiedzy ekonomiczno-finansowej społeczeństwa, zwiększają chęć do planowania i kontroli budżetem domowym. Usługi te są dostępne w każdym miejscu i czasie 24/7. Przeprowadzone badanie na grupie $N=301$ polaków wykazało, że 288 korzysta z aplikacji do wspomagania budżetem, a tylko 13 nie korzysta. Główne czynności, do których Polacy wykorzystują aplikacje to Kontrola budżetu domowego (88.54\%), Weryfikacja wydatków z ostatniego miesiąca (86.11\%), Sprawdzanie salda rachunku/-ów (48.26\%) oraz planowanie wydatków na kilka miesięcy (45.83\%). 
+
+Według artykułu \cite{FintechStats} grupą, która najczęściej używa tego typu aplikacji znajduje się w przedziale wiekowym od 27 do 42 lat. Około 91\% osób z tej grupy deklaruje użycie tego typu aplikacji. Kolejna grupa to osoby w wieku od 43-58 lat (80\%). W przedziale od 18 do 26 roku życia jest to 68\%. Według badań aktualna wielkość rynku wynosi około 441.47\$ miliardów i przy aktualnym tempie wzrostu może urosnąć nawet do 906\$ miliardów do 2029 roku.
+
+Aplikacje te najczęściej cechują się interfejsem przyjaznym dla użytkownika, kategoryzacją i śledzeniem wydatków, możliwością przypominania o rachunkach oraz zapewniają ochronę informacji personalnych. Ich rozwój jest dynamiczny, na co wskazuje rosnąca liczba użytkowników.
+\section*{Cel pracy}
+Celem pracy jest zbudowanie aplikacji do zarządzania budżetem użytkownika końcowego. Aplikacja ma za zadanie wspomagać użytkowników w kontroli wydatków, planowaniu budżetu oraz analizie danych finansowych w prosty sposób. 
+\section*{Zakres pracy}
+Zakres niniejszej pracy obejmuje zaprojektowanie i implementację aplikacji webowej umożliwiającej zarządzanie budżetem domowym. 
+Aplikacja została oparta na architekturze klient-serwer. 
+
+Warstwa serwerowa została zaimplementowana w języku Java z wykorzystaniem frameworka Spring Boot. Wykorzystana została 21 wersja JAVY. Zapewnia obsługę logiki biznesowej, komunikację z bazą danych oraz interfejs API w technologii REST.  Korzysta między innymi z takich zależności jak: 
+\begin{itemize}
+	\item Lombok - Ułatwia tworzenie klas i podstawowych funkcji w klasach.
+	\item DevTools - Pozwalające m.in. na przeładowanie w czasie rzeczywistym.
+	\item Web - Zawiera RESTful API, pozwala na komunikacje.
+	\item Security - Umożliwia zastosowanie zabezpieczeń i autoryzacji do kontrolowania aplikacji.
+	\item MongoDB - Do przechowywania dokumentów w formacie zbliżonym do JSON.
+	\item Validation - pozwala na walidacje pól na przykład: ustawienie długości pola, pole nie może być puste i tym podobne.
+\end{itemize}
+Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5. Testy są wykonywane przed uruchomieniem aplikacji, aby sprawdzić jej poprawne działanie. 
+
+Warstwa frontendowa została zrealizowana w oparciu o React + Vite. Język, wykorzystany po stronie frontendu to TypeScript, który jest językiem skupiającym się silnie na typach danych. Pozwala to na dokładne określenie wyświetlanych na stronie informacji. Elementy, z których zbudowana jest strona są wykorzystane z popularnego reactowego frameworka UI o naziwe Ant Design. Składa się on ze wstępnie zbudowanych komponentów, które łatwo jest wyświetlić na stronie internetowej.
+
+Dane są przechowywane w nierelacyjnej bazie danych MongoDB, która zawiera dokumenty JSON ze wszystkimi ważnymi informacjami, które są związane z użytkownikami aplikacji.
+
+
+W ramach projektu utworzone są funkcje takie jak:
+\begin{itemize}
+	\item Rejestracja - Pozwala na utworzenie nowego konta przez użytkownika
+	\item Logowanie - Umożliwia dostęp do konta oraz funkcji strony
+	\item Tworzenie transakcji - Zapewnia możliwość dokonywania przelewów, wpłat i wypłat z konta
+	\item Wizualizacja danych na wykresie
+\end{itemize}
+Do sprawdzenia poprawności działania tych i innych funkcji wykorzystuje się narzędzie Postman, które pozwala wysyłać zapytania, sprawdzać restpointy i ogólną komunikację między klientem a serwerem. Narzędzie to jest powszechnie wykorzystywane przez deweloperów, ponieważ ułatwia ich pracę i umożliwia szybszy sposób na sprawdzanie poprawności działania funkcji bez konieczności implementacji ich na stronie internetowej. 
+
+Aplikacja wykorzystuje tez konteneryzacja, czyli jest zapakowane w wirtualny kontener na którym są wykonywane wszystkie operację. Do tego celu służy silnik Docker Engine, który umożliwia pobieranie wirtualnych obrazów systemów. Pozwala to na automatyzację pracy oraz niezmienność wersji programu w procesie wytwarzania oprogramowania. Daje możliwość, by daną aplikację uruchomić na dowolnym komputerze, bez konieczności posiadania zainstalowanych aplikacji takich jak mongoDB, wirtualnej maszyny Javy, czy też menadżera pakietów npm.
+
+
+\section*{Struktura pracy (Budowa pracy)}
+Streszczenie wszystkiego (1 akapit) - bez wstępu 
+
+W pierwszym rozdziale zostały opisany wszystkie technologię oraz narzędzia użyte do uzyskania działającej aplikacji. Znajdują się w niej najważniejsze informacje o każdej z nich oraz pojedyncze przykłady ich zastosowań.
+
+Drugi rozdział skupia się na wymaganiach postawionych projektowi. Przedstawia również diagramy na których możemy zobaczyć w jaki sposób mają działać funkcję.
+
+Trzeci rozdział uwzględnia informacje o tym w jaki sposób został utworzony cały projekt. Tłumaczy w jak działają poszczególne technologie, narzędzia i opisuje całą aplikację.
+
+W czwartym rozdziale znajdują się informacje o tym jak użytkownik powinien korzystać ze strony. Jest to instrukcja dla użytkownika, aby mógł zrozumieć, gdzie należy szukać odpowiednich elementów strony. Przedstawia krótkie opisy wraz z obrazkami. 
+
+Piąty rozdział zawiera podsumowanie całej pracy. Zostały w nim wyciągnięte wnioski oraz moje osiągnięcia.

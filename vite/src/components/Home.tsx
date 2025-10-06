@@ -16,6 +16,11 @@ const Home: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
+        if (UserData === null && !isLoading) {
+            navigate('/auth/login');
+        }
+    }, [UserData, isLoading, navigate]);
+    useEffect(() => {
         const fetchLoginData = async () => {
             try {
                 const users = await fetchUsers();

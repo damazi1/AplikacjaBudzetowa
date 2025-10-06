@@ -1,0 +1,20 @@
+{
+  "welcome": "Witaj",
+  "Username": "Nazwa użytkownika",
+  "loginMessage": "<strong>Zaloguj się</strong> do E-Wallet",
+  "logout": "Wyloguj",
+  "Don't have an account yet?": "Nie masz jeszcze konta?",
+  "Sign Up here": "Zarejestruj się",
+  "Please input your password!" : "Proszę wprowadzić hasło!",
+  "Please input your login!" : "Proszę wprowadzić nazwę użytkownika!",
+  "Password is too short!" : "Hasło jest za krótkie!",
+  "Enter your password" : "Wprowadź swoje hasło",
+  "Password" : "Hasło",
+  "Remember me": "Zapamiętaj mnie",
+  "Created by": "Stworzone przez",
+  "registerMessage": "<strong>Zarejestruj się</strong> do E-Wallet",
+  "Have an account?": "Masz już konto?",
+  "Login here": "Zaloguj się tutaj",
+  "Login must be at least 5 characters long!": "Nazwa użytkownika musi mieć co najmniej 5 znaków!",
+  "Enter your login": "Wprowadź swoją nazwę użytkownika"
+}

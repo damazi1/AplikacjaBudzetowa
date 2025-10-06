@@ -40,6 +40,8 @@
 \usepackage{longtable}
 \usepackage{tabularx}
 \usepackage{listings}
+\usepackage{placeins}
+\usepackage{float}
 
 %Set longtable caption to \textwidth (by default its 4in)
 \LTcapwidth=\textwidth
@@ -72,25 +74,65 @@
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
-
+\definecolor{red}{rgb}{0.6,0,0} 
+\definecolor{blue}{rgb}{0,0,0.6}
+\definecolor{green}{rgb}{0,0.8,0}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
 \usepackage{listings}
-\lstset{language=[Sharp]C,
+\lstset{
+	language=c++,
+	basicstyle=\footnotesize\ttfamily,
+	numbers=left,
+	numberstyle=\tiny,
+	numbersep=5pt,
+	tabsize=2,
+	extendedchars=true,
+	breaklines=true,
+	frame=b,
+	stringstyle=\color{blue}\ttfamily,
 	showspaces=false,
 	showtabs=false,
-	breaklines=true,
+	xleftmargin=0pt,
+	framexleftmargin=17pt,
+	framexrightmargin=5pt,
+	framexbottommargin=4pt,
+	commentstyle=\color{green},
 	showstringspaces=false,
-	breakatwhitespace=true,
-	escapeinside={(*@}{@*)},
-	commentstyle=\color{greencomments},
-	keywordstyle=\color{bluekeywords}\bfseries,
-	stringstyle=\color{redstrings},
-	basicstyle=\ttfamily,
-	frame=single,
-	rulecolor=\color{black}, 
-	numbers=left,
-	numberstyle=\tiny\color{black},
-	mathescape=true,
-	 escapeinside={(*@}{@*)}
+	morekeywords={ abstract, event, new, struct,
+		as, explicit, null, switch,
+		base, extern, object, this,
+		bool, false, operator, throw,
+		break, finally, out, true,
+		byte, fixed, override, try,
+		case, float, params, typeof,
+		catch, for, private, uint,
+		char, foreach, protected, ulong,
+		checked, goto, public, unchecked,
+		class, if, readonly, unsafe,
+		const, implicit, ref, ushort,
+		continue, in, return, using,
+		decimal, int, sbyte, virtual,
+		default, interface, sealed, volatile,
+		delegate, internal, short, void,
+		do, is, sizeof, while,
+		double, lock, stackalloc,
+		else, long, static,
+		enum, namespace, string,
+		move, List, Optional,
+		String },
+	keywordstyle=\color{cyan},
+	identifierstyle=\color{red},
+	backgroundcolor=\color{white},
+	   literate=
+		{ą}{{\k{a}}}1
+		{ć}{{\'c}}1
+		{ę}{{\k{e}}}1
+		{ł}{{\l{}}}1
+		{ń}{{\'n}}1
+		{ó}{{\'o}}1
+		{ś}{{\'s}}1
+		{ż}{{\.z}}1
+		{ź}{{\'z}}1,
 }
 
 %\usepackage[pdftex]{graphicx}
@@ -109,7 +151,7 @@
 
 % Styl dla opisów do rysunków
 \newcommand{\figdesc}[1]{%
-{\usefont{T1}{phv}{m}{n}\fontsize{9pt}{9pt}\selectfont \slshape #1}}
+{\usefont{T1}{phv}{m}{n}\fontsize{12pt}{12pt}\selectfont \slshape #1}}
 
 \usepackage{hyphenat}
 \newcommand{\dywiz}{\hyp{}}
@@ -125,7 +167,7 @@
 \usepackage{fancyhdr}
 %\usepackage{amsfonts}
 %\usepackage{times}
-\usepackage[left=4cm, top=2.5cm, right=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[left=3.5cm, top=2cm, right=2cm, bottom=2cm]{geometry}
 
 %%
 %\setlength{\voffset}{-1in}

@@ -50,6 +50,10 @@ export const loginUser = async (login: string | undefined, password: string | un
         if(!response.status){
             throw new Error("Nie udało się zalogować. Sprawdź login i hasło.");
         }
+        if (response.status === 200) {
+            return { success: true };
+        }
+        return { success: false, message: "Niepoprawne dane logowania!" };
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
     }

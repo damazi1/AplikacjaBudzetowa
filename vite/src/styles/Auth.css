@@ -1,10 +1,17 @@
 /* src/styles/Auth.css */
 .ant-Auth-form-bg {
-    min-height: 40vh;
+    height: auto; /* stała wysokość */
+    width: 500px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 32px;
+    border: 2px solid #1890ff;
+    border-radius: 16px;
+    box-shadow: 20px 10px rgba(24,144,255,0.15);
+    margin: 48px auto;
+    font-family: "Sans Serif Collection", serif
 }
 
 /* Nadpisanie stylów Ant Design dla formularza */
@@ -23,4 +30,9 @@
     border-color: #40a9ff;
 }
 
-
+.ant-Auth-form-header {
+    display: block;
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+}
