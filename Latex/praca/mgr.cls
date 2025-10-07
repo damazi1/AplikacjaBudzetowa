@@ -189,17 +189,20 @@
 \renewcommand{\baselinestretch}{1.5}
 
 \pagestyle{fancy}
-\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\headrulewidth}{0pt}
 \fancyhead{} % clear all fields
 \fancyfoot{} % clear all fields
-\fancyhead[LO]{\small{\slshape\nouppercase{\rightmark}}} 
-\fancyhead[RE]{\small{\slshape\nouppercase{\leftmark}}}
-\fancyhead[RO,LE]{\small{\thepage}} 
-\fancypagestyle{plain}{% 
-  \fancyhf{} % clear all header and footer fields 
-  \fancyfoot[RO,LE]{\small{\thepage}} % except the center 
+\fancyfoot[LO]{\small{\slshape\nouppercase{\rightmark}}} 
+\fancyfoot[RE]{\small{\slshape\nouppercase{\leftmark}}}
+\fancyfoot[RO,LE]{\small{\thepage}} 
+\fancypagestyle{plain}{
+  \fancyhf{} % clear all header and footer fields
+   \fancyfoot[RO,LE]{\small{\thepage}} % except the center
+  \fancyfoot[LO]{\small{\slshape\nouppercase{\rightmark}}} 
+  \fancyfoot[RE]{\small{\slshape\nouppercase{\leftmark}}}
   \renewcommand{\headrulewidth}{0pt} 
-  \renewcommand{\footrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.4pt}
 }
 
 % formatowanie wielo (poziomowych) list wyliczeniowych
@@ -325,7 +328,7 @@
 
 \renewcommand\chapter{
   \if@openright\cleardoublepage\else\clearpage\fi
-  \thispagestyle{empty}
+  \thispagestyle{plain}
   \vspace*{1\p@}
   \@startsection{chapter}{0}{\z@}%
   {-40\p@ }%\@plus -4\p@ \@minus -4\p@
@@ -430,15 +433,11 @@
 
     \begin{center}
      
-
-        {\large \bf POLITECHNIKA CZĘSTOCHOWSKA} \\
-        {\large \bf WYDZIAŁ INFORMATYKI I SZTUCZNEJ INTELIGENCJI} \\
-
         \vfill
         
         \begin{figure}[!h]
         	\begin{center}
-        		\includegraphics[width=8cm]{WIiSI.pdf}
+        		\includegraphics[width=1\textwidth]{images/logopcz_z_logo_wiisi.png}
         	\end{center}
         \end{figure}
         
@@ -458,13 +457,13 @@
     \vfill
 
     \noindent
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cAutor} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{Nr albumu: \cNumerAlbumu} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{Kierunek: \cKierunek} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{Studia: \cStudia} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{Poziom studiów: \cPoziomStudiow} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{\large \bf Promotor pracy:} \\
-    \hspace*{0.415\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cPromotor}
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cAutor} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Nr albumu: \cNumerAlbumu} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Kierunek: \cKierunek} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Studia: \cStudia} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Poziom studiów: \cPoziomStudiow} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf Promotor pracy:} \\
+    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cPromotor}
 
     \vfill
     \vfill
