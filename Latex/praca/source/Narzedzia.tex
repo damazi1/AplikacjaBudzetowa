@@ -1,0 +1,21 @@
+\chapter{Narzędzia i metodyka pracy}
+W rozdziale przedstawiono zestaw narzędzi oraz metodykę pracy zastosowaną podczas tworzenia aplikacji webowej. Opisane rozwiązania pozwoliły na efektywne tworzenie, testowanie i wdrażanie aplikacji.
+\section{Metodyka pracy}
+Jaki metodyka np. Zwinna (Agile/Scrum)
+\section{Narzędzia stosowane w procesie wytwarzania aplikacji webowej}
+W projekcie została zastosowana masa narzędzi, które usprawniają pracę dewelopera.
+\subsection*{Środowiska programistyczne}
+\begin{itemize}
+	\item IntelliJ IDEA
+	\item Webstorm
+	\item Node.js + npm
+	\item Spring Boot / Maven
+\end{itemize}
+\subsection*{System kontroli wersji}
+System kontroli wersji to jedna z najważniejszych rzeczy podczas pisania dowolnej aplikacji.Jednym z najczęściej używanych rozwiązań jest git. Pozwala on na tworzenie lokalnych lub zdalnych repozytoriów do których zapisywane są zmiany w projekcie (commit). W dowolnym momencie możemy śledzić modyfikacje plików lub powrócić do wcześniejszej wersji projektu (rollback). Aby przesłać zmiany do zdalnego repozytorium na stronie trzeciej (np.: github, bitbucket), należy wykorzystać opcję (push), natomiast pobranie wymaga operacji (pull). 
+
+Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (branches), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone (marge) z główną gałęzią.
+\subsection*{Testowanie i komunikacja}
+\textbf{Postman} to narzędzie pozwalające na testowanie i analizę interfejsów API. Umożliwia wysyłanie żądań HTTP (GET, POST, PUT, DELETE) do serwera i sprawdzanie zwracanych odpowiedzi. Pozwala to na szybkie i prostą weryfikację poprawności działania endpointów. Umożliwia on tworzenie kolekcji z zapytaniami, które można używać wiele razy bez konieczności zapisu ich po każdym użyciu. Posiada też możliwość zapisywania ciasteczek oraz tworzenia własnych nagłówków.
+
+\textbf{Docker} to platforma umożliwiający uruchamianie aplikacji w środowisku kontenerowym. Jego głównym elementem jest silnik (ang. Docker Engine), który działa w formie usługi. Umożliwia on budowanie, uruchamianie i zarządzanie kontenerami. W środowisku Dockera można tworzyć obrazy, które zawierają niezbędne elementy do uruchomienia aplikacji. Na podstawie tych obrazów realizują konkretne zadania w izolowanym środowisku. Zaletą zastosowania Dockera jest przenośność, czyli uruchomienie projektu na dowolnej maszynie wyposażonej w środowisko Docker. W Projektach bardziej złożonych, korzystających z wielu usług, można wykorzystać plik \texttt{compose.yml}, w którym definiuje się zależności pomiędzy kontenerami, konfigurację sieci, woluminy oraz zależności uruchamiania poszczególnych usług.

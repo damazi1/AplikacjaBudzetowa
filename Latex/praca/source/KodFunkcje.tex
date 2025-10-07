@@ -1,19 +1,5 @@
 \chapter{Implementacja systemu}
-\section{Architektura systemu}
-Aplikacja została zaprojektowana w oparciu o architekturę klient-serwer. Składa się z takich komponentów jak:
-\begin{itemize}
-	\item Frontend (Klient) - Interfejs użytkownika (UI), umożliwia użytkownikowi interakcje z systemem.
-	\item Backend (serwer) - Warstwa logiki biznesowej, obsługuje żądania HTTP od klienta i komunikuje się z bazą.
-	\item Baza danych (MongoDB) - Służy do przechowywania danych finansowych.
-\end{itemize}
 
-Komunikacja odbywa się przy pomocy protokołu HTTP/REST, a dane są w formacje JSON.
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{images/vis.jpg}
-	\caption{Tymczasowe zdjęcie architektury Klient-Serwer}
-	\label{fig:KlientSerwer}
-\end{figure}
 \section{Backend – logika biznesowa i API}
 Backend odpowiada ze przetwarzanie żądań od frontendu oraz za komunikację z bazą danych. Składa się on z kilku warstw m.in. warstwy kontrolerów, repozytoriów, czy Konfiguracji. Do komunikacji wykorzystywany jest standard REST API (ang. Representational State Transfer Application Programing Interface). Udostępnie on takie metody HTTP jak GET, POST, PUT, DELETE.
 \subsection*{Jak to działa}

@@ -1,4 +1,20 @@
-\chapter{Technologie, z których korzysta aplikacja}
+\chapter{Przegląd technologii stosowanych w aplikacjach klient-serwer}
+W rozdziale przedstawiono architekturę wykorzystaną w projekcie oraz technologie zastosowane w aplikacji, w tym React, Java oraz MongoDB.
+\section{Architektura systemu}
+Aplikacja została zaprojektowana w oparciu o architekturę klient-serwer. Składa się z takich komponentów jak:
+\begin{itemize}
+	\item Frontend (Klient) - Interfejs użytkownika (UI), umożliwia użytkownikowi interakcje z systemem.
+	\item Backend (serwer) - Warstwa logiki biznesowej, obsługuje żądania HTTP od klienta i komunikuje się z bazą.
+	\item Baza danych (MongoDB) - Służy do przechowywania danych finansowych.
+\end{itemize}
+
+Komunikacja odbywa się przy pomocy protokołu HTTP/REST, a dane są w formacje JSON.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/vis.jpg}
+	\caption{Tymczasowe zdjęcie architektury Klient-Serwer}
+	\label{fig:KlientSerwer}
+\end{figure}
 \section{Java}
 Java jest obiektowym wieloplatformowym językiem programowania. Jest on najpopularniejszym językiem dla deweloperów oprogramowania \cite{JavaMicrosoft}. Korzysta z maszyn wirtualnych Java (JVM), które mogą zostać zainstalowane na większości komputerów i urządzeń przenośnych. Został on stworzony z myślą "napisz raz, uruchamiaj w dowolnym miejscu". 
 \\W projekcie jest odpowiedzialny za logikę biznesową aplikacji, przetwarzanie danych oraz komunikację z bazą danych.
@@ -58,12 +74,3 @@ Powyższy fragment kodu pozwala znaleźć użytkownika po loginie lub wyszukać 
 	"role": "ADMIN"
 }
 \end{lstlisting}
-
-\section{Postman}
-Postman to narzędzie pozwalające na testowanie i analizę interfejsów API. Umożliwia wysyłanie żądań HTTP (GET, POST, PUT, DELETE) do serwera i sprawdzanie zwracanych odpowiedzi. Pozwala to na szybkie i prostą weryfikację poprawności działania endpointów. Umożliwia on tworzenie kolekcji z zapytaniami, które można używać wiele razy bez konieczności zapisu ich po każdym użyciu. Posiada też możliwość zapisywania ciasteczek, tworzenia własnych nagłówków lub przesyłanego ciała do funkcji. 
-\section{Docker} 
-Docker pozwala na konteneryzacje aplikacji. Jego głównym elementem jest silnik (Docker Engine), który działa w formie usługi. Umożliwia on budowanie, uruchamianie i zarządzanie kontenerami. W środowisku Dockera możemy tworzyć wirtualne obrazy, które posłużą nam do wykonania jakiegoś zadania. Na bazie obrazów możemy tworzyć kontenery. Plusem takiego rozwiązania jest możliwość określenia wersji wszystkich użytych technologii, jak również perspektywa odpalenia naszego programu na dowolnym urządzeniu (przenośność), które posiada zainstalowany docker. Projekty bardziej złożone (korzystające z wielu usług) możemy połączyć za pomocą pliku compose.yml, w którym opisujemy zależności pomiędzy danymi kontenerami np.: określamy sieć w jakiej mają się znajdować, woluminy z jakich mają korzystać lub elementy od których są zależne.
-\section{Git}
-System kontroli wersji to jedna z najważniejszych rzeczy podczas pisania dowolnej aplikacji. Najczęściej używanym rozwiązaniem jest git. Pozwala on na tworzenie lokalnych lub zdalnych repozytoriów do których zapisywane są zmiany w projekcie (commit). W dowolnym momencie możemy śledzić modyfikacje plików lub powrócić do wcześniejszej wersji projektu (rollback). Aby przesłać zmiany do zdalnego repozytorium na stronie trzeciej (np.: github, bitbucket), należy wykorzystać opcję (push), natomiast pobranie wymaga operacji (pull). 
-
-Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (branches), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone (marge) z główną gałęzią.
