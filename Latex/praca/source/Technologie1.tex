@@ -1,14 +1,38 @@
 \chapter{Przegląd technologii stosowanych w aplikacjach klient-serwer}
-W rozdziale przedstawiono architekturę wykorzystaną w projekcie oraz technologie zastosowane w aplikacji, w tym React, Java oraz MongoDB.
+W procesie wytwarzania oprogramowania częstym problemem jest wybór odpowiednich rozwiązań, które pozwolą nam w najlepszy sposób osiągnąć zamierzone cele. Znajomość kompatybilnych technologii w znaczącym stopniu przyśpiesza tworzenie aplikacji webowych. Projekt można podzielić na warstwę prezentacji, która odpowiada za interfejs graficzny oraz interakcję z użytkownikiem, warstwę serwerową odpowiadającą za logikę biznesową aplikacji oraz komunikację z bazą danych oraz warstwę dostępu do danych, która odpowiada za trwałe przechowywanie rekordów i ich udostępnianie innym warstwą.
 \section{Architektura systemu}
-Aplikacja została zaprojektowana w oparciu o architekturę klient-serwer. Składa się z takich komponentów jak:
-\begin{itemize}
-	\item Frontend (Klient) - Interfejs użytkownika (UI), umożliwia użytkownikowi interakcje z systemem.
-	\item Backend (serwer) - Warstwa logiki biznesowej, obsługuje żądania HTTP od klienta i komunikuje się z bazą.
-	\item Baza danych (MongoDB) - Służy do przechowywania danych finansowych.
-\end{itemize}
+Jednym ze sposobów projektowania aplikacji sieciowych jest model klient-serwer. Klient nie posiada danych oraz funkcji, dlatego musi kontaktować się z programem posiadającym dostęp do danych oraz usług. Program ten nazywany jest serwerem. 
 
-Komunikacja odbywa się przy pomocy protokołu HTTP/REST, a dane są w formacje JSON.
+Klient zleca serwerowi żądanie pewnej usługi, następnie serwer analizuje polecenia i wysyła odpowiedź. Model ten jest powszechnie używany w aplikacjach dostępnych za pośrednictwem internetu \cite{ArchKS}. 
+
+\subsection*{Przykładowe zastosowanie w aplikacji webowej}
+Próba logowania na stronę WWW jest równoważna z wysłaniem do serwera wiadomości z typem operacji, oraz podanymi w formularzu wartościami. Serwer otrzymując taką wiadomość wykonuje niezbędne testy na przykład: sprawdza poprawność otrzymanych danych. Po pomyślnym dokonaniu sprawdzeń serwer wykonuje żądaną operację i wysyła odpowiedź klientowi \cite{ArchKS}.
+
+\subsection*{Kody odpowiedzi HTTP}
+Odpowiedź serwera to numeryczna dana wysłana przez serwer, która ma na celu poinformowanie użytkownika o realizacji pewnego zadania. Kody dzielą się na informacyjne, które zaczynają się od 1xx, powodzenia zaczynające się od 2xx, przekierowania (3xx), błędu aplikacji klienta (4xx), błędu serwera HTTP (5xx) \cite{TempWiki}.
+\begin{table}[H]
+	\centering
+	\caption{Przykładowe opisy odpowiedzi serwera}
+	\begin{tabular}{|c|p{2cm}|p{10cm}|}
+		\hline
+		\textbf{Kod} & \textbf{Opis słowny} & \textbf{Znaczenie} \\ \hline
+		100 & Continue & Prośba o dalsze wysłanie zapytania \\ \hline
+		200 & OK & Zawartość żądania (najczęściej zwracany nagłówek)\\ \hline
+		201 & Created & Wysłany dokument został zapisany na serwerze \\ \hline
+		204 & No content & Serwer nie potrzebuje zwracać żadnej treści \\ \hline
+		300 & Multiple Choices & Istnieje więcej niż jeden sposób obsłużenia danego zapytania \\ \hline
+		302 & Found & Zasób jest chwilowo dostępny pod innym adresem \\ \hline
+		400 & Bad Request & Żądanie nie może być obsłużone przez serwer z powodu nieprawidłowości postrzeganej jako błąd użytkownika \\ \hline
+		401 & Unauthorized & Żądanie zasobu, który wymaga uwierzytelnienia \\ \hline
+		403 & Forbidden & Serwer zrozumiał zapytanie, jednak konfiguracja bezpieczeństwa zabrana mu zwrócić żądany zasób \\ \hline
+		404 & Not Found & Serwer nie znalazł zasobu według podanego adresu URL\\ \hline
+		500 & Internal Server Error & Serwer napotkał niespodziewane trudności \\ \hline
+		502 & Bad Gateway & Serwer spełniający rolę bramy otrzymał niepoprawną odpowiedź od serwera nadrzędnego \\ \hline
+		503 & Service Unavaiable & Serwer nie jest w stanie zrealizować żądania użytkownika ze względu na przeciążenia \\ \hline
+		504 & Gateway Timeout & Serwer spełniający rolę bramy nie otrzymał odpowiedzi w ustalonym czasie \\ \hline
+	\end{tabular}
+\end{table}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/vis.jpg}
@@ -16,10 +40,10 @@ Komunikacja odbywa się przy pomocy protokołu HTTP/REST, a dane są w formacje 
 	\label{fig:KlientSerwer}
 \end{figure}
 \section{Java}
-Java jest obiektowym wieloplatformowym językiem programowania. Jest on najpopularniejszym językiem dla deweloperów oprogramowania \cite{JavaMicrosoft}. Korzysta z maszyn wirtualnych Java (JVM), które mogą zostać zainstalowane na większości komputerów i urządzeń przenośnych. Został on stworzony z myślą "napisz raz, uruchamiaj w dowolnym miejscu". 
-\\W projekcie jest odpowiedzialny za logikę biznesową aplikacji, przetwarzanie danych oraz komunikację z bazą danych.
+Java jest obiektowym wieloplatformowym językiem programowania. Jest ona jednym z najpopularniejszym języków dla deweloperów oprogramowania \cite{JavaMicrosoft}. Korzysta z wirtualnej maszyny Java (JVM), które mogą zostać zainstalowane na większości komputerów i urządzeń przenośnych. Został on stworzony z myślą ,,napisz raz, uruchamiaj w dowolnym miejscu''. 
+\\W projekcie jest odpowiedzialny za logikę biznesową aplikacji, przetwarzanie danych oraz komunikację z bazą danych \cite{JDK21Docs}.
 \subsection*{Spring Boot}
-Framework Spring Boot pozwala znacząco uprościć proces tworzenia aplikacji webowej w Javie. Eliminuje konieczność ręcznej konfiguracji wielu elementów. Pełni on role fundamentu dla warstwy serwerowej, udostępniając interfejs REST API. Dzięki niemu aplikacja frontendowa może komunikować się z backendem. Składa się z takich rzeczy jak:
+Framework Spring Boot pozwala znacząco uprościć proces tworzenia aplikacji webowej w Javie. Eliminuje konieczność ręcznej konfiguracji wielu elementów. Pełni on role fundamentu dla warstwy serwerowej, udostępniając interfejs REST API, który umożliwia komunikację przy użyciu odpowiednich punktów końcowych (ang. \textit{endpoints}). Składa się z takich rzeczy jak:
 \begin{itemize}
 	\item Controller - obsługuje żądania HTML
 	\item Repository - odpowiada za komunikacje z bazą danych
@@ -27,7 +51,7 @@ Framework Spring Boot pozwala znacząco uprościć proces tworzenia aplikacji we
 	\item Model - Reprezentuje dane w postaci klas, które są odwzorowaniem tabel w bazie danych.
 	\item Resource - Znajdują się w nim właściwości aplikacji, oraz statyczne elementy.
 \end{itemize}
-Spring Boot wspiera również takie mechanizmy jak Wstrzykiwanie zależności (ang. Dependency Injection) oraz AOP (Aspect-Oriented Programming).
+Spring Boot wspiera również takie mechanizmy jak Wstrzykiwanie zależności (ang. \textit{Dependency Injection}) oraz AOP (ang. \textit{Aspect-Oriented Programming}) \cite{SpringDocs}.
 \subsection*{Maven}
 W projekcie wykorzystano narzędzie Apache Maven, które pełni role automatyzacji budowy i zarządzania zależnościami. Pozwala zdefiniować wszystkie wymagane biblioteki i frameworki w jednym centralnym pliku pom.xml (ang. Project Object Model). Działa w oparciu o repozytoria, w których przechowywane są biblioteki. Główny plik zawiera takie informacje jak:
 \begin{itemize}
@@ -43,8 +67,17 @@ W przypadku aplikacji opartej na Spring Boot, Maven pobiera również tzw. start
 	\item spring-boot-starter-security - Dodaje mechanizmy autoryzacji i uwierzytelniania
 	\item spring-boot-starter-test - pozwala na testowanie aplikacji
 \end{itemize}
-Cała konfiguracja środowiska sprowadza się do utworzenia odpowiedniego pliku z zależnościami, a Spring Boot automatycznie na jego podstawie konfiguruje je przy uruchomieniu.
-
+Cała konfiguracja środowiska sprowadza się do utworzenia odpowiedniego pliku z zależnościami, a Spring Boot automatycznie na jego podstawie konfiguruje je przy uruchomieniu \cite{MavenDocs}.
+\subsubsection*{Dane do wstawienia w ten rozdział}
+ Korzysta między innymi z takich zależności jak: 
+\begin{itemize}
+	\item Lombok - Ułatwia tworzenie klas i podstawowych funkcji w klasach.
+	\item DevTools - Pozwalające m.in. na przeładowanie w czasie rzeczywistym.
+	\item Web - Zawiera RESTful API, pozwala na komunikacje.
+	\item Security - Umożliwia zastosowanie zabezpieczeń i autoryzacji do kontrolowania aplikacji.
+	\item MongoDB - Do przechowywania dokumentów w formacie zbliżonym do JSON.
+	\item Validation - pozwala na walidacje pól na przykład: ustawienie długości pola, pole nie może być puste i tym podobne.
+\end{itemize}
 \section{React}
 React to jedna z bibliotek JavaScript służąca do tworzenia interfejsów użytkownika (ang. User Interface) w aplikacjach webowych. Jest oparta na koncepcji komponentów, które można łatwo ze sobą łączyć i w czytelny sposób wyświetlać na stronie. React pozwala renderować widoki na podstawie mechanizmu Virtual DOM (ang. Document Object Model). Obiekt DOM umożliwia dostęp do struktury strony w celu jej modyfikacji. W przypadku modelu wirtualnego minimalizuje operacje na drzewie rzeczywistym. 
 \subsection*{Vite}
