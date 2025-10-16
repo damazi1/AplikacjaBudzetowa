@@ -1,14 +1,10 @@
 \chapter{Implementacja systemu}
-
+Rozdział  przedstawia proces implementacji systemu. Omówiono w nim wykorzystane technologie oraz poszczególne warstwy aplikacji. Celem tego rozdziału jest zaprezentowanie działania wykorzystanej architektury oraz korelacje między poszczególnymi elementami systemu.
 \section{Backend – logika biznesowa i API}
-Backend odpowiada ze przetwarzanie żądań od frontendu oraz za komunikację z bazą danych. Składa się on z kilku warstw m.in. warstwy kontrolerów, repozytoriów, czy Konfiguracji. Do komunikacji wykorzystywany jest standard REST API (ang. Representational State Transfer Application Programing Interface). Udostępnie on takie metody HTTP jak GET, POST, PUT, DELETE.
-\subsection*{Jak to działa}
-\begin{enumerate}
-	\item Klient wysyła żądanie do określonego adresu URL (endpointu) serwera
-	\item Serwer przetwarza żądanie i wykonuje operację
-	\item Serwer zwraca odpowiedź w formacie JSON oraz kod stanu HTTP
-\end{enumerate}
-\subsection*{Opis funkcji}
+Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot, który upraszcza proces tworzenia aplikacji dzięki zestawowi tzw. starterów.
+
+\subsection*{Spring Boot i ekosystem bibliotek}
+Freamework spring boot oferuje wiele bibliotek, które pozwalają wykorzystywać ...
 Aplikacja zawiera wiele funkcji w tym Dodawanie lub usuwanie użytkowników, pobieranie listy wpłat i wypłat z konta, autoryzacja użytkowników. Wszystkie te funkcje są zawarte w odpowiednim kontrolerze. Dla każdej funkcji kontrolera został utworzony własny endpoint. Poniżej znajduje się kilka przykładów endpointów:
 \begin{lstlisting}[language={Java}, caption={Przykładowe Endpointy}, label={lst:java-endpoints}]
 @RestController 
@@ -18,6 +14,8 @@ Aplikacja zawiera wiele funkcji w tym Dodawanie lub usuwanie użytkowników, pob
 	@PutMapping("/update/{id}")		// Dostęp pod PUT /User/update/{id}
 	@DeleteMapping("/delete/{id}")	// Dostęp pod DELETE /User/delete{id}
 \end{lstlisting}
+Do komunikacji wykorzystywany jest standard REST API (ang. \textit{Representational State Transfer Application Programing Interface}). Udostępnia takie metody HTTP jak GET, POST, PUT, DELETE.
+
 Ich pełny opis znajduje się dalej w listingach (\ref{lst:java-register}, \ref{lst:java-list}, \ref{lst:java-delete}, \ref{lst:java-update})
 \subsection*{Połączenie z bazą danych}
 Połączenie z bazą danych odbywa się za pomocą specjalnego zasobu \textit{application.properties}, czyli właściwości aplikacji. Zawiera on wszystkie potrzebne informacje jak nazwa hosta, port na którym działa baza, nazwę bazy i ogólną konfigurację: 

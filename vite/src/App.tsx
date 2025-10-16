@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import './Styles/Layout.css';
+import './styles/Layout.css';
 import {ConfigProvider, Layout, theme as antdTheme} from "antd";
 import MyFooter from "./components/MyFooter.tsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";

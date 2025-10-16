@@ -44,8 +44,10 @@ Wymaganiami funkcjonalnymi nazywamy wszystkie potrzeby, które nie dotyczą funk
 	\caption{Wymagania niefunkcjonalne systemu do zarządzania budżetem domowym}
 	\label{tab:wymagania_niefunkcjonalne}
 \end{table}
+\section{Diagramy UML}
+Jednym z kluczowych etapów w procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
 \section{Diagramy przypadków użycia}
-Diagram przypadków użycia (ang. \textit{Use Case Diagram})
+Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi, które system świadczy aktorom, bez wskazywania rozwiązań technologicznych \cite{UML1}. Stanowi on podstawę do modelowania szczegółowych części systemu.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{images/DPU.jpg}
@@ -53,13 +55,15 @@ Diagram przypadków użycia (ang. \textit{Use Case Diagram})
 	\label{fig:UseCase}
 \end{figure}
 \section{Diagram stanów}
+Diagram maszyny stanów (ang. \textit{state machine diagram}) ukazuje wszystkie stany, w których może znaleźć się obiekt oraz przejścia między nimi. Pozwala odczytać jakie akcje wpływają na zmianę stanu, a także akcję, które są wykonywane w momencie przejścia w inny stan.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{images/Wniosek.jpg}
+	\includegraphics[width=0.7\textwidth]{images/Wniosek.jpg}
 	\caption{Diagram stanów składania wniosku}
 	\label{fig:StateMachine}
 \end{figure}
 \section{Diagramy sekwencji}
+Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas., który reprezentuje statyczną strukturę systemu. Diagram sekwencji w dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/Limit.png}
