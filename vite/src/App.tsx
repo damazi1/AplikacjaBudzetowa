@@ -13,8 +13,9 @@ import {ThemeProvider, useTheme } from "./theme/ThemeContext.tsx";
 import Signup from "./components/Signup.tsx";
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useLocation } from 'react-router-dom';
-
-
+import {QueryParamProvider} from "use-query-params";
+import {ReactRouter6Adapter} from "use-query-params/adapters/react-router-6";
+import queryString from "query-string";
 
 // Destrukturyzacja komponentów Layout z Ant Design
 // aby uprościć kod i uniknąć powtarzania Layout.
@@ -46,6 +47,12 @@ const App: React.FC = () => {
     const nodeRef = useRef(null);
 
     return (
+        <QueryParamProvider       adapter={ReactRouter6Adapter}
+                                  options={{
+                                      searchStringToObject: queryString.parse,
+                                      objectToSearchString: queryString.stringify,
+                                  }}
+        >
         <ThemeProvider>
             <ThemeWrapper>
                     <Layout style={{ minHeight: "100vh", display: "flex", flexDirection: "column",  overflow: "hidden" }}>
@@ -81,6 +88,8 @@ const App: React.FC = () => {
                     </Layout>
             </ThemeWrapper>
         </ThemeProvider>
+        </QueryParamProvider>
+
 
     );
 };

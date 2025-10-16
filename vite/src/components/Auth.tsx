@@ -1,6 +1,6 @@
 // Cały komponent Auth jest z dokumentacji Ant Design https://ant.design/components/form
 
-import React from 'react';
+import React, {type FC} from 'react';
 import type { FormProps } from 'antd';
 import '../styles/Auth.css'; // Import CSS for styling
 import { Button, Checkbox, Form, Input, message } from 'antd';
@@ -14,7 +14,7 @@ type FieldType = {
     remember?: string;
 };
 
-const Auth: React.FC = () => {
+const Auth: FC = () => {
 
     const [isFormFilled, setIsFormFilled] = useState(false);
     const {t} = useTranslation();
