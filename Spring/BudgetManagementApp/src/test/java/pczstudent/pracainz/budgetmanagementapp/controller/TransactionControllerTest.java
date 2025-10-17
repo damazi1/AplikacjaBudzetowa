@@ -51,6 +51,15 @@ public class TransactionControllerTest {
                 .andExpect(content().string("amount: must be greater than 0"));
     }
 
+    @Test
+    public void createTransferHandlesBorderTransferAmount() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/Transaction/create/transfer")
+                        .contentType("application/json")
+                        .content("{\"fromAccountNumber\":\"1234567890122234569012335\",\"toAccountNumber\":\"1234567890122234569012335\",\"amount\":0.0}"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string("amount: must be greater than 0"));
+    }
+
 
     @Test
     public void createTransferHandlesInsufficientBalance() throws Exception {

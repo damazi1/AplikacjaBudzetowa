@@ -4,8 +4,27 @@ Rozdział  przedstawia proces implementacji systemu. Omówiono w nim wykorzystan
 Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot, który upraszcza proces tworzenia aplikacji dzięki zestawowi tzw. starterów.
 
 \subsection*{Spring Boot i ekosystem bibliotek}
-Freamework spring boot oferuje wiele bibliotek, które pozwalają wykorzystywać ...
-Aplikacja zawiera wiele funkcji w tym Dodawanie lub usuwanie użytkowników, pobieranie listy wpłat i wypłat z konta, autoryzacja użytkowników. Wszystkie te funkcje są zawarte w odpowiednim kontrolerze. Dla każdej funkcji kontrolera został utworzony własny endpoint. Poniżej znajduje się kilka przykładów endpointów:
+Freamework spring boot oferuje moduły oraz biblioteki wykorzystane do budowy REST API, dostępu do baz danych, bezpieczeństwa i testowania. Wykorzystywane biblioteki są deklarowane w pliku \texttt{pom.xml}. Są one wstępnie skonfigurowane. Takie rozwiązanie znacząco zwiększa tępo rozwoju aplikacji, pozwala na lepszą pracę w grupach oraz redukuje ilość kodu szablonowego (ang. \textit{boilerplate code}).
+\subsubsection*{Zarządzanie zależnościami i startery}
+Spring boot łączy biblioteki w postaci starterów. Pozwala to zminimalizować ryzyko konfliktów wersji oraz skrócić czas konfiguracji. Kluczowe startery wykorzystywane w aplikacji webowej to:
+\begin{itemize}
+	\item \textbf{spring-boot-starter-web} -- Warstwa HTTP/REST oparta na spring MVC, która udostępnia wbudowany serwer Tomcat. 
+	\item \textbf{spring-boot-starter-data-jpa} -- Umożliwia dostęp do relacyjnej bazy danych poprzez JPA (ang. \textit{Java Persistence API}).
+	\item \textbf{spring-boot-starter-data-mongodb} -- Pozwala na dostęp do nierelacyjnej bazy MongoDB. 
+	\item \textbf{spring-boot-starter-validation} -- Implementuje biblioteki do walidacji danych wejściowych.
+	\item \textbf{spring-boot-starter-security} -- Mechanizm uwierzytelniania, autoryzacji i ochrony endpointów.
+	\item \textbf{spring-boot-starter-test} -- Środowisko testowe do testów jednostkowych i integracyjnych. 
+	\item \textbf{Lombok} -- Redukuje kod szablonowy (gettery, settery, konstruktory).
+\end{itemize}
+\subsubsection*{Warstwa webowa}
+Umożliwia komunikację z wykorzystywaniem standardu REST API (ang. \textit{Representational State Transfer Application Programing Interface}). W warstwie kontrolerów tworzone są endpointy w oparciu o modele z jakimi są związane. Kontroler może implementować obsługę żądań HTTP, takich jak:
+\begin{itemize}
+	\item POST -- Przesyłanie danych na serwer
+	\item GET -- Pobieranie danych z serwera
+	\item PUT -- Aktualizowanie danych na serwerze
+	\item DELETE -- Usuwanie danych z serwera
+\end{itemize}
+Mapowanie endpointów w kontrolerze jest pokazane w listingu \ref{lst:java-endpoints}.
 \begin{lstlisting}[language={Java}, caption={Przykładowe Endpointy}, label={lst:java-endpoints}]
 @RestController 
 @RequestMapping("/User") // Wszystkie endpointy zaczynają się od /User
@@ -14,19 +33,14 @@ Aplikacja zawiera wiele funkcji w tym Dodawanie lub usuwanie użytkowników, pob
 	@PutMapping("/update/{id}")		// Dostęp pod PUT /User/update/{id}
 	@DeleteMapping("/delete/{id}")	// Dostęp pod DELETE /User/delete{id}
 \end{lstlisting}
-Do komunikacji wykorzystywany jest standard REST API (ang. \textit{Representational State Transfer Application Programing Interface}). Udostępnia takie metody HTTP jak GET, POST, PUT, DELETE.
 
-Ich pełny opis znajduje się dalej w listingach (\ref{lst:java-register}, \ref{lst:java-list}, \ref{lst:java-delete}, \ref{lst:java-update})
-\subsection*{Połączenie z bazą danych}
-Połączenie z bazą danych odbywa się za pomocą specjalnego zasobu \textit{application.properties}, czyli właściwości aplikacji. Zawiera on wszystkie potrzebne informacje jak nazwa hosta, port na którym działa baza, nazwę bazy i ogólną konfigurację: 
-\begin{lstlisting}[language={Java}, caption={application.properties}, label={lst:java-application.properties}]
-spring.data.mongodb.host=${DB_HOST:localhost}
-spring.data.mongodb.port=${DB_PORT:27017}
-spring.data.mongodb.database=${DB_NAME:budget_management_db}
-spring.data.mongodb.auto-index-creation=true
-\end{lstlisting}
+Implementacja powyższych endpointów znajduje się w listingach (\ref{lst:java-register}, \ref{lst:java-list}, \ref{lst:java-delete}, \ref{lst:java-update})
+\subsubsection*{Dostęp do danych}
+Połączenie z bazą danych zostało zrealizowane z wykorzystaniem \\ \texttt{spring-boot-starter-data-mongodb}, który udostępnia spójny model pracy z dokumentową bazą MongoDB. Pozwala mapować obiekty klas na dokumenty i tworzyć repozytoria oparte na interfejsach.
 
-Mapowanie modeli na dokumenty odbywa się dzięki zależności Spring Data MongoDB. Utworzenie klasy na przykład konta wymaga podania @Document przed klasą. Dzięki temu model będzie mógł być konwertowany do formatu dokumentu.
+Utworzenie klasy mapowanej do dokumentu wymaga oznaczenia adnotacją \texttt{@Document}, a klucza głównego \texttt{@Id}. Identyfikator przeważnie określa się typem String (listing \ref{lst:java-Account}). 
+
+Warstwa repozytoriów opiera się na interfejsach rozszerzających \texttt{MongoRepository<T, ID>}. Repozytoria pozwalają na podstawie nazw generować implementację metod wyszukujących (listing \ref{lst:java-Repository}).
 \begin{lstlisting}[language={Java}, caption={Fragment modelu Account}, label={lst:java-Account}]
 @Document
 public class Account {
@@ -40,16 +54,57 @@ public class Account {
 	private String userId;
 	...
 \end{lstlisting}
-\subsection*{Konfiguracja i bezpieczeństwo}
-Opcje konfiguracji i bezpieczeństwa to bardzo ważna część aplikacji. Odpowiada za sposób generowania tokenów, które następnie zostaną wykorzystane do tworzenia ciasteczek. Odpowiada też za walidację oraz dostęp do metod. Określa jakie funkcje dostępne są dla użytkowników nieautoryzowanych, a które mogą zostać wywołane przez tych posiadających autoryzację. 
+\begin{lstlisting}[language={Java}, caption={Repozytorium dla klasy Account}, label={lst:java-Repository}]
+@RepositoryRestResource
+public interface AccountRepository extends MongoRepository<Account, String> {
+	List<Account> findByUserId(String userId);
+	Optional<Account> findByNumber(String number);
+}
+	\end{lstlisting}
+\subsubsection*{Bezpieczeństwo}
+Spring Security zapewnia mechanizm uwierzytelniania JWT (ang. \textit{JSON Web Token}) i filtrowania żądań. Token umożliwia autoryzowane połączenie z serwerem dzięki mechanizmowi ciasteczek. Token bezpieczeństwa składa się z trzech części (tab. \ref{tab:JWT}), które zwyczajowo wyglądają w następujący sposób \texttt{xxxxx.yyyyy.zzzzz}. Filtrowanie pozwala m.in. na określenie żądań, które mogą zostać wykonane bez konieczności autoryzacji użytkownika.
+
+\begin{longtable}{|p{3cm}|p{5cm}|p{6cm}|}
+		\caption{Struktura tokenu JWT \cite{JWT}}
+		\label{tab:JWT} \\
+\hline
+\textbf{Nawza} & \textbf{struktura} & \textbf{Opis} \\ \hline
+
+Nagłówek (ang. \textit{Header}) &
+ \texttt{\{} \newline
+ \hspace*{1em}\texttt{"alg": "HS256",} \newline
+ \hspace*{1em}\texttt{"typ": "JWT"} \newline
+ \texttt{\}} & 
+ Nagłówek składa się z wykorzystanego algorytmu oraz z typu użytego tokena. \\ \hline
+ Ładunek (ang. \textit{Payload}) &
+  \texttt{\{} \newline
+ \hspace*{1em}\texttt{"sub": "1234567890",} \newline
+ \hspace*{1em}\texttt{"name": "John Doe"} \newline
+ \hspace*{1em}\texttt{"admin": "true"} \newline
+ \texttt{\}} & 
+ Ładunek zawiera roszczenia (ang. \textit{claims}), czyli oświadczenia dotyczące podmiotu i dodatkowe dane. Typy roszczeń to: rejestrowane (ang. \textit{registered}), publiczne (ang. \textit{public}) i prywatne (ang. \textit{private}).
+ \\ \hline
+  Podpis (ang. \textit{Signature}) &
+\texttt{HMACSHA256(} \newline
+ \hspace*{1em}\texttt{base64UrlEncode(header)} \newline
+ \hspace*{1em}\texttt{+ "."\space +} \newline
+ \hspace*{1em}\texttt{base64UrlEncode(payload)} \newline
+ \hspace*{1em}\texttt{, secretPassword)} &
+  Podpis składa się z zaszyfrowanego nagłówka, ładunku i hasła, które są później przetwarzane przez wybrany algorytm. 
+ \\ \hline
+
+\end{longtable}
+
+\subsubsection*{Testowanie}
+Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z wykorzystaniem biblioteki JUnit. Polegają na wysłaniu żądania HTTP do serwera i porównaniu odpowiedzi otrzymanej z oczekiwaną (przykładowe kody odpowiedzi w tabeli \ref{tab:Kody-HTTP}). W testach tego typu ważną cechą jest sprawdzenie wartości granicznych (listing \ref{lst:java-UnitTest}). 
+
+Testy integracyjne pozwalają sprawdzić interakcje między komponentami aplikacji dzięki narzędziu MockMVC.
+\subsubsection*{Konfiguracja i uruchamianie}
+Konfiguracja środowiska odbywa się w pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w różnych środowiskach.
 \subsection*{Przykładowe fragmenty kodu}
 \subsubsection*{rejestracja}
+Funkcja rejestracji przyjmuje jako argument obiekt klasy User, który posiada poprawnie uzupełnione ciało (login: String, password: String, role: UserRoles). Jeżeli podane dane są poprawne, zostaje wywołana funkcja szyfrująca hasło, a następnie użytkownik jest zapisywany w bazie danych.
 \begin{lstlisting}[language={Java}, caption={Rejestracja użytkownika}, label={lst:java-register}]
-/**
-* Rejestracja użytkownika.
-* @param user Obiekt użytkownika zawierający dane do rejestracji w formacie JSON.
-*             Wymagane pola: login, password, role.
-*/
 @PostMapping("/register")
 public String register(@Valid @RequestBody User user) {
 	user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,6 +113,7 @@ public String register(@Valid @RequestBody User user) {
 }
 \end{lstlisting}
 \subsubsection*{Lista użytkowników}
+Funkcja \texttt{getUser()} wykorzystuję metodę z repozytorium, która umożliwia pobranie wszystkich dokumentów i zwraca je.
 \begin{lstlisting}[language={Java}, caption={Lista użytkowników}, label={lst:java-list}]
 @GetMapping("/list")
 public Iterable<User> getUser() {
@@ -65,6 +121,7 @@ public Iterable<User> getUser() {
 }
 \end{lstlisting}
 \subsubsection*{Usuwanie użytkownika}
+Funkcja \texttt{deleteUser} przyjmuję jako parametr podany w ścieżce identyfikator użytkownika. Następnie jeżeli istnieje usuwa dokument z bazy danych.
 \begin{lstlisting}[language={Java}, caption={Usuwanie użytkownika}, label={lst:java-delete}]
 @DeleteMapping("/delete/{id}")
 public void deleteUser(@PathVariable String id) {
@@ -72,6 +129,7 @@ public void deleteUser(@PathVariable String id) {
 }
 \end{lstlisting}
 \subsubsection*{Edycja użytkownika}
+Funkcja \texttt{updateUser} pozwala zmienić login użytkownikowi. Jako parametr przyjmuję identyfikator podany w ścieżce oraz wymagany login. Jeżeli zostały podane poprawne dane aktualizuje dokument w bazie danych.
 \begin{lstlisting}[language={Java}, caption={Edycja użytkownika}, label={lst:java-update}]
 @PutMapping("/update/{id}")
 public void updateUser(@PathVariable String id, @RequestParam String login) {
@@ -80,14 +138,14 @@ public void updateUser(@PathVariable String id, @RequestParam String login) {
 	userRepository.save(user);
 }
 \end{lstlisting}
-\subsection*{Testy jednostkowe}
-Aplikacja posiada również możliwość testowania poprawności działania metod. Testowanie polega na sprawdzeniu, czy funkcja zwraca odpowiednią odpowiedź z serwera, na przykład w przypadku nieautoryzowanego dostępu do funkcji w odpowiedzi od serwera powinniśmy otrzymać błąd 401 (Unauthorized). W przypadku, gdy wszystko zakończy się powodzeniem otrzymamy sygnał 200 (OK). Kody błędów znajdują się w tabeli (Nie ma jeszcze). Do testowania aplikacji wykorzystuje bibliotekę JUnit w wersji 5.
+\subsubsection*{Test Jednostkowy}
+Podany poniżej kod testujący służy do sprawdzenia czy aplikacja jest zabezpieczona przed wysyłaniem przelewów, w których podano graniczną wartość, czyli kwotę 0.0 \$. Oczekiwany status odpowiedzi to 4xx, a zwracana odpowiedź to ,,amount: must be greater then 0''
 \begin{lstlisting}[language={Java}, caption={Przykładowy test}, label={lst:java-UnitTest}]
 @Test
-public void createTransferHandlesNegativeTransferAmount() throws Exception {
+public void createTransferHandlesBorderTransferAmount() throws Exception {
 	this.mockMvc.perform(MockMvcRequestBuilders.post("/Transaction/create/transfer")
 	.contentType("application/json")
-	.content("{\"fromAccountNumber\":\"1234567890122234569012335\",\"toAccountNumber\":\"1234567890122234569012335\",\"amount\":-50.0}"))
+	.content("{\"fromAccountNumber\":\"1234567890122234569012335\",\"toAccountNumber\":\"1234567890122234569012335\",\"amount\":0.0}"))
 	.andExpect(status().is4xxClientError())
 	.andExpect(content().string("amount: must be greater than 0"));
 }
@@ -179,5 +237,3 @@ COPY src ./src
 EXPOSE 8080
 CMD ["mvn", "spring-boot:run"]
 \end{lstlisting}
-\section{Przykładowe fragmenty kodu i funkcje}
-Wywalić przykłady z wcześniej i wrzucić je tutaj? Czy tutaj umieścić coś jeszcze? wszystkie przykłady dałem wcześniej.
