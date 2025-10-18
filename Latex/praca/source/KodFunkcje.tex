@@ -151,38 +151,41 @@ public void createTransferHandlesBorderTransferAmount() throws Exception {
 }
 \end{lstlisting}
 \section{Frontend – interfejs użytkownika}
-Warstwa prezentacji systemu, czyli to z czym użytkownik wchodzi w interakcje nazywamy frontendem. Została zrealizowana przy pomocy biblioteki React oraz narzędzia Vite. Kod źródłowy programu został napisany w TypeScipt. Komunikacja została zapewniona dzięki protokołowi HTTP/REST. Powoduje to niezależność frontendu od backendu.
+Warstwa prezentacji została zrealizowana w oparciu o bibliotekę React oraz narzędzie budujące Vite. Vite zapewnia szybkie uruchamianie środowiska deweloperskiego oraz prostą integrację z TypeScript. React dostarcza deklaratywny model budowy, który pozwala opisać, jak powinien wyglądać interfejsu użytkownika w danym stanie \cite{Declarative}. 
 \subsection*{Struktura projektu}
-Projekt jest podzielony na moduły:
+Struktura katalogów projektu została zaprojektowana w sposób pozwalający rozdzielić warstwy odpowiedzialności. Składa się z takich modułów jak:
 \begin{itemize}
-	\item Assets - przechowywanie statycznych elementów strony (np. ikony),
-	\item Models - Zawiera typy utworzone na potrzeby działania funkcji,
-	\item Services - Odpowiada za komunikacje z backendem,
-	\item Styles - Przechowuje style w formacie .css,
-	\item Context - Obsługuje globalny stan aplikacji,
-	\item Components - Zawiera widoki stron i wszystkie elementy takie jak formularze
+	\item Assets - przechowywanie statycznych elementów strony (np. ikony).
+	\item Models - Zawiera typy utworzone na potrzeby działania funkcji.
+	\item Services - Odpowiada za komunikacje z backendem.
+	\item Styles - Przechowuje style w formacie .css.
+	\item Context - Obsługuje globalny stan aplikacji.
+	\item Components - Zawiera widoki stron i wszystkie elementy takie jak formularze.
 \end{itemize}
+\subsection*{Typescript}
+\textit{Opisać tu dlaczego wykorzystałem ten język jakie ma ,,Plusy''}
+Czy ten podrozdział jest nie potrzebny, bo opis języka jest w przeglądzie technologi? 
+\subsection*{Interfejs użytkownika}
+Interfejs użytkownika wykorzystuje komponenty z biblioteki Ant Design, która oferuje m.in. siatkę (ang. \textit{grid}), formularze (ang. \textit{form}), okna modalne (ang. \textit{modal}) oraz tabele (ang. \textit{table}). Elementy aplikacji pozwalają na spersonalizowanie motywów oraz tłumaczenie treści. Użytkownik może sprawdzić szczegóły profilu lub przejrzeć historię i dane swoich portfeli, które ma przypisane do konta.
 \subsection*{Komunikacja z API}
-Komunikacja z backendem odbywa się dzięki bibliotece axios, która odwołuje się do endpointów strony. Poniżej znajduje się przykładowa funkcja wyszukująca konta.
+Komunikacja z backendem odbywa się dzięki bibliotece axios, która wysyła żądania do serwera. 
 \begin{lstlisting}[caption={Funkcja wyszukująca wszystkie konta użytkownika}, label={lst:TS-service1}]
-export const fetchAccounts= async (): Promise<Accounts[]> =>{
-	const id = await fetchUserId();
-	try {
-		const response = await axios.get(`http://localhost:8080/Account/get/${id.id}`, {
-			withCredentials: true,
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		return await response.data;
-	} catch (error: any) {
-	throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");
+	export const fetchAccounts= async (): Promise<Accounts[]> =>{
+		const id = await fetchUserId();
+		try {
+			const response = await axios.get(`http://localhost:8080/Account/get/${id.id}`, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			return await response.data;
+		} catch (error: any) {
+			throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");
+		}
 	}
-}
 \end{lstlisting}
 
-\subsection*{UI}
-Interfejs użytkownika jest przejrzysty i łatwy w obsłudze. Wiele elementów na stronie zostało wykorzystane z biblioteki Ant Design, która jest jedną z popularniejszych bibliotek dla React'a. Pozwala ona na tworzenie formularzy, wykresów liniowych, przycisków, ikon i wielu innych przydatnych elementów strony. Użytkownik może personalizować motyw strony (jasny/ciemny), sprawdzić szczegóły profilu lub przejrzeć historię i dane swoich kont bankowych, które ma przypisane do konta.
 \subsection*{Stan aplikacji i interakcje}
 Stany są jednym z kluczowych funkcji, które wykorzystuje się w aplikacjach opartych o React. Wykorzystują funkcję haków (hook), które pozwalają używać stanów bez konieczności posiadania klasy. Do zarządzania stanami możemy użyć funkcji useState lub useEffect. Funkcja useState pozwala nam ustawić jakiś status podczas działania strony. Prostym przykładem będzie zmiana motywu strony przez użytkownika. Wtedy status zmienia się z light na dark. UseEffect pozwala wykonać jakąś funkcję lub działanie i wpłynąć na to jaki status zostanie ustawiony. Poniżej znajdują się przykłady zastosowań dla obu funkcji.
 \begin{lstlisting}[caption={Wykorzystanie stanów}, label={lst:TS-states}]
@@ -200,35 +203,51 @@ useEffect(() => {
 	fetchLoginData();
 }, []);
 \end{lstlisting}
-\section{Przepływ danych}
-Aplikacja przechowuje dane w postaci dokumentów bazy NoSql MongoDB. Backend komunikuje się z bazą poprzez warstwę repozytoriów i pobiera z niej informacje w formacie JSON, następnie odpowiednio sformatowane dane przesyła odpowiednim endpointem do frontendu, gdy zostanie wywołana odpowiednia metoda.
+\section{Baza danych - implementacja i przepływ danych}
+Dane przechowywane nierelacyjnej bazie dokumentowej MongoDB. Wspiera ona wydajne zapytania pod typowe przypadki użycia aplikacji budżetowej na przykład: filtrowanie, agregacje po dacie, kategoriach lub użytkownikach. 
 \subsubsection*{Przykładowy przepływ danych}
-Poniżej znajduje się sposób przepływu danych dla funkcji logowania aplikacji:
+Dane wyświetlane użytkownikowi końcowemu muszą zostać pobrane z bazy, przetworzone przez serwer, i dopiero wtedy zostaną ukazane użytkownikowi. 
 \begin{enumerate}
-	\item Użytkownik odpala formularz na stronie i wprowadza dane.
-	\item Frontend wysyła żądanie HTTP do backendu.
-	\item Backend przetwarza dane i porównuje je z tymi znajdującymi się w bazie.
-	\item Wynik zwraca w formacie JSON.
-	\item Frontend aktualizuje widok użytkownika.
+	\item Użytkownik wywołuje operację logowania. Parametry trafiają do API jako JSON.
+	\item Warstwa kontrolerów waliduje dane. 
+	\item Backend zleca operację repozytorium.
+	\item Baza danych analizuje zapytanie oraz zwraca dokumenty w formacie BSON,
+	\item Dane są serializowane do JSON i zwracane do frontendu.
 \end{enumerate}
-\begin{lstlisting}[caption={Przykład przesyłanych danych między frontendem, a backendem}, label={lst:TS-service1}]
+\begin{lstlisting}[caption={Przykładowe dane zwracane z bazy}, label={lst:TS-service1}]
 [{
 	"fromAccountNumber": "3620457673958599558548379",
 	"toAccountNumber": "1234567890122234561012335",
 	"amount": 50.0,
-	"description": "test",
+	"description": "opis",
 	"transactionId": "68dfb1d240d00a2221f78809"
-},
-{
-	"fromAccountNumber": "3620457673958599558548379",
-	"toAccountNumber": "1234567890122234561012335",
-	"amount": 150.0,
-	"description": "test",
-	"transactionId": "68dfb1d740d00a2221f7880b"
 }]
 \end{lstlisting}
-\section{Integracja komponentów}
-Komponenty są uruchamiane w oddzielnych kontenerach Dockera. Plik compose.yml pozwala jednocześnie uruchomić bazę danych, backend i frontend przy pomocy jednego polecenia: \textit{docker compose up}.
+\section{Integracja warstw}
+Integracja trzech warstw systemu została zaprojektowana tak, aby zapewnić spójny przepływ danych, określić jednoznaczną specyfikację API oraz przewidywać zachowania w środowiskach deweloperskich.
+\subsection*{Umowa API}
+Podstawą integracji jest stabilna specyfikacja API \cite{API}. Frontend korzysta z określonego punktu wejścia, a żądania i odpowiedzi wykorzystują obiekty klas w javie oraz odpowiadające im typy w TypeScript w celu komunikacji. Dane wejściowe są walidowane w kontrolerach i zapisywane bądź odczytywane z MongoDB. Takie podejście zapewnia jednoznaczność komunikacji między warstwami i ułatwia wprowadzanie zmian. 
+\subsection*{Autoryzacja i pochodzenie żądań}
+Mechanizm bezpieczeństwa oparto o tokeny JWT, na których podstawie określana jest tożsamość użytkownika. W środowisku deweloperskim, gdzie frontend i backend działają pod różnymi portami zezwala się na połączenia z innych domen CORS (ang. \textit{Cross-Origin Resource Sharing}) w kontrolowanym zakresie.
+\begin{lstlisting}[language={java}, caption={Konfiguracja CROS}, label={lst:Java-CROS}]
+public WebMvcConfigurer corsConfigurer() {
+	return new WebMvcConfigurer() {
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/**")
+			.allowedOrigins("http://localhost:5173")
+			.allowedMethods("GET", "POST", "PUT", "DELETE")
+			.allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT)
+			.allowCredentials(true)
+			.maxAge(3600);
+		}
+	};}
+\end{lstlisting}
+\subsection*{Wydajność i obsługa błędów}
+Wydajność integracji osiągnięto poprzez projektowanie zapytań pod konkretne wzorce dostępu z interfejsu użytkownika. Widoki otrzymują jedynie niezbędne pola. W przypadku wystąpienia błędu system zwróci komunikat w ujednoliconym formacie. Dzięki temu frontend może prezentować informacje o błędach w przewidywalny sposób.
+
+\subsection{Konteneryzacja i uruchamianie wieloskładnikowe}
+Konteneryzacja umożliwia spójne uruchamianie wszystkich warstw niezależnie od systemu operacyjnego. Aplikacja backendowa posiada utworzony obraz pozwalający na jej płynne uruchamianie i edycję (listing \ref{lst:Docker-build}). Baza danych MongoDB działa w dedykowanym kontenerze z trwałym woluminem, w którym przechowywane są dokumenty. Połączenie kontenerów odbywa się dzięki konfiguracji zawartej w pliku \texttt{docker-compose.yml} (listing \ref{lst:Docker-compose}), który zawiera w sobie informację o obrazach, portach , sieciach, woluminach, zależnościach oraz zmiennych środowiskowych.
 \begin{lstlisting}[caption={Budowanie obrazu - Dockerfile}, label={lst:Docker-build}]
 FROM maven:3.9.10-eclipse-temurin-21
 WORKDIR /app
@@ -236,4 +255,22 @@ COPY pom.xml .
 COPY src ./src
 EXPOSE 8080
 CMD ["mvn", "spring-boot:run"]
+\end{lstlisting}
+\begin{lstlisting}[caption={Fragment pliku konfiguracyjnego compose.yml}, label={lst:Docker-compose}]
+app:						// nazwa kontenera
+	build:				// budowanie obrazu na podstawie dockerfile
+		context: .
+		dockerfile: Dockerfile
+ports:					// określenie portów
+	- "8080:8080"
+environment:		// zmienne środowiskowe
+	DB_HOST: mongo
+	DB_PORT: 27017
+	DB_NAME: budget_management_db
+networks:				// określenie sieci
+	- default
+volumes:				// zadeklarowanie współdzielonego folderu 
+	- .:/app
+depends_on:			// określenie zależności od innych kontenerów
+	- mongo
 \end{lstlisting}
