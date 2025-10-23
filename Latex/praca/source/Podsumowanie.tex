@@ -1,44 +1,48 @@
-\chapter{Podsumowanie i wnioski }
+\chapter{Podsumowanie}
+W teraźniejszych czasach ludzie coraz częściej korzystają z portfeli elektronicznych. Pozwalają one na proste zarządzanie finansami bez konieczności wychodzenia z domu. Dzięki nim można kategoryzować swoje wydatki, przeglądać szczegółowe statystyki, oszczędzać pieniądze i usprawnić zarządzanie finansami. 
 
-Celem niniejszej pracy było zaprojektowanie i implementacja aplikacji webowej wspomagającej zarządzanie finansami. Aplikacja powstała w oparciu o architekturę klient-serwer i posiada takie funkcjonalności jak:
-\begin{itemize}
-	\item Rejestrowanie i logowanie użytkownika,
-	\item Tworzenie różnego rodzaju transakcji,
-	\item Sprawdzanie szczegółów profilu lub kont,
-	\item Analiza danych finansowych przy pomocy wykresów,
-	\item Komunikacja między frontendem, a backendem przy pomocy REST API,
-	\item Przechowywanie danych w bazie nierelacyjnej MongoDB.
-\end{itemize}
-Aplikacja umożliwia elastyczne zarządzanie danymi, dzięki bazie MongoDB. Jej uniwersalny interfejs jest prosty w obsłudze co ułatwia poruszanie się po stronie dla każdej grupy wiekowej. Projekt pozwoli użytkownikowi w łatwiejszy sposób robić takie rzeczy jak:
-\begin{itemize}
-	\item Zarządzać własnym budżetem domowym,
-	\item Śledzić swoje wydatki,
-	\item Planować przyszłe płatności,
-	\item Wykonywać kroki w celu inwestycji środków.
-\end{itemize}
+Celem niniejszej pracy było zaprojektowanie i implementacja aplikacji webowej wspomagającej zarządzanie finansami osobistymi. Aplikacja została utworzona w oparciu o różne technologię i narzędzia.
+
+System powstał i w pełni spełnia założone cele. Umożliwia dodawanie i usuwanie środków, śledzenie wydatków, kategoryzowanie i ogólne zarządzanie budżetem. Interfejs użytkownika pozwala intuicyjnie poruszać się po elementach aplikacji, a funkcje i metody opisane po stronie serwera, dają możliwość na wydajne przetwarzanie danych. 
 \section*{Wnioski}
-Nowoczesne technologie webowe pozwalają na tworzenie skalowalnych i łatwych w rozwoju aplikacji. Architektura klient-serwer sprawdziła się w rozdzieleniu warstwy frontendu od backendu.
+Nowoczesne technologie pozwalają na tworzenie skalowalnych i łatwych w rozwoju aplikacji. Narzędzia programistyczne są niezbędne w procesie tworzenia oprogramowania. 
 
-W przyszłości aplikację będzie można rozszerzyć o:
+Odpowiednie przygotowanie architektury aplikacji pozwala na implementacje klas, metod i funkcji, które zostały zaplanowane na początku tworzenia projektu. 
+W procesie wytwarzania oprogramowania może okazać się, że nie wszystkie zaplanowane rozwiązania będą odpowiednie dla danego systemu.
+
+Język Java wraz z frameworkiem Spring jest idealny do tworzenia aplikacji webowej. Zawiera wiele bibliotek, które czynią to rozwiązanie jednym z najlepszych. Testowanie oprogramowania pozwala ograniczyć ilość błędów systemu. 
+
+Biblioteka React wraz z narzędziami deweloperskimi pozwala na sprawny rozwój interfejsu użytkownika. Dostępność wielu gotowych komponentów sprawia, że warstwa prezentacji jest przejrzysta i czytelna. 
+
+Środowiska deweloperskie pozwalają na szybkie sprawdzanie wprowadzanych zmian dzięki funkcji przeładowania na gorąco. 
+
+Nierelacyjne bazy danych działają wydajniej niż ich relacyjne odpowiedniki. 
+
+Konteneryzacja umożliwia tworzenie bezpiecznych środowisk, w których może działać system.
+Kontrola wersji aplikacji pozwala ograniczyć sytuacje, w których program po wprowadzeniu wielu zmian przestaje funkcjonować. 
+
+\section*{Osiągnięcia autora}
+Podczas tworzenia projektu autor rozwinął swoje umiejętności techniczne oraz analityczne w zakresie tworzenia aplikacji webowych. Poszerzył zakres wiedzy w dziedzinie informatyki i inżynierii oprogramowania. Opracował takie zagadnienia jak:
 \begin{itemize}
-	\item Funkcje prognozowania wydatków z wykorzystaniem algorytmów uczenia maszynowego,
-	\item Możliwość eksportu danych do formatu PDF lub CSV.
-\end{itemize}
-
-Projekt umożliwił rozwinięcie umiejętności analitycznych oraz technicznych związanych z tworzeniem aplikacji webowych.
-
-\section*{Co osiągnąłem}
-Podczas realizacji projektu osiągnięto wiele rezultatów. Stworzono kompletną aplikację webową umożliwiającą zarządzanie budżetem domowym, w której połączono wiele nowoczesnych rozwiązań technologicznych. Do najważniejszych osiągnięć należą:
+	\item implementacja tokenów JWT,
+	\item architektura oparta o serwisy (SOA),
+	\item sposoby komunikacji klienta z serwerem, 
+	\item implementacje interfejsu użytkownika z wykorzystaniem biblioteki React,
+	\item opracowanie diagramów,
+	\item język TypeScript,
+	\item nierelacyjne bazy danych,
+	\item wykorzystanie frameworka Spring,
+	\item testowanie aplikacji,
+	\item konteneryzacja.
+\end{itemize}   
+\section*{Przyszły rozwój aplikacji}
+W przyszłości aplikację będzie można rozszerzyć o takie funkcjonalności jak 
 \begin{itemize}
-	\item Wykorzystanie architektury klient-serwer,
-	\item Interfejs oparty o technologię React,
-	\item Opracowanie logiki biznesowej przy pomocy Spring Boot,
-	\item Uzyskanie płynnie działającego przepływu danych w bazie MongoDB,
-	\item Wdrożenie środowiska do uruchamiania w oparciu o Docker,
-	\item Opracowanie testów funkcjonalnych przy użyciu narzędzia Postman,
-	\item Umożliwienie dalszej rozbudowy systemu.
+	\item Prognozowania wydatków z wykorzystaniem algorytmów uczenia maszynowego.
+	\item Dodawanie kart płatniczych.
+	\item Możliwość ustawienia awataru użytkownika.
+	\item Utworzenie raportów z danymi w formacie PDF.
+	\item Konwersja danych do formatu XML.
+	\item Rozszerzenie tłumaczeń strony.
+	\item Zwiększony wybór walut.
 \end{itemize}
-
-Realizacja powyższych elementów pozwoliła na stworzenie w pełni działającego systemu, który spełnia założenia projektowe. 
-
-W trakcie tworzenia projektu autor rozwinął swoje umiejętności w zakresie programowania w językach TypeScript i Java, projektowania aplikacji webowych oraz pracy z bazami typu NoSQL. Zdobyte doświadczenie obejmuje również prace z narzędziami takimi jak Git, Docker oraz Postman.
