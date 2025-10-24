@@ -1,20 +1,19 @@
 \chapter{Implementacja systemu}
 Rozdział  przedstawia proces implementacji systemu. Omówiono w nim wykorzystane technologie oraz poszczególne warstwy aplikacji. Celem tego rozdziału jest zaprezentowanie działania wykorzystanej architektury oraz korelacje między poszczególnymi elementami systemu.
 \section{Backend – logika biznesowa i API}
-Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot, który upraszcza proces tworzenia aplikacji dzięki zestawowi tzw. starterów.
+Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot, który upraszcza proces tworzenia aplikacji.
 
 \subsection*{Spring Boot i ekosystem bibliotek}
 Freamework spring boot oferuje moduły oraz biblioteki wykorzystane do budowy REST API, dostępu do baz danych, bezpieczeństwa i testowania. Wykorzystywane biblioteki są deklarowane w pliku \texttt{pom.xml}. Są one wstępnie skonfigurowane. Takie rozwiązanie znacząco zwiększa tępo rozwoju aplikacji, pozwala na lepszą pracę w grupach oraz redukuje ilość kodu szablonowego (ang. \textit{boilerplate code}).
 \subsubsection*{Zarządzanie zależnościami i startery}
 Spring boot łączy biblioteki w postaci starterów. Pozwala to zminimalizować ryzyko konfliktów wersji oraz skrócić czas konfiguracji. Kluczowe startery wykorzystywane w aplikacji webowej to:
 \begin{itemize}
-	\item \textbf{spring-boot-starter-web} -- Warstwa HTTP/REST oparta na spring MVC, która udostępnia wbudowany serwer Tomcat. 
-	\item \textbf{spring-boot-starter-data-jpa} -- Umożliwia dostęp do relacyjnej bazy danych poprzez JPA (ang. \textit{Java Persistence API}).
-	\item \textbf{spring-boot-starter-data-mongodb} -- Pozwala na dostęp do nierelacyjnej bazy MongoDB. 
-	\item \textbf{spring-boot-starter-validation} -- Implementuje biblioteki do walidacji danych wejściowych.
-	\item \textbf{spring-boot-starter-security} -- Mechanizm uwierzytelniania, autoryzacji i ochrony endpointów.
-	\item \textbf{spring-boot-starter-test} -- Środowisko testowe do testów jednostkowych i integracyjnych. 
-	\item \textbf{Lombok} -- Redukuje kod szablonowy (gettery, settery, konstruktory).
+	\item spring-boot-starter-web -- Warstwa HTTP/REST oparta na spring MVC, która udostępnia wbudowany serwer Tomcat. 
+	\item spring-boot-starter-data-jpa -- Umożliwia dostęp do relacyjnej bazy danych poprzez JPA (ang. \textit{Java Persistence API}).
+	\item spring-boot-starter-data-mongodb -- Pozwala na dostęp do nierelacyjnej bazy MongoDB. 
+	\item spring-boot-starter-validation -- Implementuje biblioteki do walidacji danych wejściowych.
+	\item spring-boot-starter-security -- Mechanizm uwierzytelniania, autoryzacji i ochrony endpointów.
+	\item spring-boot-starter-test -- Środowisko testowe do testów jednostkowych i integracyjnych. 
 \end{itemize}
 \subsubsection*{Warstwa webowa}
 Umożliwia komunikację z wykorzystywaniem standardu REST API (ang. \textit{Representational State Transfer Application Programing Interface}). W warstwie kontrolerów tworzone są endpointy w oparciu o modele z jakimi są związane. Kontroler może implementować obsługę żądań HTTP, takich jak:
@@ -95,13 +94,16 @@ Nagłówek (ang. \textit{Header}) &
 
 \end{longtable}
 
-\subsubsection*{Testowanie}
+\subsubsection*{TODO::Testowanie}
 Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z wykorzystaniem biblioteki JUnit. Polegają na wysłaniu żądania HTTP do serwera i porównaniu odpowiedzi otrzymanej z oczekiwaną (przykładowe kody odpowiedzi w tabeli \ref{tab:Kody-HTTP}). W testach tego typu ważną cechą jest sprawdzenie wartości granicznych (listing \ref{lst:java-UnitTest}). 
 
 Testy integracyjne pozwalają sprawdzić interakcje między komponentami aplikacji dzięki narzędziu MockMVC.
+
+\textbf{TODO: Napisać więcej testów i wstawić jakieś przykłady. Widze że sekcja testowania powtarza się w wielu fragmentach kodu i nie wiem do końca w których powinienem ją zostawić.}
 \subsubsection*{Konfiguracja i uruchamianie}
 Konfiguracja środowiska odbywa się w pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w różnych środowiskach.
-\subsection*{Przykładowe fragmenty kodu}
+\subsection*{TODO: Przykładowe fragmenty kodu}
+\textbf{TODO: Najprawdopodobniej zmieni się trochę architektura endpointów. Będą wywoływane tylko serwisy, które mają dostęp do repozytoriów. W endpointach będą jedynie wstrzykiwane serwisy i wywoływane zawarte w nich metody}
 \subsubsection*{rejestracja}
 Funkcja rejestracji przyjmuje jako argument obiekt klasy User, który posiada poprawnie uzupełnione ciało (login: String, password: String, role: UserRoles). Jeżeli podane dane są poprawne, zostaje wywołana funkcja szyfrująca hasło, a następnie użytkownik jest zapisywany w bazie danych.
 \begin{lstlisting}[language={Java}, caption={Rejestracja użytkownika}, label={lst:java-register}]
@@ -162,9 +164,9 @@ Struktura katalogów projektu została zaprojektowana w sposób pozwalający roz
 	\item Context - Obsługuje globalny stan aplikacji.
 	\item Components - Zawiera widoki stron i wszystkie elementy takie jak formularze.
 \end{itemize}
-\subsection*{Typescript}
-\textit{Opisać tu dlaczego wykorzystałem ten język jakie ma ,,Plusy''}
-Czy ten podrozdział jest nie potrzebny, bo opis języka jest w przeglądzie technologi? 
+\subsection*{TODO: Typescript}
+\textbf{TODO: Opisać tu dlaczego wykorzystałem ten język jakie ma ,,Plusy''
+Czy ten podrozdział jest nie potrzebny, bo opis języka jest w przeglądzie technologi? }
 \subsection*{Interfejs użytkownika}
 Interfejs użytkownika wykorzystuje komponenty z biblioteki Ant Design, która oferuje m.in. siatkę (ang. \textit{grid}), formularze (ang. \textit{form}), okna modalne (ang. \textit{modal}) oraz tabele (ang. \textit{table}). Elementy aplikacji pozwalają na spersonalizowanie motywów oraz tłumaczenie treści. Użytkownik może sprawdzić szczegóły profilu lub przejrzeć historię i dane swoich portfeli, które ma przypisane do konta.
 \subsection*{Komunikacja z API}
@@ -187,7 +189,7 @@ Komunikacja z backendem odbywa się dzięki bibliotece axios, która wysyła ż�
 \end{lstlisting}
 
 \subsection*{Stan aplikacji i interakcje}
-Stany są jednym z kluczowych funkcji, które wykorzystuje się w aplikacjach opartych o React. Wykorzystują funkcję haków (hook), które pozwalają używać stanów bez konieczności posiadania klasy. Do zarządzania stanami możemy użyć funkcji useState lub useEffect. Funkcja useState pozwala nam ustawić jakiś status podczas działania strony. Prostym przykładem będzie zmiana motywu strony przez użytkownika. Wtedy status zmienia się z light na dark. UseEffect pozwala wykonać jakąś funkcję lub działanie i wpłynąć na to jaki status zostanie ustawiony. Poniżej znajdują się przykłady zastosowań dla obu funkcji.
+Stany są jednym z kluczowych funkcji, które wykorzystuje się w aplikacjach opartych o React. Wykorzystują funkcję haków (ang. \textit{hook}), które pozwalają używać stanów bez konieczności posiadania klasy. Do zarządzania stanami możemy użyć funkcji useState lub useEffect. Funkcja useState pozwala nam ustawić jakiś status podczas działania strony. Użytkownik może przykładowo zmienić motyw, następuje zmiana statusu z ciemnego na jasny. Użycie efektu pozwala wykonać jakąś funkcję lub działanie i wpłynąć na to jaki status zostanie ustawiony. Poniżej znajdują się przykłady zastosowań dla obu funkcji.
 \begin{lstlisting}[caption={Wykorzystanie stanów}, label={lst:TS-states}]
 const [loginData, setLogin] = useState<string | null>(null);
 	
@@ -241,12 +243,13 @@ public WebMvcConfigurer corsConfigurer() {
 			.allowCredentials(true)
 			.maxAge(3600);
 		}
-	};}
+	};
+}
 \end{lstlisting}
 \subsection*{Wydajność i obsługa błędów}
 Wydajność integracji osiągnięto poprzez projektowanie zapytań pod konkretne wzorce dostępu z interfejsu użytkownika. Widoki otrzymują jedynie niezbędne pola. W przypadku wystąpienia błędu system zwróci komunikat w ujednoliconym formacie. Dzięki temu frontend może prezentować informacje o błędach w przewidywalny sposób.
 
-\subsection{Konteneryzacja i uruchamianie wieloskładnikowe}
+\subsection*{Konteneryzacja i uruchamianie wieloskładnikowe}
 Konteneryzacja umożliwia spójne uruchamianie wszystkich warstw niezależnie od systemu operacyjnego. Aplikacja backendowa posiada utworzony obraz pozwalający na jej płynne uruchamianie i edycję (listing \ref{lst:Docker-build}). Baza danych MongoDB działa w dedykowanym kontenerze z trwałym woluminem, w którym przechowywane są dokumenty. Połączenie kontenerów odbywa się dzięki konfiguracji zawartej w pliku \texttt{docker-compose.yml} (listing \ref{lst:Docker-compose}), który zawiera w sobie informację o obrazach, portach , sieciach, woluminach, zależnościach oraz zmiennych środowiskowych.
 \begin{lstlisting}[caption={Budowanie obrazu - Dockerfile}, label={lst:Docker-build}]
 FROM maven:3.9.10-eclipse-temurin-21

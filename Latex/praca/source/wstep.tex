@@ -1,21 +1,25 @@
-\chapter{Wstęp}
+\chapter{TODO:Wstęp}
 W gospodarstwach domowych jednym z kluczowych obszarów decyzyjnych mających bezpośredni wpływ na poziom zaspokojenia potrzeb jest strefa finansowa. W jej ramach podejmowane są decyzję związane z konsumpcją, oszczędzaniem bądź inwestowaniem.
 
 Jednym z celów wykorzystania aplikacji wspomagających zarządzanie budżetem domowym jest wspieranie procesów decyzyjnych konsumentów \cite{Robo-Advisory}. Aplikacje finansowe podnoszą świadomość społeczeństwa dotyczącą finansów oraz zwiększają chęć do planowania i kontroli budżetu domowego. Usługi finansowe są dostępne w każdym miejscu i czasie niemalże dwadzieścia cztery godziny na dobę. Aplikacje te najczęściej cechują się interfejsem przyjaznym dla użytkownika, kategoryzacją i śledzeniem wydatków, możliwością przypominania o rachunkach oraz zapewniają ochronę informacji personalnych.
 
+Wiele aplikacji jest tworzonych z myślą o użytkownikach, korzystających z urządzeń mobilnych. Takie aplikacje są nazywane natywnymi, czyli stworzonymi dla konkretnej platformy mobilnej. Potrzebę tworzenia aplikacji dla każdego systemu tworzą języki programowania, w których są pisane. Dla Androida jest to najczęściej Java lub Kotlin, a w przypadku iOS-a Swift \cite{native}. Aplikacje bankowe potrzebują dostępu do wszystkich funkcji systemu operacyjnego, aby zapewnić bezpieczeństwo i wydajność. Duża część banków znajdujących się aktualnie na rynku oferuje w swoich aplikacjach narzędzia, które wspomagają zarządzanie finansami klienta. 
+
+Banki oferują też możliwość korzystania z bankowości internetowej, która udostępnia podobne narzędzia co aplikacje natywne w przeglądarce internetowej. Pierwszy bank internetowy pojawił się na rynku polskim w październiku 1998r. i należał do Banku Gospodarczego S.A. \cite{bankowoscinternetowa}.
+
 W ankiecie przeprowadzonej dla AcademyBank wskazano, że 83.1\% osób śledzi swoje wydatki, z czego 45.3\% używa do tego narzędzi cyfrowych. Jednym z rozwiązań jest korzystanie z aplikacji budżetowych. Użycie tych narzędzi zadeklarowało 20.9\% ankietowanych. Z biegiem czasu te liczby będą tylko rosły, ponieważ na rynku będzie pojawiać się coraz więcej narzędzi umożliwiających proste zarządzanie własnymi finansami. Niemal 80\% osób korzystających z platform do zarządzania budżetem deklaruje, że korzysta z nich przynajmniej raz w tygodniu \cite{AcademyBank}.
 
-W celu analizy jakości aplikacji do zarządzania finansami osobistymi przeprowadzono badanie na grupie $N=301$ polaków, z których 288 przyznało, że korzysta z aplikacji do wspomagania budżetem, a tylko 13, że nie korzysta. Główne czynności, do których Polacy wykorzystują aplikacje to Kontrola budżetu domowego (88.54\%), Weryfikacja wydatków z ostatniego miesiąca (86.11\%), Sprawdzanie salda rachunku/-ów (48.26\%) oraz planowanie wydatków na kilka miesięcy (45.83\%) \cite{PFMApp}. \textbf{(tu ciekawy artykuł można wstawić więcej danych)}
+W celu analizy jakości aplikacji do zarządzania finansami osobistymi przeprowadzono badanie na grupie $N=301$ polaków, z których 288 przyznało, że korzysta z aplikacji do wspomagania budżetem, a tylko 13, że nie korzysta. Główne czynności, do których Polacy wykorzystują aplikacje to Kontrola budżetu domowego (88.54\%), Weryfikacja wydatków z ostatniego miesiąca (86.11\%), Sprawdzanie salda rachunku/-ów (48.26\%) oraz planowanie wydatków na kilka miesięcy (45.83\%) \cite{PFMApp}. \textbf{(TODO: tu ciekawy artykuł można wstawić więcej danych)}
 
 Dane zebrane przez stronę CoinLaw przedstawiają, że aplikacje do wspomagania budżetem domowym są najczęściej wykorzystywane w przedziale wiekowym od 27 do 42 lat (91\%). Kolejna grupa to osoby w wieku od 43 do 58 lat (80\%). W przedziale od 18 do 26 roku życia jest to 68\% \cite{FintechStats}. Aktualna wielkość rynku dla technologii finansowych jako usługi (ang. \textit{Fintech as a Service}) wynosi około 441.47\$ miliardów i przy aktualnym tempie wzrostu może urosnąć nawet do 906\$ miliardów do 2030 roku \cite{FaaS}.
 
 
 \section{Cel pracy}
 Celem pracy jest zbudowanie aplikacji do zarządzania budżetem domowym. Aplikacja ma za zadanie wspomagać użytkownika w kontroli wydatków, analizie danych finansowych oraz zarządzaniu finansami osobistymi.
-\section{Zakres pracy}
-Niniejszy praca została utworzona w oparciu o architekturę klient-serwer, która umożliwia tworzenie aplikacji webowych. Aplikacja charakteryzuje się wysoką wydajnością, niezawodnością i czytelnym interfejsem użytkownika. Użytkownik dostaje wskazówki odnośnie korzystania z aplikacji, gdy pierwszy raz z niej korzysta. Interfejs użytkownika będzie wyposażony w przyciski pozwalające na łatwą nawigację oraz zmianę treści wyświetlanych na stronie. Użytkownicy mogą utworzyć wpłaty oraz wypłaty z konta oraz kategoryzować transakcje. Podsumowanie finansów przedstawia wykres, na którym można przeglądać wydatki za dzień, tydzień, miesiąc, rok. Aplikacja będzie dostępna na przeglądarki internetowe.
+\section{TODO:Zakres pracy}
+Niniejszy praca została utworzona w oparciu o architekturę klient-serwer, która umożliwia tworzenie aplikacji webowych. Aplikacja charakteryzuje się wysoką wydajnością, niezawodnością i czytelnym interfejsem użytkownika. Klient dostaje wskazówki odnośnie korzystania z aplikacji, gdy pierwszy raz z niej korzysta. Interfejs użytkownika posiada przyciski pozwalające na łatwą nawigację oraz zmianę treści wyświetlanych na stronie. Użytkownicy mogą utworzyć wpłaty oraz wypłaty z konta oraz kategoryzować transakcje. Podsumowanie finansów przedstawia wykres, na którym można przeglądać wydatki za dzień, tydzień, miesiąc, rok. Aplikacja uruchamia się na poziomie przeglądarki internetowe.
 
-Warstwa serwerowa została zaimplementowana w języku Java z wykorzystaniem frameworka Spring Boot. Zastosowano język Java w wersji 21, który zapewnia obsługę logiki biznesowej, komunikację z bazą danych oraz interfejs API w technologii REST.
+Warstwa serwerowa została zaimplementowana w języku Java z wykorzystaniem frameworka Spring Boot. Zastosowano język Java w wersji 21 \textbf{(TODO: możliwe że jednak 23)}, który zapewnia obsługę logiki biznesowej, komunikację z bazą danych oraz interfejs API w technologii REST.
 
 Warstwa prezentacji została zrealizowana w oparciu o React + Vite. Język, wykorzystany po stronie frontendu to TypeScript, który wspiera statyczne typowanie.  Elementy, z których zbudowany jest interfejs użytkownika są wykorzystane z popularnego reactowego frameworka UI o naziwe Ant Design. Składa się on ze wstępnie zbudowanych komponentów, które łatwo jest wyświetlić na stronie internetowej.
 
@@ -29,8 +33,9 @@ Drugi rozdział przedstawia metodykę pracy oraz narzędzia, które zostały wyk
 
 Trzeci rozdział skupia się na wymaganiach, które musi spełnić projekt oraz na diagramach przedstawiających oczekiwany sposób działania wybranych funkcji aplikacji. Opisuje czym są poszczególne diagramy, do czego służą oraz sposób w jaki powinno się czytać zawarte w nich informację. 
 
-Czwarty rozdział prezentuje informację w jaki sposób został zaimplementowany system. Opisuje jak działają poszczególne warstwy systemu oraz w jaki sposób odbywa się przepływa danych między poszczególnymi warstwami. Przedstawia funkcję wraz z opisami ich działania oraz komunikaty jakie zwraca serwer. 
+Czwarty rozdział prezentuje informację w jaki sposób został zaimplementowany system. Opisuje jak działają poszczególne warstwy systemu oraz w jaki sposób odbywa się przepływ danych. Przedstawia funkcję wraz z opisami ich działania oraz komunikaty jakie zwraca serwer. 
 
-Piąty rozdział informuje użytkownika w jaki sposób powinien poruszać się po aplikacji. Przedstawia miejsca, w których znajdują się kluczowe elementy interfejsu użytkownika oraz opisuje za jakie funkcję są odpowiedzialne. 
+Piąty rozdział informuje użytkownika w jaki sposób powinien poruszać się po aplikacji.
+Przedstawia proces uruchamiania systemu oraz kroki jakie należy podjąć by efektywnie poruszać się po interfejsie użytkownika. Opisuje kluczowe elementy warstwy prezentacji takie jak formularze, ustawienia, portfele użytkownika i funkcję systemu.
 
-Szósty rozdział podsumowuje efekty pracy oraz przedstawia wnioski. Informuje, czy zostały osiągnięte założone efekty pracy oraz prezentuje ,,Moje osiągnięci''.
+Szósty rozdział opisuje efekty pracy oraz wnioski. Informuje, czy system spełnia założone cele oraz co osiągnął autor. Przedstawia możliwości przyszłego rozwoju aplikacji.

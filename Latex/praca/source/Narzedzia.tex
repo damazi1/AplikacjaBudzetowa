@@ -1,29 +1,23 @@
 \chapter{Narzędzia i metodyka pracy}
 W rozdziale przedstawiono zestaw narzędzi oraz metodykę pracy zastosowaną podczas tworzenia aplikacji webowej. Opisane rozwiązania pozwoliły na efektywne tworzenie, testowanie i wdrażanie aplikacji.
-\section{Metodyka pracy}
-Jaki metodyka np. Zwinna (Agile/Scrum)
+\section{TODO: Metodyka pracy}
+\textbf{TODO: Jaka metodyka np. Zwinna (Agile/Scrum), opisać jak się używa, sprinty, taski itd.}
 \section{Narzędzia stosowane w procesie wytwarzania aplikacji webowej}
-W projekcie została zastosowana masa narzędzi, które usprawniają pracę dewelopera.
+W procesie tworzenia aplikacji wykorzystuje się narzędzia, które usprawniają pracę programisty. Do takich narzędzi należą zintegrowane środowiska programistyczne (ang. \textit{Integrated Development Enviroment} - IDE), systemy kontroli wersji, narzędzia wspomagające testowanie oraz konteneryzacje.
 \subsection*{Środowiska programistyczne}
-\begin{itemize}
-	\item IntelliJ IDEA
-	\item Webstorm
-	\item Node.js + npm
-	\item Spring Boot / Maven
-\end{itemize}
+Każdy deweloper potrzebuje narzędzi, które pozwolą mu na edycję kodu źródłowego. Jednym z najpopularniejszych rozwiązań są zintegrowane środowiska programistyczne, które składają się z edytora kodu, kompilatora lub interpretera oraz debuggera. W projekcie zostały wykorzystane takie edytory jak: Intellij IDEA Ultimate oraz WebStorm. Oba te narzędzia zostały wydane przez producenta oprogramowania JetBrains. 
 \subsection*{System kontroli wersji}
-System kontroli wersji to jedna z najważniejszych rzeczy podczas pisania dowolnej aplikacji.Jednym z najczęściej używanych rozwiązań jest git. Pozwala on na tworzenie lokalnych lub zdalnych repozytoriów do których zapisywane są zmiany w projekcie (commit). W dowolnym momencie możemy śledzić modyfikacje plików lub powrócić do wcześniejszej wersji projektu (rollback). Aby przesłać zmiany do zdalnego repozytorium na stronie trzeciej (np.: github, bitbucket), należy wykorzystać opcję (push), natomiast pobranie wymaga operacji (pull). 
+System kontroli wersji to jedna z najważniejszych rzeczy podczas tworzenia dowolnej aplikacji. Oprogramowanie służące do obsługi kontroli wersji nazywa się Git. Pozwala na tworzenie lokalnych lub zdalnych repozytoriów do których zapisywane są zmiany w projekcie poprzez polecenie \texttt{commit}. W dowolnym momencie możemy śledzić modyfikacje plików lub powrócić do wcześniejszej wersji projektu przy pomocy komendy \texttt{rollback}. Aby przesłać zmiany do zdalnego repozytorium na stronie trzeciej (np.: github, bitbucket), należy wykorzystać opcję \texttt{push}, natomiast pobranie wymaga operacji \texttt{pull}. 
 
-Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (branches), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone (marge) z główną gałęzią.
-\subsection*{Testowanie i komunikacja}
-\textbf{Postman} to narzędzie pozwalające na testowanie i analizę interfejsów API. Umożliwia wysyłanie żądań HTTP (GET, POST, PUT, DELETE) do serwera i sprawdzanie zwracanych odpowiedzi. Pozwala to na szybkie i prostą weryfikację poprawności działania endpointów. Umożliwia on tworzenie kolekcji z zapytaniami, które można używać wiele razy bez konieczności zapisu ich po każdym użyciu. Posiada też możliwość zapisywania ciasteczek oraz tworzenia własnych nagłówków.
+Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (ang. \textit{branches}), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone poleceniem \texttt{marge} z główną gałęzią.
+\subsection*{Testowanie komunikacji}
+Poprawne komunikowanie się wszystkich warstw jest kluczowym aspektem tworzenia aplikacji webowych. W celu sprawdzenia komunikacji wykorzystuje się narzędzie Postman, które umożliwia wysyłanie żądań HTTP do serwera i sprawdzanie otrzymanych odpowiedzi. Pozwala to na weryfikację punktów końcowych aplikacji. Narzędzie to daje możliwość tworzenia kolekcji z zapytaniami, które można używać wielokrotnie bez konieczności ponownego tworzenia zapytań wraz z danymi. Posiada również możliwość zapisywania ciasteczek.
 
-\textbf{Docker} to platforma umożliwiający uruchamianie aplikacji w środowisku kontenerowym. Jego głównym elementem jest silnik (ang. Docker Engine), który działa w formie usługi. Umożliwia on budowanie, uruchamianie i zarządzanie kontenerami. W środowisku Dockera można tworzyć obrazy, które zawierają niezbędne elementy do uruchomienia aplikacji. Na podstawie tych obrazów realizują konkretne zadania w izolowanym środowisku. Zaletą zastosowania Dockera jest przenośność, czyli uruchomienie projektu na dowolnej maszynie wyposażonej w środowisko Docker. W Projektach bardziej złożonych, korzystających z wielu usług, można wykorzystać plik \texttt{compose.yml}, w którym definiuje się zależności pomiędzy kontenerami, konfigurację sieci, woluminy oraz zależności uruchamiania poszczególnych usług.
+\subsection*{Konteneryzacja}
+Możliwość pracy na różnych urządzeniach bez konieczności instalowania oprogramowania jest ciekawą perspektywą dla każdego dewelopera. Umożliwia to narzędzie Docker, którego głównym elementem jest silnik (ang. \textit{Docker Engine}) działający w formie usługi. Pozwala na budowanie, uruchamianie i zarządzanie kontenerami. Środowisko umożliwia tworzenie obrazów na bazie których powstają izolowane środowiska do wykonywania konkretnych zadań. Narzędzie pozwala na konteneryzacje zaawansowanych projektów, korzystające z wielu usług, dzięki plikowi \texttt{docker-compose.yml}, w którym definiuje się zależności między kontenerami, konfigurację sieci oraz woluminy.
 
-\subsubsection*{Do wykorzystania tekst}
+\subsection*{TODO: Testy funkcyjne}
 Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5. Testy są wykonywane przed uruchomieniem aplikacji, aby sprawdzić jej poprawne działanie. 
-
-
-Do sprawdzenia poprawności działania tych i innych funkcji wykorzystuje się narzędzie Postman, które pozwala wysyłać zapytania, sprawdzać endpointy i ogólną komunikację między klientem a serwerem. Narzędzie to jest powszechnie wykorzystywane przez deweloperów, ponieważ ułatwia ich pracę i umożliwia szybszy sposób na sprawdzanie poprawności działania funkcji bez konieczności implementacji ich na stronie internetowej. 
-
-Docker ..., czyli jest zapakowane w wirtualny kontener na którym są wykonywane wszystkie operację. Do tego celu służy silnik Docker Engine, który umożliwia pobieranie wirtualnych obrazów systemów. Pozwala to na automatyzację pracy oraz niezmienność wersji programu w procesie wytwarzania oprogramowania. Daje możliwość, by daną aplikację uruchomić na dowolnym komputerze, bez konieczności posiadania zainstalowanych aplikacji takich jak mongoDB, wirtualnej maszyny Javy, czy też menadżera pakietów npm.
+\textbf{TODO: Tu należy dopisać zdecydowanie więcej. Zostanie to uzupełnione w momencie rozszerzenia mojej wiedzy w temacie testów jednostkowych i integracyjnych.}
+\subsection*{TODO: Lombok i devTools Spring}
+\textbf{TODO: Zależności które opisałem w sekcji SpringBoot teoretycznie są narzędziami. Czy należy je przenieść do sekcji narzędziowej?}
