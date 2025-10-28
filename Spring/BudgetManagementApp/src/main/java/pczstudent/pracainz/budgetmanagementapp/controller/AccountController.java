@@ -24,7 +24,7 @@ public class AccountController {
         if(userRepository.findById(account.getUserId()).isEmpty()){
             return "User not found";
         }
-        accountRepository.insert(account);
+        accountRepository.save(account);
         return "Account created successfully";
     }
     @GetMapping("/get/{userId}")

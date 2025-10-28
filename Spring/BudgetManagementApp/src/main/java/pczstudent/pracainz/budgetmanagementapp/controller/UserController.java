@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public String register(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.insert(user);
+        userRepository.save(user);
         return "Rejestracja udana";
     }
 
