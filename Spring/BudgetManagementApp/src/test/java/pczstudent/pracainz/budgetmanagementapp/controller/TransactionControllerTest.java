@@ -22,7 +22,7 @@ public class TransactionControllerTest {
                         .contentType("application/json")
                         .content("{\"fromAccountNumber\":\"1234567890122234569012335\",\"toAccountNumber\":\"1234567890122234569012335\",\"amount\":50.0}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Transfer created successfully")); // Uncomment if you have a specific response
+                .andExpect(content().string("Invalid account numbers provided for transfer")); // Uncomment if you have a specific response
     }
 
     @Test

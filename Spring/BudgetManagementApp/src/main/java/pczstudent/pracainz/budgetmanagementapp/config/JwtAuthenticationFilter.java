@@ -6,56 +6,67 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import pczstudent.pracainz.budgetmanagementapp.service.JwtService;
+
 import java.io.IOException;
 import java.util.Collections;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final HandlerExceptionResolver exceptionResolver;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
+
+    public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService,
+                                   @Qualifier("handlerExceptionResolver") HandlerExceptionResolver exceptionResolver){
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+        this.exceptionResolver = exceptionResolver;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = null;
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            token = header.substring(7);
-        } else {
-            // Szukaj tokena w ciasteczkach
-            if (request.getCookies() != null) {
-                for (Cookie cookie : request.getCookies()) {
-                    if ("jwt".equals(cookie.getName())) {
-                        token = cookie.getValue();
-                        break;
-                    }
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
                 }
             }
         }
 
-        if (token != null) {
-            if (JwtUtil.validateToken(token)) {
-                Authentication auth = new UsernamePasswordAuthenticationToken("user", null, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
-        } else if (!request.getRequestURI().startsWith("/User/login")
-                && !request.getRequestURI().startsWith("/User/register")
-                && !request.getRequestURI().startsWith("/User/list")
-                && !request.getRequestURI().startsWith("/User/delete")
-                && !request.getRequestURI().startsWith("/User/search")
-                && !request.getRequestURI().startsWith("/User/logout")
-                && !request.getRequestURI().startsWith("/Account/create")
-                && !request.getRequestURI().startsWith("/Account/get/")
-                && !request.getRequestURI().startsWith("/Transaction/create/transfer")
-                && !request.getRequestURI().startsWith("/Transaction/create/deposit")
-                && !request.getRequestURI().startsWith("/Transaction/create/withdrawal")
-                && !request.getRequestURI().startsWith("/Transfer/all/")) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if (token == null) {
+            filterChain.doFilter(request, response);
             return;
         }
-        filterChain.doFilter(request, response);
+        try {
+            final String username = jwtService.extractUsername(token);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (username != null && authentication == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            exceptionResolver.resolveException(request, response, null, e);
+        }
     }
 }
