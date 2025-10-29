@@ -38,7 +38,6 @@ public class AuthenticationController {
                 .maxAge(24 * 60 * 60)
                 .sameSite(SameSiteCookies.STRICT.toString())
                 .build();
-        String jwtToken = jwtService.generateToken(authenticatedUser);
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(authenticatedUser);
     }

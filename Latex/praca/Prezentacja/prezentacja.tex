@@ -1,0 +1,51 @@
+\documentclass{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{adjustbox} 
+\usepackage{caption} 
+
+\selectlanguage{polish}
+
+\usetheme{Boadilla}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{
+	\leavevmode%
+	\hbox{%
+		% Lewa część — 0.25\textwidth
+		\begin{beamercolorbox}[wd=0.25\textwidth,ht=2.5ex,dp=1.125ex,center]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\hspace*{2ex}\insertshortauthor
+		\end{beamercolorbox}%
+		% Środkowa część — 0.5\textwidth
+		\begin{beamercolorbox}[wd=0.5\textwidth,ht=2.5ex,dp=1.125ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshorttitle
+		\end{beamercolorbox}%
+		% Prawa część — 0.25\textwidth
+		\begin{beamercolorbox}[wd=0.25\textwidth,ht=2.5ex,dp=1.125ex,center]{date in head/foot}%
+			\usebeamerfont{date in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+		\end{beamercolorbox}%
+	}%
+	\vskip0pt%
+}
+\title{Aplikacja wspomagająca zarządzanie budżetem domowym}
+\author{Dawid Ziora}
+\date[]{2025}
+\titlegraphic{\includegraphics[width=0.5\linewidth]{../images/logopcz_z_logo_wiisi.png}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Spis treści}
+	\tableofcontents
+\end{frame}
+
+\input{aplikacja}
+\input{technologie}
+\input{narzedzia}
+
+\end{document}

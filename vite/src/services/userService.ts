@@ -1,10 +1,16 @@
 import axios from "axios";
 import type {User} from "../models/User.ts";
 
-const url = 'http://localhost:8080/User';
+const url = 'http://localhost:8080/user';
 export const fetchUsers = async (): Promise<string[]> => {
     try {
-        const response = await axios.get(`${url}/list`);
+        const response = await axios.get(`${url}/`, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(response.data);
         return response.data.map((user: { login: string }) => user.login);
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
@@ -40,9 +46,11 @@ export const fetchUserId = async (): Promise<User> => {
     }
 }
 
-export const loginUser = async (login: string | undefined, password: string | undefined): Promise<void> => {
+export const loginUser = async (username: string | undefined, password: string | undefined): Promise<{
+    success: boolean
+}> => {
     try {
-        const response = await axios.post(`${url}/login`, { login, password },
+        const response = await axios.post(`http://localhost:8080/auth/login`, { username, password },
         {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true // <-- tutaj, poza headers!
@@ -53,7 +61,7 @@ export const loginUser = async (login: string | undefined, password: string | un
         if (response.status === 200) {
             return { success: true };
         }
-        return { success: false, message: "Niepoprawne dane logowania!" };
+        return { success: false };
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
     }
@@ -83,7 +91,10 @@ export const registerUser = async (data : { login: string; password: string; rol
 
 export const searchUsers = async (query: string): Promise<string[]> => {
     try {
-        const response = await axios.get(`${url}/search?query=${query}`);
+        const response = await axios.get(`${url}/search?query=${query}`, {
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true // <-- tutaj, poza headers!
+        });
         return response.data.map((user: { id: string, login: string }) => ({
             id: user.id,
             login: user.login

@@ -23,6 +23,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         const fetchLoginData = async () => {
             try {
+                console.log("Fetching users...");
                 const users = await fetchUsers();
                 setLogin(users.join('\n'));
             } catch (err: any) {
@@ -42,7 +43,6 @@ const Home: React.FC = () => {
             const fetchAccountData = async () => {
                 try {
                     const accounts = await fetchAccounts();
-                    console.log(accounts);
                     setAccounts(accounts);
                 } catch (err: any) {
                 } finally {
