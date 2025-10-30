@@ -8,6 +8,8 @@ import pczstudent.pracainz.budgetmanagementapp.dto.WalletAdd;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.repository.WalletRepository;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class WalletService {
@@ -21,5 +23,9 @@ public class WalletService {
                 .setCurrency(wallet.getCurrency())
                 .setUserId(currentUser);
         return walletRepository.save(newWallet);
+    }
+
+    public List<Wallet> getWalletsForUser(String login) {
+        return walletRepository.findByUserId(login);
     }
 }
