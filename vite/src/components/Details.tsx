@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-    import {Alert, Button, Form, Input, Layout, Modal, Radio, Select} from "antd";
-    import {deleteUser, fetchUserId, registerUser, searchUsers} from "../services/userService.ts";
-import { createAccount } from "../services/accountService.ts";
+    import {Alert, Button, Card, Col, Form, Input, Layout, message, Modal, Radio, Row, Select} from "antd";
+    import {deleteUser, fetchUserId, fetchUsers, registerUser, searchUsers} from "../services/userService.ts";
+import {createAccount} from "../services/accountService.ts";
 
-    const { Content } = Layout;
+const { Content } = Layout;
 
     const Details: React.FC = () => {
         const [user, setUser] = useState<any>(null);
@@ -14,18 +14,32 @@ import { createAccount } from "../services/accountService.ts";
         const [userOptions, setUserOptions] = useState<{value: string, label: string}[]>([]);
         const [searchLoading, setSearchLoading] = useState(false);
         const [, setFoundUsers] = useState<any[]>([]);
+        const [currencyOptions, setCurrencyOptions] = useState<{ value: string; label: string }[]>([]);
 
-        const fetchUsers = async (search = "") => {
+        const [loginData, setLogin] = useState<string | null>(null);
+        useEffect(() => {
+            const fetchLoginData = async () => {
+                try {
+                    console.log("Fetching users...");
+                    const users = await fetchUsers();
+                    console.log(users)
+                    setLogin(users.join('\n'));
+                    } catch (err: any) {
+                    message.error(err.response?.data?.error || err.message);
+                }
+            };
+            fetchLoginData();
+        }, []);
+
+        const fetchUsersQuery = async (search = "") => {
             try {
                 setSearchLoading(true);
                 const users = await searchUsers(search); // Teraz users to tablica obiektów
-                console.log(users);
                 setFoundUsers(users);
                 const options = users.slice(0, 5).map((u: any) => ({
                     value: u.id,
                     label: u.login
                 }));
-                console.log(options);
                 setUserOptions(options);
                 setSearchLoading(false);
             } catch (err: any) {
@@ -37,7 +51,7 @@ import { createAccount } from "../services/accountService.ts";
 // Otwieranie modala i pobieranie pierwszych 5 użytkowników:
         const showDeleteModal = () => {
             setIsDeleteModalOpen(true);
-            fetchUsers();
+            fetchUsersQuery();
         };
         const handleDeleteCancel = () => setIsDeleteModalOpen(false);
 
@@ -53,7 +67,7 @@ import { createAccount } from "../services/accountService.ts";
         };
 
         const handleSearch = (value: string) => {
-            fetchUsers(value);
+            fetchUsersQuery(value);
         };
 
         const showModal = () => setIsModalOpen(true);
@@ -103,12 +117,47 @@ import { createAccount } from "../services/accountService.ts";
             return number;
         }
 
-        const currencyOptions = [
-            { value: "PLN", label: "PLN" },
-            { value: "EUR", label: "EUR" },
-            { value: "USD", label: "USD" },
-            { value: "SEK", label: "SEK" }
-        ];
+        const fetchCurrencyOptions = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/Account/currency', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const data = await response.json();
+                console.log('currency payload:', data);
+
+                let opts: { value: string; label: string }[] = [];
+
+                if (Array.isArray(data)) {
+                    // backend zwraca bezpośrednio tablicę np. ["USD","EUR",..."]
+                    opts = data.map((c: string) => ({value: c, label: c}));
+                } else if (data && typeof data === 'object') {
+                    // obsłuż strukturę { rates: { USD: ..., EUR: ... } }
+                    if (data.rates && typeof data.rates === 'object') {
+                        // gdy rates jest obiektem z kluczami walut
+                        opts = Object.keys(data.rates).map((code: string) => ({value: code, label: code}));
+                    } else {
+                        // fallback: zamapuj klucze głównego obiektu
+                        opts = Object.keys(data).map((code: string) => ({value: code, label: code}));
+                    }
+                }
+                setCurrencyOptions(opts);
+                console.log('currency options:', opts);
+            } catch (error) {
+                console.error('Error fetching currency data:', error);
+                setCurrencyOptions([]);
+            }
+        };
+        useEffect(() => {
+            if (isAccountModalOpen) {
+                fetchCurrencyOptions();
+            }
+        }, [isAccountModalOpen]);
 
         const accountTypeOptions = [
             { value: "SAVINGS", label: "Oszczędnościowe" },
@@ -167,14 +216,22 @@ import { createAccount } from "../services/accountService.ts";
                     <div>
                         <h2>Rola: {user.role}</h2>
                         <p>To jest dodatkowa informacja dostępna tylko dla administratorów.</p>
+                        <Row gutter={32} justify="start">
+                            <Col>
+                                <Card className="ant-home-card" variant="outlined" style={{whiteSpace: 'pre-line'}}>
+                                    {loginData ? loginData : "Ładowanie..."}
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Radio.Group defaultValue="addUser" style={{ marginBottom: 16 }}>
+                                    <Radio.Button value="addUser" onClick={showModal}>Dodaj użytkownika</Radio.Button>
+                                    <Radio.Button value="deleteUser" onClick={showDeleteModal}>Usuń użytkownika</Radio.Button>
+                                </Radio.Group>
+                            </Col>
+                        </Row>
+
                         <Content>
-                            <Radio.Group defaultValue="addUser" style={{ marginBottom: 16 }}>
-                                <Radio.Button value="addUser" onClick={showModal}>Dodaj użytkownika</Radio.Button>
-                                <Radio.Button value="deleteUser" onClick={showDeleteModal}>Usuń użytkownika</Radio.Button>
-                                <Radio.Button value="deleteUser" onClick={handleCancel}>Usuń użytkownika</Radio.Button>
-                                <Radio.Button value="deleteUser" onClick={handleCancel}>Usuń użytkownika</Radio.Button>
-                                <Radio.Button value="deleteUser" onClick={handleCancel}>Usuń użytkownika</Radio.Button>
-                            </Radio.Group>
+
                             <Modal
                                 title="Dodaj użytkownika"
                                 open={isModalOpen}

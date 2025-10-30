@@ -1,16 +1,15 @@
-import {Row, Col, Typography, Card, message} from 'antd';
+import {Row, Col, Typography, Card, message, Button, Space, Modal, Form, Input, Select} from 'antd';
 import '../styles/Home.css';
 import React, {useEffect, useState} from 'react';
-import {fetchUsers} from "../services/userService.ts";
 import {useNavigate} from "react-router-dom";
 import type {Accounts} from "../models/Accounts.ts";
 const { Title } = Typography;
 import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
 import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę jeśli inna
-import type { User } from "../models/User.ts"; // popraw ścieżkę jeśli inna
+import type { User } from "../models/User.ts";
+import {addWallet} from "../services/WalletServiice.tsx"; // popraw ścieżkę jeśli inna
 
 const Home: React.FC = () => {
-    const [loginData, setLogin] = useState<string | null>(null);
     const [AccountData, setAccounts] = useState<Accounts [] | null>(null);
     const [UserData, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -20,18 +19,6 @@ const Home: React.FC = () => {
             navigate('/auth/login');
         }
     }, [UserData, isLoading, navigate]);
-    useEffect(() => {
-        const fetchLoginData = async () => {
-            try {
-                console.log("Fetching users...");
-                const users = await fetchUsers();
-                setLogin(users.join('\n'));
-            } catch (err: any) {
-                message.error(err.response?.data?.error || err.message);
-            }
-        };
-        fetchLoginData();
-    }, []);
     useEffect(() => {
         if (localStorage.getItem('loginSuccess')) {
             message.success('Login successful');
@@ -62,6 +49,31 @@ const Home: React.FC = () => {
         };
         fetchUserData();
     }, [] );
+
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [formType, setFormType] = useState<'wallet' | 'account'>('wallet');
+    const [form] = Form.useForm();
+
+    const openForm = (type: 'wallet' | 'account') => {
+        setFormType(type);
+        setIsFormOpen(true);
+    };
+    const closeForm = () => {
+        setIsFormOpen(false);
+        form.resetFields();
+    };
+
+    const onSubmit = async (values: any) => {
+        try {
+            if (formType === 'wallet')
+                await addWallet(values)
+            message.success('Zapisano');
+            closeForm();
+        } catch (e: any) {
+            message.error(e.message || 'Błąd zapisu');
+        }
+    };
+
     if (UserData === null) {
         return (
             <div className="home-ant-container">
@@ -79,13 +91,27 @@ const Home: React.FC = () => {
                 Witaj {UserData ? UserData.login : "Użytkowniku"}!
             </Title>
 
-            <Row gutter={[24, 24]} justify="center">
-                <Col xs={24} md={8}>
-                    <Card className="ant-home-card" variant="outlined" style={{whiteSpace: 'pre-line'}}>
-                        {loginData ? loginData : "Ładowanie..."}
-                    </Card>
+            <Row>
+                <Col offset={4}>
+                    <h1>Portfele</h1>
                 </Col>
-                <Col xs={24} md={8}>
+            </Row>
+            <Row>
+
+                <Col xs={24} md={16} offset={4}>
+                    <Space direction={"vertical"}>
+                        <Button style={{background: "green", width: "250px"}} type={"primary"} onClick={() => openForm('wallet')}>Utwórz nowy portfel </Button>
+                        <Button style={{background: "green", width: "250px"}} type={"primary"} onClick={() => openForm('account')}>Utwórz nowe konto  </Button>
+                    </Space>
+                </Col>
+            </Row>
+            <Row>
+                <Col offset={4} style={{marginTop: '20px'}}>
+                    <h1>Twoje konta</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={24} md={16} offset={4}>
                     {isLoading ? (
                         <Card className="ant-home-card" variant="outlined">
                             <strong>Ładowanie kont...</strong>
@@ -107,12 +133,60 @@ const Home: React.FC = () => {
                         </Card>
                     )}
                 </Col>
-                <Col xs={24} md={8}>
-                    <Card className="ant-home-card" variant="outlined">
-                        <p>Opis funkcji 3 lub dowolny tekst.</p>
-                    </Card>
-                </Col>
             </Row>
+
+            {/* Modal z formularzem na tej samej stronie */}
+            <Modal
+                title={formType === 'wallet' ? 'Nowy portfel' : 'Nowe konto'}
+                open={isFormOpen}
+                onCancel={closeForm}
+                onOk={() => form.submit()}
+                okText="Zapisz"
+                cancelText="Anuluj"
+                destroyOnClose
+            >
+                <Form form={form} layout="vertical" onFinish={onSubmit} preserve={false}>
+                    <Form.Item
+                        name="name"
+                        label="Nazwa"
+                        rules={[{ required: true, message: 'Podaj nazwę' }]}
+                    >
+                        <Input placeholder="np. Mój portfel" />
+                    </Form.Item>
+
+                    {formType === 'account' && (
+                        <Form.Item
+                            name="type"
+                            label="Typ konta"
+                            rules={[{ required: true, message: 'Wybierz typ konta' }]}
+                        >
+                            <Select
+                                placeholder="Wybierz typ"
+                                options={[
+                                    { value: 'SAVINGS', label: 'Oszczędnościowe' },
+                                    { value: 'CHECKING', label: 'Bieżące' },
+                                ]}
+                            />
+                        </Form.Item>
+                    )}
+
+                    <Form.Item
+                        name="currency"
+                        label="Waluta"
+                        rules={[{ required: true, message: 'Wybierz walutę' }]}
+                    >
+                        <Select
+                            placeholder="Wybierz walutę"
+                            options={[
+                                { value: 'PLN', label: 'PLN' },
+                                { value: 'USD', label: 'USD' },
+                                { value: 'EUR', label: 'EUR' },
+                            ]}
+                        />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
         </div>
     );
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pczstudent.pracainz.budgetmanagementapp.model.Account;
+import pczstudent.pracainz.budgetmanagementapp.model.Currency;
 import pczstudent.pracainz.budgetmanagementapp.repository.AccountRepository;
 import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
 
@@ -34,5 +35,10 @@ public class AccountController {
     @GetMapping("/details/{number}")
     public Account getAccountDetails(@PathVariable String number) {
         return accountRepository.findByNumber(number).orElse(null);
+    }
+    @GetMapping("/currency")
+    public List<Currency> getCurrencies() {
+        List<Currency> currencies = List.of(Currency.values());
+        return currencies;
     }
 }

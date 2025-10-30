@@ -1,10 +1,7 @@
 package pczstudent.pracainz.budgetmanagementapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -23,6 +20,7 @@ import java.util.List;
 @Document
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     private String id;
@@ -32,12 +30,6 @@ public class User implements UserDetails {
     private UserRoles role;
     private LocalDate createdAt;
 
-    public User(String username, String password) {
-        this.login = username;
-        this.password = password;
-        this.role = UserRoles.USER;
-        this.createdAt = LocalDate.now();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
