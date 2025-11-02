@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 import {QueryParamProvider} from "use-query-params";
 import {ReactRouter6Adapter} from "use-query-params/adapters/react-router-6";
 import queryString from "query-string";
+import Wallet from "./components/Wallet.tsx";
 
 // Destrukturyzacja komponentów Layout z Ant Design
 // aby uprościć kod i uniknąć powtarzania Layout.
@@ -76,6 +77,7 @@ const App: React.FC = () => {
                                                 <Route path="/auth/signup" element={<Signup/>}/>
                                                 <Route path="/details/:login" element={<Details/>}/>
                                                 <Route path="/account/:accountNumber" element={<Account/>}/>
+                                                <Route path="/wallet/:walletId" element={<Wallet/>}/>
                                             </Routes>
                                         </div>
                                     </CSSTransition>

@@ -36,6 +36,15 @@
 \date[]{2025}
 \titlegraphic{\includegraphics[width=0.5\linewidth]{../images/logopcz_z_logo_wiisi.png}}
 
+\AtBeginSection[]{
+	\begin{frame}[plain]   % plain usuwa nagłówki/stopki (wygląda jak strona tytułowa)
+		\centering
+		\vfill
+		{\Huge\bfseries\insertsection} % nazwa sekcji
+		\vfill
+	\end{frame}
+}
+
 \begin{document}
 
 \maketitle

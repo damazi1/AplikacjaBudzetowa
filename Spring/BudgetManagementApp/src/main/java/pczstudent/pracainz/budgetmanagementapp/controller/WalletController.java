@@ -1,6 +1,7 @@
 package pczstudent.pracainz.budgetmanagementapp.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @PostMapping("/add")
-    public ResponseEntity<Wallet> addWallet(@RequestBody WalletAdd wallet) {
+    public ResponseEntity<Wallet> addWallet(@Valid @RequestBody WalletAdd wallet) {
         Wallet createdWallet = walletService.addWallet(wallet);
         return ResponseEntity.ok(createdWallet);
     }

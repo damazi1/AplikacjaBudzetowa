@@ -1,4 +1,4 @@
-import {Row, Col, Typography, Card, message, Button, Space, Modal, Form, Input, Select} from 'antd';
+import {Row, Col, Typography, Card, message, Button, Space, Modal, Form, Input, Select, InputNumber} from 'antd';
 import '../styles/Home.css';
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
@@ -7,13 +7,43 @@ const { Title } = Typography;
 import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
 import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę jeśli inna
 import type { User } from "../models/User.ts";
-import {addWallet} from "../services/WalletServiice.tsx"; // popraw ścieżkę jeśli inna
+import {addWallet, fetchWallets} from "../services/WalletServiice.tsx";
+import type {Wallet} from "../models/Wallet.ts";
+import {currencies} from "../services/CurrencyService.tsx"; // popraw ścieżkę jeśli inna
 
 const Home: React.FC = () => {
     const [AccountData, setAccounts] = useState<Accounts [] | null>(null);
     const [UserData, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [currencyOptions, setCurrencyOptions] = useState<{ value: string; label: string }[]>([]);
+
+    useEffect(() => {
+        const fetchCurrencyOptions = async () => {
+            try {
+                const data = await currencies();
+                setCurrencyOptions(data);
+            } catch (e) {
+                console.error('Error fetching currency data:', e);
+                setCurrencyOptions([]);
+            }
+        };
+        fetchCurrencyOptions(); // uruchom raz
+    }, []); // konieczne []
+    const [walletData, setWalletData] = useState<Wallet[]>([]);
+
+    useEffect(() => {
+        const loadWallets = async () => {
+            try {
+                const wallets = await fetchWallets();
+                setWalletData(wallets || []);
+            } catch (error) {
+                console.error('Error fetching wallets:', error);
+                setWalletData([]);
+            }
+        };
+        loadWallets();
+    }, []);
     useEffect(() => {
         if (UserData === null && !isLoading) {
             navigate('/auth/login');
@@ -69,6 +99,7 @@ const Home: React.FC = () => {
                 await addWallet(values)
             message.success('Zapisano');
             closeForm();
+            setTimeout(() => window.location.reload(), 200);
         } catch (e: any) {
             message.error(e.message || 'Błąd zapisu');
         }
@@ -85,6 +116,8 @@ const Home: React.FC = () => {
             </div>
         )
     }
+
+
     return (
         <div className="home-ant-container">
             <Title level={1} style={{textAlign: 'center', marginBottom: 32}}>
@@ -92,26 +125,48 @@ const Home: React.FC = () => {
             </Title>
 
             <Row>
-                <Col offset={4}>
+                <Col>
                     <h1>Portfele</h1>
                 </Col>
             </Row>
-            <Row>
-
-                <Col xs={24} md={16} offset={4}>
+            <Row gutter={[16, 16]} style={{ marginTop: 8 }}>
+                {walletData.length === 0 ? (
+                    <Col xs={24} md={16}>
+                        <Card className="ant-home-card">
+                            <strong>Brak portfeli</strong>
+                        </Card>
+                    </Col>
+                ) : (
+                    walletData.map(wallet => (
+                        <Col key={wallet.id} span={6}>
+                            <Card
+                                className="ant-home-card"
+                                onClick={() => navigate(`/wallet/${wallet.id}`)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <p><strong>Nazwa:</strong> {wallet.name}</p>
+                                <p><strong>Balans:</strong> {wallet.balance} {wallet.currency}</p>
+                            </Card>
+                        </Col>
+            ))
+            )}
+                <Col span={6}>
                     <Space direction={"vertical"}>
                         <Button style={{background: "green", width: "250px"}} type={"primary"} onClick={() => openForm('wallet')}>Utwórz nowy portfel </Button>
                         <Button style={{background: "green", width: "250px"}} type={"primary"} onClick={() => openForm('account')}>Utwórz nowe konto  </Button>
                     </Space>
                 </Col>
+        </Row>
+            <Row gutter={[16, 16]} style={{marginTop: '20px'}}>
+
             </Row>
             <Row>
-                <Col offset={4} style={{marginTop: '20px'}}>
+                <Col style={{marginTop: '20px'}}>
                     <h1>Twoje konta</h1>
                 </Col>
             </Row>
             <Row>
-                <Col xs={24} md={16} offset={4}>
+                <Col xs={24} md={24}>
                     {isLoading ? (
                         <Card className="ant-home-card" variant="outlined">
                             <strong>Ładowanie kont...</strong>
@@ -177,13 +232,20 @@ const Home: React.FC = () => {
                     >
                         <Select
                             placeholder="Wybierz walutę"
-                            options={[
-                                { value: 'PLN', label: 'PLN' },
-                                { value: 'USD', label: 'USD' },
-                                { value: 'EUR', label: 'EUR' },
-                            ]}
+                            options= {currencyOptions}
                         />
                     </Form.Item>
+
+                    {formType === "wallet" && (
+                        <Form.Item
+                            name="balance"
+                            label="Podaj balans (opcjonalne)"
+                            rules={[{ required: false, message: "poczatkowy balans" }]}
+                        >
+                            <InputNumber style={{ width: '100%' }} min={0} step={0.01} stringMode precision={2}  defaultValue={0}/>
+                        </Form.Item>
+
+                    )}
                 </Form>
             </Modal>
 

@@ -1,6 +1,7 @@
 // src/main/java/pczstudent/pracainz/budgetmanagementapp/config/JwtAuthenticationFilter.java
 package pczstudent.pracainz.budgetmanagementapp.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -64,6 +65,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            // Token wygasł — usuń ciasteczko i pozwól dojść do endpointu (np. /auth/login)
+            Cookie expired = new Cookie("jwt", "");
+            expired.setPath("/");
+            expired.setHttpOnly(true);
+            expired.setMaxAge(0);
+            response.addCookie(expired);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             exceptionResolver.resolveException(request, response, null, e);

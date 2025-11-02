@@ -8,6 +8,7 @@ import pczstudent.pracainz.budgetmanagementapp.dto.WalletAdd;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.repository.WalletRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,7 +22,8 @@ public class WalletService {
         Wallet newWallet = new Wallet ()
                 .setName(wallet.getName())
                 .setCurrency(wallet.getCurrency())
-                .setUserId(currentUser);
+                .setUserId(currentUser)
+                .setBalance(wallet.getBalance() != null ? wallet.getBalance(): BigDecimal.ZERO);
         return walletRepository.save(newWallet);
     }
 

@@ -1,4 +1,10 @@
 /* Home.css */
+:root {
+    --container-max: 1100px;     /* dostosuj szerokość „środka” */
+    --side-padding: 16px;        /* wewnętrzne odstępy po bokach na małych ekranach */
+    --gap: 24px;                 /* odstęp między kartami/sekcjami */
+}
+
 .ant-home-card {
     border-radius: 16px;
     border: 2px solid #223355;
@@ -15,6 +21,6 @@
     transform: translateY(-8px) scale(1.03);
 }
 .home-ant-container {
-    padding: 40px 16px;
-    flex-direction: column;
+    width: min(100% - 2 * var(--side-padding), var(--container-max));
+    margin-inline: auto;         /* centruje całość */
 }
