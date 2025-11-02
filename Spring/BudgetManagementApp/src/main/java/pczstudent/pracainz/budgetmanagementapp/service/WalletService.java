@@ -30,4 +30,7 @@ public class WalletService {
     public List<Wallet> getWalletsForUser(String login) {
         return walletRepository.findByUserId(login);
     }
+    public Wallet getWalletById(String id) {
+        return walletRepository.findById(id).orElseThrow();
+    }
 }

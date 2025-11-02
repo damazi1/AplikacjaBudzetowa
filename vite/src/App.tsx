@@ -77,7 +77,7 @@ const App: React.FC = () => {
                                                 <Route path="/auth/signup" element={<Signup/>}/>
                                                 <Route path="/details/:login" element={<Details/>}/>
                                                 <Route path="/account/:accountNumber" element={<Account/>}/>
-                                                <Route path="/wallet/:walletId" element={<Wallet/>}/>
+                                                <Route path="/wallet/:id" element={<Wallet/>}/>
                                             </Routes>
                                         </div>
                                     </CSSTransition>

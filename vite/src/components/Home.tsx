@@ -7,7 +7,7 @@ const { Title } = Typography;
 import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
 import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę jeśli inna
 import type { User } from "../models/User.ts";
-import {addWallet, fetchWallets} from "../services/WalletServiice.tsx";
+import {addWallet, fetchWallets} from "../services/WalletService.tsx";
 import type {Wallet} from "../models/Wallet.ts";
 import {currencies} from "../services/CurrencyService.tsx"; // popraw ścieżkę jeśli inna
 

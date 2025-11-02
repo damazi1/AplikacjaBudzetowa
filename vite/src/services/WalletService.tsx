@@ -1,4 +1,5 @@
 import axios from "axios";
+import type {Wallet} from "../models/Wallet.ts";
 
 export const addWallet = async (data: {name: string, currency: string, balance: number}) => {
     try {
@@ -22,4 +23,13 @@ export const fetchWallets = async () => {
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : "Unknown error");
     }
-        }
+}
+
+export const getWalletById = async (id: string): Promise<Wallet> => {
+    const url = `http://localhost:8080/wallet/${id}`;
+    const response = await axios.get<Wallet>(url, {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+};

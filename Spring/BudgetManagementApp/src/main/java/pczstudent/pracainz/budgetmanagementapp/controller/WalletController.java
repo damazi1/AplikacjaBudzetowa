@@ -28,4 +28,9 @@ public class WalletController {
         String login = authentication.getName();
         return ResponseEntity.ok(walletService.getWalletsForUser(login));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Wallet> getWalletById(@PathVariable String id) {
+        Wallet wallet = walletService.getWalletById(id);
+        return ResponseEntity.ok(wallet);
+    }
 }
