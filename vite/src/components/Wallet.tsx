@@ -4,11 +4,14 @@ import { Col, Row, Card, Spin, message } from "antd";
 import { useParams } from "react-router-dom";
 import { getWalletById } from "../services/WalletService";
 import type {Wallet} from "../models/Wallet.ts";
+import { CategorySelect } from "./SelectCat.tsx";
+import type {Category} from "../models/icons.ts";
 
 const Wallet: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = React.useState<Category | null>(null);
 
   useEffect(() => {
       console.log(id);
@@ -46,11 +49,26 @@ const Wallet: React.FC = () => {
             <div>Brak danych</div>
           )}
         </Col>
+          <Col>
+              <Card>
+                  <h1 style={{ fontWeight: 600, fontSize: 28, marginBottom: 16 }}>Add transaction</h1>
+
+                  <label style={{ display: "block", marginBottom: 8, fontSize: 14, opacity: 0.9 }}>
+                      Category
+                  </label>
+                  <div style={{ maxWidth: 420 }}>
+                      <CategorySelect value={category} onChange={setCategory} />
+                  </div>
+                  {category && (
+                      <p style={{ marginTop: 16 }}>
+                          Wybrano: <strong>{category.label}</strong>
+                      </p>
+                  )}
+              </Card>
+          </Col>
       </Row>
-        <h5>This is a user icon</h5>
-        <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-        </svg>    </div>
+    </div>
+
   );
 };
 
