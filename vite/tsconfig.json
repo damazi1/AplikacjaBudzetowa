@@ -20,7 +20,13 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "jsx": "react"
+    "jsx": "react",
+
+    /* Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/app/*"]
+    }
   },
   "include": ["src"]
 }
