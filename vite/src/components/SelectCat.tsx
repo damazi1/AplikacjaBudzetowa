@@ -1,34 +1,41 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Select, { components, type GroupBase, type OptionProps, type SingleValueProps } from "react-select";
-import { CATEGORIES, type Category } from "../models/icons";
-import {Icon} from "@iconify/react";
+import { Icon } from "@iconify/react";
+import { type Category } from "../models/Category";
+import { Categories } from "../services/CategoryService"; // musi zwracać Promise<Category[]>
 
-export type CategoryOption = Category;
-
-const optionStyles = {
-    control: (base: any) => ({
-        ...base,
-        minHeight: 44
-    }),
-    option: (base: any, state: any) => ({
-        ...base,
-        paddingTop: 8,
-        paddingBottom: 8
-    }),
-    singleValue: (base: any) => ({
-        ...base,
-        display: "flex",
-        alignItems: "center",
-        gap: 8
-    })
+type CategoryOption = {
+    icon: string;
+    label: string;
+    color?: string;
 };
 
-// Ikona w kółku z tłem w kolorze kategorii
+function useCategories() {
+    const [categories, setCategories] = useState<Category[] | Category | null>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        let mounted = true;
+        Categories()
+            .then(data => {
+                if (!mounted) return;
+                // jeśli backend zwróci pojedynczy obiekt zamiast tablicy
+                if (Array.isArray(data)) setCategories(data);
+                else setCategories([data]);
+            })
+            .catch(e => { if (mounted) setError(e.message ?? "Błąd"); })
+            .finally(() => { if (mounted) setLoading(false); });
+        return () => { mounted = false; };
+    }, []);
+
+    return { categories, loading, error };
+}
+
 function BadgeIcon({ icon, color }: { icon: string; color?: string }) {
     return (
-        <span
-            style={{
-        display: "inline-flex",
+        <span style={{
+            display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
             width: 28,
@@ -36,64 +43,73 @@ function BadgeIcon({ icon, color }: { icon: string; color?: string }) {
             borderRadius: "50%",
             background: color ?? "#e2e8f0",
             boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)"
-    }}
->
-    <Icon icon={icon} color={"#ffffff"}/>
-        </span>
-);
+        }}>
+      <Icon icon={icon} color="#ffffff" />
+    </span>
+    );
 }
 
-// Custom option z ikoną
 const Option = (props: OptionProps<CategoryOption, false, GroupBase<CategoryOption>>) => {
-    const data = props.data;
+    const d = props.data;
     return (
         <components.Option {...props}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-    <BadgeIcon icon={data.icon} color={data.color} />
-    <span>{data.label}</span>
-    </div>
-    </components.Option>
-);
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <BadgeIcon icon={d.icon} color={d.color} />
+                <span>{d.label}</span>
+            </div>
+        </components.Option>
+    );
 };
 
-// Wyświetlanie wybranej wartości
 const SingleValue = (props: SingleValueProps<CategoryOption, false, GroupBase<CategoryOption>>) => {
-    const data = props.data;
+    const d = props.data;
     return (
         <components.SingleValue {...props}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-    <BadgeIcon icon={data.icon} color={data.color} />
-    <span>{data.label}</span>
-    </div>
-    </components.SingleValue>
-);
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <BadgeIcon icon={d.icon} color={d.color} />
+                <span>{d.label}</span>
+            </div>
+        </components.SingleValue>
+    );
 };
 
-type Props = {
-    value?: CategoryOption | null;
-    onChange?: (value: CategoryOption | null) => void;
-    placeholder?: string;
-    categories?: CategoryOption[];
-};
+export const CategorySelect: React.FC = () => {
+    const { categories, loading, error } = useCategories();
+    const [selected, setSelected] = useState<CategoryOption | null>(null);
 
-export const CategorySelect: React.FC<Props> = ({
-                                                    value,
-                                                    onChange,
-                                                    placeholder = "Select category...",
-                                                    categories = CATEGORIES
-                                                }) => {
+    const options: CategoryOption[] = useMemo(() => {
+        const arr = Array.isArray(categories) ? categories : (categories ? [categories] : []);
+        return arr.map(c => ({
+            icon: c.icon,
+            label: c.label,
+            color: c.color,
+        }));
+    }, [categories]);
+
+    if (loading) return <div>Ładowanie kategorii...</div>;
+    if (error) return <div>Błąd: {error}</div>;
+
     return (
-        <Select<CategoryOption, false>
-            placeholder={placeholder}
-    options={categories}
-    value={value ?? null}
-    onChange={(opt) => onChange?.(opt ?? null)}
-    getOptionLabel={(opt) => opt.label}
-    getOptionValue={(opt) => opt.value}
-    components={{ Option, SingleValue }}
-    styles={optionStyles}
-    menuPortalTarget={document.body}
-    menuPosition="fixed"
-        />
-);
+        <div>
+            <Select<CategoryOption, false>
+                placeholder="Wybierz kategorię..."
+                options={options}
+                onChange={opt => setSelected(opt)}
+                getOptionLabel={o => o.label}
+                getOptionValue={(o) => o.label}
+                components={{ Option, SingleValue }}
+                isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition="fixed"
+            />
+            {selected && (
+                <div>
+                    Wybrano: {selected.label}
+                </div>
+                )
+            }
+
+        </div>
+
+    );
 };
