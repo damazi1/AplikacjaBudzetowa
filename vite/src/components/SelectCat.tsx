@@ -1,7 +1,7 @@
 import React from "react";
 import Select, { components, type GroupBase, type OptionProps, type SingleValueProps } from "react-select";
 import { CATEGORIES, type Category } from "../models/icons";
-import { IconFromApi } from "./Icons";
+import {Icon} from "@iconify/react";
 
 export type CategoryOption = Category;
 
@@ -38,7 +38,7 @@ function BadgeIcon({ icon, color }: { icon: string; color?: string }) {
             boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)"
     }}
 >
-    <IconFromApi name={icon} size={18} color="#ffffff" />
+    <Icon icon={icon} color={"#ffffff"}/>
         </span>
 );
 }

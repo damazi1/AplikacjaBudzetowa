@@ -5,6 +5,7 @@ import {Button, Col, Row, Space} from "antd";
 import {WalletCard} from "../../components/wallet/WalletCard.tsx";
 import {useNavigate} from "react-router-dom";
 import {WalletCreate} from "../../components/wallet/WalletCreate.tsx";
+import {Icon} from '@iconify/react';
 
 export function HomePage() {
     const navigate = useNavigate();
@@ -49,6 +50,7 @@ export function HomePage() {
                     </Space>
                 </Col>
             </Row>
+            <Icon icon={"mdi:car"} width={48} height={48} color={"#555555"}/>
         </div>
     )
 }
