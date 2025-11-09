@@ -6,6 +6,7 @@ import { getWalletById } from "../services/WalletService";
 import type {Wallet} from "../models/Wallet.ts";
 import { CategorySelect } from "./SelectCat.tsx";
 import type {Category} from "../models/icons.ts";
+import {WalletDetails} from "./wallet/WalletDetails.tsx";
 
 const Wallet: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -34,20 +35,8 @@ const Wallet: React.FC = () => {
     <div style={{ margin: "15px" }}>
       <h1>Wallet</h1>
       <Row>
-        <Col>
-          {loading ? (
-            <Spin />
-          ) : wallet ? (
-            <Card>
-              <p><strong>Id:</strong> {wallet.id}</p>
-              <p><strong>Nazwa:</strong> {wallet.name}</p>
-              <p><strong>Użytkownik:</strong> {wallet.userId}</p>
-              <p><strong>Waluta:</strong> {wallet.currency}</p>
-              <p><strong>Saldo:</strong> {wallet.balance}</p>
-            </Card>
-          ) : (
-            <div>Brak danych</div>
-          )}
+        <Col span={6}>
+            <WalletDetails/>
         </Col>
           <Col>
               <Card>

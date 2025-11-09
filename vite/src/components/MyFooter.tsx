@@ -1,6 +1,5 @@
 import { Layout } from 'antd';
 import React from 'react';
-import '../styles/MyFooter.css';
 import {useTranslation} from "react-i18next";
 const { Footer } = Layout;
 

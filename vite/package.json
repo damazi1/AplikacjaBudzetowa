@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@iconify/react": "^6.0.2",
     "antd": "^5.26.5",
     "axios": "^1.10.0",
     "dompurify": "^3.3.0",

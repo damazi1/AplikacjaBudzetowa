@@ -7,17 +7,15 @@
 
 .ant-home-card {
     border-radius: 16px;
-    border: 2px solid #223355;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    min-height: 120px;
+    border: 2px solid;
+    box-shadow: 0 4px 8px;
     text-align: center;
     transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-    margin: 15px;
 }
 
 .ant-home-card:hover {
-    box-shadow: 0 8px 32px rgba(64,169,255,0.25);
-    border-color: #40a9ff;
+    box-shadow: 0 4px 8px;
+    border: 2px solid;
     transform: translateY(-8px) scale(1.03);
 }
 .home-ant-container {

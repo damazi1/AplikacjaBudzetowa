@@ -1,30 +1,47 @@
 import React from 'react';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {AppLayout} from "@app/layout/AppLayout.tsx"
-import {NotFound} from "./NotFound";
-import {AuthForm, LegacyHome} from "./legacy.tsx";
-
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AppLayout } from '@app/layout/AppLayout.tsx';
+import { NotFound } from './NotFound';
+import { AuthForm, RegisterForm, WalletDetails } from './legacy.tsx';
+import { HomePage } from '@pages/Home/HomePage.tsx';
+import { AuthReq } from '../../components/IsLogin.tsx';
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <AppLayout />,
-        errorElement: <NotFound/>,
+        element: <AuthReq/>,
         children: [
-            {index: true, element: <LegacyHome/>},
+            {
+                path: '/',
+                element: <AppLayout/>,
+                errorElement: <NotFound/>,
+                children: [
+                    {index: true, element: <HomePage/>},
+                    {path: "wallet/:id", element: <WalletDetails />}
+                ],
+            },
+        ]
+    },
+    {
+        path: '/auth/login',
+        element: <AppLayout />,
+        errorElement: <NotFound />,
+        children: [
+            { index: true, element: <AuthForm /> },
         ],
     },
     {
-        path: "/auth/login",
+        path: '/auth/signup',
         element: <AppLayout />,
-        errorElement: <NotFound/>,
+        errorElement: <NotFound />,
         children: [
-            {index: true, element: <AuthForm/>}
-            ]
+            { index: true, element: <RegisterForm /> },
+        ],
     },
-    {path: "*", element: <NotFound/>}
-    ]);
+    { path: '*', element: <NotFound /> },
+]);
 
 export function AppRouter() {
-    return <RouterProvider router={router}/>;
+    return (
+        <RouterProvider router={router} />
+    );
 }

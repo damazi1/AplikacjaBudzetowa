@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Tooltip } from "antd";
 import { SunOutlined, MoonOutlined } from "@ant-design/icons";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./ThemeContext";
 
 export function ThemeSwitch() {
     const { mode, toggle } = useTheme();
@@ -14,7 +14,6 @@ export function ThemeSwitch() {
     aria-label="Przełącz motyw"
     onClick={toggle}
     icon={mode === "dark" ? <SunOutlined /> : <MoonOutlined />}
-    style={{ color: "#e6eef8" }}
     />
     </Tooltip>
 );

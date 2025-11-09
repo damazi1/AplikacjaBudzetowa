@@ -9,7 +9,8 @@ import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę j
 import type { User } from "../models/User.ts";
 import {addWallet, fetchWallets} from "../services/WalletService.tsx";
 import type {Wallet} from "../models/Wallet.ts";
-import {currencies} from "../services/CurrencyService.tsx"; // popraw ścieżkę jeśli inna
+import {currencies} from "../services/CurrencyService.tsx";
+import {WalletCard} from "./wallet/WalletCard.tsx"; // popraw ścieżkę jeśli inna
 
 const Home: React.FC = () => {
     const [AccountData, setAccounts] = useState<Accounts [] | null>(null);
@@ -139,14 +140,7 @@ const Home: React.FC = () => {
                 ) : (
                     walletData.map(wallet => (
                         <Col key={wallet.id} span={6}>
-                            <Card
-                                className="ant-home-card"
-                                onClick={() => navigate(`/wallet/${wallet.id}`)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <p><strong>Nazwa:</strong> {wallet.name}</p>
-                                <p><strong>Balans:</strong> {wallet.balance} {wallet.currency}</p>
-                            </Card>
+                            <WalletCard wallet={wallet} onClick={(w) => navigate(`/wallet/${w.id}`)} />
                         </Col>
             ))
             )}

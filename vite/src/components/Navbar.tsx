@@ -1,14 +1,12 @@
 import {useNavigate} from "react-router-dom";
-import {HomeOutlined, SettingOutlined, UserOutlined, FlagOutlined} from "@ant-design/icons";
-import {Drawer, Dropdown, Layout, Segmented} from "antd";
+import {HomeOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {Drawer, Dropdown, Layout, theme} from "antd";
 import React, {useEffect, useState} from "react";
-import {useTheme} from "../theme/ThemeContext.tsx";
 import {fetchUserId, logoutUser} from "../services/userService.ts";
 import type { User } from "../models/User.ts";
 import { Select } from "antd";// Ścieżki odpowiadające kluczom zakładek
 import { useTranslation } from "react-i18next";
-
-
+import {ThemeSwitch} from "../theme";
 
 // Destrukturyzacja komponentów Layout z Ant Design
 const { Header } = Layout;
@@ -17,7 +15,6 @@ const { Header } = Layout;
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const { toggleTheme, theme } = useTheme();
     const [user, setUser] = useState<User|null>(null);
 
     useEffect(() => {
@@ -38,19 +35,16 @@ const Navbar: React.FC = () => {
     };
 
     const { i18n } = useTranslation();
-
-    const toggleCollapsed = () => {
-        setCollapsed(!collapsed);
-    };
+    const {token} = theme.useToken();
     return (
-        <Header style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-    <span style={{color: "#fff", fontWeight: "bold", fontSize: "22px",cursor: "pointer"}}
+        <Header style={{background: token.colorPrimary,color: "#fff", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+    <span style={{fontWeight: "bold", fontSize: "22px",cursor: "pointer"}}
     onClick={() => navigate('/')}>
         <HomeOutlined></HomeOutlined> E-Wallet
     </span>
             <div style={{display: 'flex', alignItems: 'center'}}>
         <span
-            style={{color: "#fff", cursor: "pointer", marginRight: '16px', fontSize: '20px'}}
+            style={{cursor: "pointer", marginRight: '16px', fontSize: '20px'}}
             onClick={() => setSettingsOpen(true)}
         >
             <SettingOutlined/>
@@ -79,7 +73,7 @@ const Navbar: React.FC = () => {
         }}
         placement="bottom"
     >
-        <span style={{ color: "#fff", cursor: "pointer", fontSize: '20px' }}>
+        <span style={{ cursor: "pointer", fontSize: '20px' }}>
             <UserOutlined />
         </span>
     </Dropdown>
@@ -91,11 +85,7 @@ const Navbar: React.FC = () => {
                     open={settingsOpen}
                 >
                     <p>Motyw: </p>
-                    <Segmented
-                        options={["dark", "light"]}
-                        onChange={(value) => toggleTheme(value as "dark" | "light")}
-                        defaultValue={theme}
-                    />
+                    <ThemeSwitch />
                     <p>Język: </p>
                     <Select
                         defaultValue={i18n.language}
