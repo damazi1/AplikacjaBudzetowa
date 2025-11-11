@@ -23,7 +23,6 @@ public class Wallet {
     private String name;
     private String userId;
     private Currency currency;
-@DecimalMin(value = "0.00", message = "Balance cannot be negative")
 @Digits(integer = 20, fraction = 2)
-    private BigDecimal balance;
+    private double balance;
 }

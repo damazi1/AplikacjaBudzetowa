@@ -23,7 +23,7 @@ public class WalletService {
                 .setName(wallet.getName())
                 .setCurrency(wallet.getCurrency())
                 .setUserId(currentUser)
-                .setBalance(wallet.getBalance() != null ? wallet.getBalance(): BigDecimal.ZERO);
+                .setBalance(wallet.getBalance() != 0 ? wallet.getBalance(): 0);
         return walletRepository.save(newWallet);
     }
 
@@ -32,5 +32,8 @@ public class WalletService {
     }
     public Wallet getWalletById(String id) {
         return walletRepository.findById(id).orElseThrow();
+    }
+    public Wallet updateWallet(Wallet wallet) {
+        return walletRepository.save(wallet);
     }
 }

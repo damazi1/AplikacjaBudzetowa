@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 public class WalletAdd {
     private String name;
     private Currency currency;
-    @DecimalMin(value = "0.00", inclusive = true, message = "Balance cannot be negative")
     @Digits(integer = 20, fraction = 2, message = "Maximum 2 decimal places allowed")
-    private BigDecimal balance;
+    private double balance;
 }

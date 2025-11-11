@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import React from "react";
 import {getWalletById} from "../../services/WalletService.tsx";
 import type Wallet from "../Wallet.tsx";
-import {Spin} from "antd";
+import {Card, Col, Row, Spin} from "antd";
 
 
 export const WalletDetails =() => {
@@ -31,13 +31,19 @@ export const WalletDetails =() => {
         <div style={{ padding: '20px' }}>
         {
             loading ? ( <Spin/>) : wallet ? (
-                <>
-                    <p><strong>Id:</strong> {wallet.id}</p>
-                    <p><strong>Nazwa:</strong> {wallet.name}</p>
-                    <p><strong>Użytkownik:</strong> {wallet.userId}</p>
-                    <p><strong>Waluta:</strong> {wallet.currency}</p>
-                    <p><strong>Saldo:</strong> {wallet.balance}</p>
-                </>
+                <Card>
+                    <Row style={{textAlign: "center"}}>
+                        <Col span={8}>
+                            <strong>Nazwa portfela:</strong> {wallet.name}
+                        </Col>
+                        <Col span={8}>
+                            <strong>Użytkownik:</strong> {wallet.userId}
+                        </Col>
+                        <Col span={8}>
+                            <strong>Waluta:</strong> {wallet.currency}
+                        </Col>
+                    </Row>
+                </Card>
 ) : (<div>Brak danych</div>)
 }
         </div>

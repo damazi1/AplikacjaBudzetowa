@@ -2,34 +2,62 @@ package pczstudent.pracainz.budgetmanagementapp.controller;
 
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pczstudent.pracainz.budgetmanagementapp.dto.WalletPeriodDto;
 import pczstudent.pracainz.budgetmanagementapp.model.*;
 import pczstudent.pracainz.budgetmanagementapp.repository.*;
+import pczstudent.pracainz.budgetmanagementapp.service.TransactionService;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/Transaction")
+@AllArgsConstructor
 public class TransactionController {
 
-    @Autowired
     private TransactionRepository transactionRepository;
-
-    @Autowired
     private TransferRepository transferRepository;
-
-    @Autowired
     private AccountRepository accountRepository;
-    @Autowired
     private DepositRepository depositRepository;
-    @Autowired
     private WithdrawalRepository withdrawalRepository;
+
+    private final TransactionService transactionService;
+
+    @PostMapping("/wallet/newTransaction")
+    public ResponseEntity<Transaction> newTransaction(@Valid @RequestBody Transaction transaction, @RequestParam String walletId) {
+        transaction.setWalletId(walletId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        transaction.setUserId(currentUser.getId());
+        Transaction savedTransaction = transactionService.walletNewTransaction(transaction);
+        return ResponseEntity.ok(savedTransaction);
+    }
+
+    @GetMapping("/wallet/periodTransactions")
+    public ResponseEntity<List<Transaction>> getPeriodTransactions
+            (@RequestParam String walletId,
+             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
+             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate) {
+        Date from = startDate;
+        Date to = endDate;
+        List<Transaction> transactions = (List<Transaction>)
+                transactionService.periodTransactions(walletId, from, to);
+        return ResponseEntity.ok(transactions);
+    }
+
 
     @PostMapping("/create/transfer")
     public String createTransfer(@Valid @RequestBody Transfer transfer) {
         if (accountRepository.findByNumber(transfer.getFromAccountNumber()).isEmpty() ||
-            accountRepository.findByNumber(transfer.getToAccountNumber()).isEmpty()) {
+                accountRepository.findByNumber(transfer.getToAccountNumber()).isEmpty()) {
             return "Invalid account numbers provided for transfer";
         }
 
