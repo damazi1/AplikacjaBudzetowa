@@ -1,5 +1,5 @@
 import React from "react";
-import { ConfigProvider, theme as antdTheme } from "antd";
+import { ConfigProvider } from "antd";
 import plPL from "antd/locale/pl_PL";
 
 type ThemeMode = "light" | "dark";

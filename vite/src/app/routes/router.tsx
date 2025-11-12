@@ -2,8 +2,9 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppLayout } from '@app/layout/AppLayout.tsx';
 import { NotFound } from './NotFound';
-import { AuthForm, RegisterForm, WalletDetails } from './legacy.tsx';
+import {AccountDetails, AuthForm, RegisterForm, UserDetails} from './legacy.tsx';
 import { HomePage } from '@pages/Home/HomePage.tsx';
+import { WalletPage } from "@pages/Wallet/WalletPage.tsx";
 import { AuthReq } from '../../components/IsLogin.tsx';
 
 const router = createBrowserRouter([
@@ -16,7 +17,9 @@ const router = createBrowserRouter([
                 errorElement: <NotFound/>,
                 children: [
                     {index: true, element: <HomePage/>},
-                    {path: "wallet/:id", element: <WalletDetails />}
+                    {path: "wallet/:id", element: <WalletPage />},
+                    {path: "account/:accountNumber", element: <AccountDetails />},
+                    {path: "details/:name", element: <UserDetails />}
                 ],
             },
         ]

@@ -2,10 +2,9 @@ import React, { useRef } from "react";
 import './styles/Layout.css';
 import {ConfigProvider, Layout, theme as antdTheme} from "antd";
 import MyFooter from "./components/MyFooter.tsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Home from "./components/Home.tsx";
 import Navbar from "./components/Navbar.tsx";
-import Sidebar from "./components/Sidebar.tsx";
 import Auth from "./components/Auth.tsx";
 import Details from "./components/Details.tsx";
 import Account from "./components/Account.tsx";
@@ -16,7 +15,7 @@ import { useLocation } from 'react-router-dom';
 import {QueryParamProvider} from "use-query-params";
 import {ReactRouter6Adapter} from "use-query-params/adapters/react-router-6";
 import queryString from "query-string";
-import Wallet from "./components/Wallet.tsx";
+import {WalletPage} from "@pages/Wallet/WalletPage.tsx";
 
 // Destrukturyzacja komponentów Layout z Ant Design
 // aby uprościć kod i uniknąć powtarzania Layout.
@@ -24,12 +23,12 @@ import Wallet from "./components/Wallet.tsx";
 const { Content } = Layout;
 
 const ThemeWrapper: React.FC<{children: React.ReactNode}> = ({children}) => {
-    const {theme} = useTheme();
+    const {mode} = useTheme();
     return (
         <ConfigProvider
             theme={{
-                algorithm: theme === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-                token: theme === "dark"
+                algorithm: mode === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+                token: mode === "dark"
                     ? {
                         colorBgBase: "#23272f", // jaśniejszy szary
                         colorBgContainer: "#2c313a",
@@ -77,7 +76,7 @@ const App: React.FC = () => {
                                                 <Route path="/auth/signup" element={<Signup/>}/>
                                                 <Route path="/details/:login" element={<Details/>}/>
                                                 <Route path="/account/:accountNumber" element={<Account/>}/>
-                                                <Route path="/wallet/:id" element={<Wallet/>}/>
+                                                <Route path="/wallet/:id" element={<WalletPage/>}/>
                                             </Routes>
                                         </div>
                                     </CSSTransition>

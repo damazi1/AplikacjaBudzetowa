@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import React from "react";
 import {getWalletById} from "../../services/WalletService.tsx";
-import type Wallet from "../Wallet.tsx";
+import type { Wallet } from "../../models/Wallet.ts";
 import {Card, Col, Row, Spin} from "antd";
 
 
@@ -12,7 +12,6 @@ export const WalletDetails =() => {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("Wallet ID:", id);
         if (!id) return;
         const loadData = async () => {
             setLoading(true);
@@ -31,7 +30,7 @@ export const WalletDetails =() => {
         <div style={{ padding: '20px' }}>
         {
             loading ? ( <Spin/>) : wallet ? (
-                <Card>
+                <Card style={{textAlign: "center"}} title={"Dane o portfelu"}>
                     <Row style={{textAlign: "center"}}>
                         <Col span={8}>
                             <strong>Nazwa portfela:</strong> {wallet.name}

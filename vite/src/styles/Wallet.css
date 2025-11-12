@@ -1,0 +1,13 @@
+.PositiveTransaction {
+    color: green;
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+}
+
+.NegativeTransaction {
+    color: red;
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+}

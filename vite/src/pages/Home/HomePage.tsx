@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from "react";
-import type Wallet from "../../components/Wallet.tsx";
-import {fetchWallets} from "../../services/WalletService.tsx";
+import {fetchWallets} from "@services/WalletService.tsx";
 import {Button, Col, Row, Space} from "antd";
-import {WalletCard} from "../../components/wallet/WalletCard.tsx";
+import {WalletCard} from "@components/wallet/WalletCard.tsx";
 import {useNavigate} from "react-router-dom";
-import {WalletCreate} from "../../components/wallet/WalletCreate.tsx";
+import {WalletCreate} from "@components/wallet/WalletCreate.tsx";
 import {Icon} from '@iconify/react';
+import type {Wallet} from "@models/Wallet.ts";
 
 export function HomePage() {
     const navigate = useNavigate();

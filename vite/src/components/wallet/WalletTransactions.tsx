@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Row, Spin, Empty } from "antd";
 import { periodWalletTransaction } from "../../services/WalletService";
 import dayjs from "dayjs";
-import type {Dayjs} from "dayjs";
 
 type WalletTransactionsProps = {
     walletId: string;
-    dateFrom?: Dayjs; // "YYYY-MM-DD"
-    dateTo?: Dayjs;   // "YYYY-MM-DD"
+    dateFrom?: string; // "YYYY-MM-DD"
+    dateTo?: string;   // "YYYY-MM-DD"
 };
 
 type TransactionItem = {
@@ -59,9 +58,7 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
     }, [walletId, dateFrom, dateTo]);
 
     return (
-        <Card>
-            <h4>Zakres: {dateFrom ?? "-"} → {dateTo ?? "-"}</h4>
-            {loading ? (
+        <Card title={`Historia transakcji od ${dateFrom ? dayjs(dateFrom).format("DD-MM-YYYY") : "-"} do ${dateTo ? dayjs(dateTo).format("DD-MM-YYYY") : "-"}`}>            {loading ? (
                 <div style={{ textAlign: "center", padding: 16 }}>
                     <Spin />
                 </div>

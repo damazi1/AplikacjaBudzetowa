@@ -26,7 +26,11 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["src/app/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@components/*": ["src/components/*"],
+      "@models/*": ["src/models/*"],
+      "@services/*": ["src/services/*"],
+      "@styles/*": ["src/styles/*"]
     }
   },
   "include": ["src"]

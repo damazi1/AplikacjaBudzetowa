@@ -35,7 +35,7 @@ const Auth: FC = () => {
                 localStorage.setItem('loginSuccess', 'true');
                 window.location.href = "/";
             } else {
-                message.error(result.message || "Niepoprawne dane logowania!");
+                message.error("Niepoprawne dane logowania!");
             }
         } catch (error) {
             message.error(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pczstudent.pracainz.budgetmanagementapp.dto.WalletExpensesAndIncome;
 import pczstudent.pracainz.budgetmanagementapp.dto.WalletPeriodDto;
 import pczstudent.pracainz.budgetmanagementapp.model.*;
 import pczstudent.pracainz.budgetmanagementapp.repository.*;
@@ -53,6 +54,17 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
+    @GetMapping("/wallet/totalPeriodBalance")
+    public ResponseEntity<WalletExpensesAndIncome> getTotalPeriodBalance (
+            @RequestParam String walletId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate) {
+        Date from = startDate;
+        Date to = endDate;
+        WalletExpensesAndIncome balance =
+                transactionService.totalPiriodBalance(walletId, from, to);
+        return ResponseEntity.ok(balance);
+    }
 
     @PostMapping("/create/transfer")
     public String createTransfer(@Valid @RequestBody Transfer transfer) {

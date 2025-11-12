@@ -3,7 +3,7 @@
 import React from 'react';
 import type { FormProps } from 'antd';
 import '../styles/Auth.css'; // Import CSS for styling
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import {loginUser} from "../services/userService.ts";
 import {useState} from "react";
 import {Trans, useTranslation} from "react-i18next";
@@ -58,7 +58,7 @@ const Auth: React.FC = () => {
                 {/* ...pozostałe pola formularza... */}
                 <Form.Item<FieldType>
                     label={t("Username")}
-                    name="username"
+                    name="login"
 
                     rules={[
                         { required: true, message: 'Please input your login!' },
@@ -79,7 +79,7 @@ const Auth: React.FC = () => {
 
                 <Form.Item<FieldType>
                     label={t("Confirm Password")}
-                    name="confirmed password"
+                    name="password"
                     rules={[
                         { required: true, message: t("Please input your password!") },
                         { min: 5, message: t('Password is too short!') }
