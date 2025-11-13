@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {HomeOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import {Drawer, Dropdown, Layout, theme} from "antd";
 import React, {useEffect, useState} from "react";
-import {fetchUserId, logoutUser} from "../services/userService.ts";
+import {fetchUserId, logoutUser} from "@services/userService.tsx";
 import type { User } from "../models/User.ts";
 import { Select } from "antd";// Ścieżki odpowiadające kluczom zakładek
 import { useTranslation } from "react-i18next";

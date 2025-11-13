@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Select, { components, type GroupBase, type OptionProps, type SingleValueProps } from "react-select";
 import { Icon } from "@iconify/react";
-import { type Category } from "../models/Category";
-import { Categories } from "../services/CategoryService";
+import { type Category } from "@models/Category.tsx";
+import { Categories } from "@services/CategoryService.tsx";
+
+//TODO: Tutaj można przejrzeć kod bo dużo z bota w tym pliku
 
 type CategoryOption = {
     value: string;      // wartość zwracana do formularza

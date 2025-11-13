@@ -24,8 +24,8 @@ export function WalletCard({wallet, onClick}: WalletCardProps){
                     <Icon icon={"mdi:wallet-bifold"} width={50} height={50} color={"brown"}/>
                 </Col>
                 <Col span={20}>
-                    <p><h3><strong>Nazwa:</strong> {wallet.name}</h3> </p>
-                    <p> <strong> Balans:</strong> <div className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</div></p>
+                    <h3><strong>Nazwa:</strong> {wallet.name}</h3>
+                    <strong> Balans:</strong> <div className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</div>
                 </Col>
             </Row>
         </Card>

@@ -1,14 +1,9 @@
-import axios from "axios";
+import {api} from "../axios.ts";
 
 export const currencies = async (): Promise<{ value: string; label: string }[]> => {
     try {
-        const response = await axios.get<string[] | Record<string, any>>(
-            `http://localhost:8080/Account/currency`,
-            {
-                withCredentials: true,
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+        const response = await api.get<string[] | Record<string, any>>(
+            `/Account/currency`);
 
         const data = response.data;
         let opts: { value: string; label: string }[] = [];

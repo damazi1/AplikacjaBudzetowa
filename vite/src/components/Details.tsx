@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
     import {Alert, Button, Card, Col, Form, Input, Layout, message, Modal, Radio, Row, Select} from "antd";
-    import {deleteUser, fetchUserId, fetchUsers, registerUser, searchUsers} from "../services/userService.ts";
-import {createAccount} from "../services/accountService.ts";
+    import {deleteUser, fetchUserId, fetchUsers, registerUser, searchUsers} from "@services/userService.tsx";
+import {createAccount} from "@services/accountService.tsx";
 
 const { Content } = Layout;
 
@@ -20,9 +20,7 @@ const { Content } = Layout;
         useEffect(() => {
             const fetchLoginData = async () => {
                 try {
-                    console.log("Fetching users...");
                     const users = await fetchUsers();
-                    console.log(users)
                     setLogin(users.join('\n'));
                     } catch (err: any) {
                     message.error(err.response?.data?.error || err.message);

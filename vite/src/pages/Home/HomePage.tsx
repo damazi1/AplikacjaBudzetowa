@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 import {fetchWallets} from "@services/WalletService.tsx";
-import {Button, Col, DatePicker, Row, Space} from "antd";
+import {Button, Col, DatePicker, Row} from "antd";
 import {WalletCard} from "@components/wallet/WalletCard.tsx";
 import {useNavigate} from "react-router-dom";
 import {WalletCreate} from "@components/wallet/WalletCreate.tsx";
@@ -64,7 +64,7 @@ export function HomePage() {
                     >
                     </DatePicker.RangePicker>
                 </Col>
-                
+
             </Row>
         </div>
     )

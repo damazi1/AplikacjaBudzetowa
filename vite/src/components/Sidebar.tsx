@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Layout, Menu} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
-import { fetchAccounts} from "../services/accountService.ts";
+import { fetchAccounts} from "@services/accountService.tsx";
 import type {Accounts} from "../models/Accounts.ts";
 
 /**

@@ -4,8 +4,8 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import type {Accounts} from "../models/Accounts.ts";
 const { Title } = Typography;
-import { fetchAccounts } from "../services/accountService"; // popraw ścieżkę jeśli inna
-import { fetchUserId } from "../services/userService.ts"; // popraw ścieżkę jeśli inna
+import { fetchAccounts } from "@services/accountService.tsx"; // popraw ścieżkę jeśli inna
+import { fetchUserId } from "@services/userService.tsx"; // popraw ścieżkę jeśli inna
 import type { User } from "../models/User.ts";
 import {addWallet, fetchWallets} from "../services/WalletService.tsx";
 import type {Wallet} from "../models/Wallet.ts";

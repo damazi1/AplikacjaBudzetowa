@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Card, Col, Row} from "antd";
 import type {Accounts} from "@models/Accounts.ts";
-import {fetchAccounts} from "@services/accountService.ts";
+import {fetchAccounts} from "@services/accountService.tsx";
 import {useNavigate} from "react-router-dom";
 
 

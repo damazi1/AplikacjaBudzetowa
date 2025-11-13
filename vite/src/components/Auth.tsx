@@ -4,7 +4,7 @@ import React, {type FC} from 'react';
 import type { FormProps } from 'antd';
 import '../styles/Auth.css'; // Import CSS for styling
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import {loginUser} from "../services/userService.ts";
+import {loginUser} from "@services/userService.tsx";
 import {useState} from "react";
 import {Trans, useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";

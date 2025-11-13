@@ -1,7 +1,7 @@
 import React from "react";
 import {Card, Button, Form, InputNumber, Input, message} from "antd";
 import FormItem from "antd/es/form/FormItem";
-import {CategorySelect} from "../SelectCat.tsx";
+import {CategorySelect} from "./WalletCategorySelect.tsx";
 import {newWalletTransaction} from "../../services/WalletService.tsx";
 
 interface WalletAddTransactionFormProps {

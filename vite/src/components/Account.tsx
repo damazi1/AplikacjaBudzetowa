@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { message, Layout, Card, Row, Col, Segmented, Modal, Button, Form, InputNumber, Input } from "antd";
-import {fetchAccountDetails} from "../services/accountService.ts";
+import {fetchAccountDetails} from "@services/accountService.tsx";
 import type {Accounts} from "../models/Accounts.ts";
-import {fetchTransactions, newPayment} from "../services/transactionService.ts";
+import {fetchTransactions, newPayment} from "@services/transactionService.tsx";
 import type {Transaction} from "../models/Transactions.ts";
 const { Content } = Layout;
 import {LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer} from "recharts";
@@ -22,10 +22,16 @@ const Account: React.FC = () => {
     const showDepositModal = () => setIsDepositModalOpen(true);
     const handleDepositCancel = () => setIsDepositModalOpen(false);
 
-    const handleDeposit = async (values: { amount: number; description: string }) => {
+    type handleDepositPayload = {
+        accountNumber: number
+        amount: number
+        description: string
+    }
+
+    const handleDeposit = async (values: handleDepositPayload) => {
         setDepositLoading(true);
         try {
-            await newPayment(accountData!.number, values.amount, values.description);
+            await newPayment(values);
             message.success("Wpłata zakończona sukcesem");
             setIsDepositModalOpen(false);
             // odśwież dane konta/transakcji jeśli trzeba
