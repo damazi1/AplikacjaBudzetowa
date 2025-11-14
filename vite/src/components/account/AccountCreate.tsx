@@ -1,22 +1,20 @@
+import {Button, type ButtonProps, Form, Input, message, Modal, Select} from "antd";
 import React from "react";
-import { Button, Modal, Form, Input, Select, InputNumber, message } from "antd";
-import type { ButtonProps } from "antd";
-import { addWallet } from "@services/WalletService.tsx";
-import { currencies } from "@services/CurrencyService.tsx";
+import {currencies} from "@services/CurrencyService.tsx";
+import {createAccount} from "@services/accountService.tsx";
 
 type Props = {
     onCreated?: () => void;              // wywołaj po sukcesie, np. do refetch portfeli
     label?: string;                      // tekst na przycisku
     buttonProps?: ButtonProps;           // np. { block: true, type: 'primary' }
 };
-
 type FormValues = {
     name: string;
     currency: string;
-    balance?: number;
+    accountType?: string;
 };
 
-export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", buttonProps }: Props) {
+export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", buttonProps }: Props) {
     const [open, setOpen] = React.useState(false);
     const [saving, setSaving] = React.useState(false);
     const [options, setOptions] = React.useState<{ value: string; label: string }[]>([]);
@@ -40,10 +38,10 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
     const handleSubmit = async (values: FormValues) => {
         try {
             setSaving(true);
-            await addWallet({
+            await createAccount({
                 name: values.name,
                 currency: values.currency,
-                balance: Number(values.balance ?? 0),
+                type: "LOAN",
             });
             message.success("Portfel utworzony");
             setOpen(false);
@@ -55,7 +53,6 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
             setSaving(false);
         }
     };
-
     return (
         <>
             <Button
@@ -67,7 +64,7 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
             </Button>
 
             <Modal
-                title="Nowy portfel"
+                title="Nowe konto bankowe"
                 open={open}
                 onCancel={() => {
                     setOpen(false);
@@ -99,22 +96,23 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
                             options={options}
                         />
                     </Form.Item>
-
                     <Form.Item
-                        name="balance"
-                        label="Początkowy balans (opcjonalnie)"
+                        name="accountType"
+                        label="Typ konta"
+                        rules={[{ required: true, message: "Wybierz typ konta" }]}
+                        initialValue="LOAN"
                     >
-                        <InputNumber
-                            style={{ width: "100%" }}
-                            min={0}
-                            step={0.01}
-                            stringMode
-                            precision={2}
-                            defaultValue={0}
+                        <Select
+                            placeholder="Wybierz typ konta"
+                            options={[
+                                { value: "LOAN", label: "Kredytowe" },
+                                { value: "SAVINGS", label: "Oszczędnościowe" },
+                                { value: "CHECKING", label: "Rozliczeniowe" },
+                            ]}
                         />
                     </Form.Item>
                 </Form>
             </Modal>
         </>
-    );
+    )
 }

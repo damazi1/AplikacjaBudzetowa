@@ -14,16 +14,22 @@ export const fetchAccounts= async (): Promise<Accounts[]> =>{
 
 export const fetchAccountDetails = async (account: string): Promise<Accounts> => {
     try {
-        const response = await api.get(`http://localhost:8080/Account/details/${account}`);
+        const response = await api.get(`/Account/details/${account}`);
         return response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania szczegółów konta");
     }
 }
 
-export const createAccount = async (payload: Accounts): Promise<void> => {
+type createAccountPayload = {
+    name: string;
+    currency: string;
+    type: string;
+}
+
+export const createAccount = async (data: createAccountPayload): Promise<void> => {
     try {
-        const response = await api.post(`http://localhost:8080/Account/create`, payload);
+        const response = await api.post(`/Account/create`, data);
         return response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas tworzenia konta");

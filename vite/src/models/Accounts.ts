@@ -1,8 +1,9 @@
 export type Accounts = {
-    id: string,
+    id?: string,
     name: string,
-    number: number,
     currency: string,
     balance: number,
+    number: string
     type: string,
+    userId?: string
 }

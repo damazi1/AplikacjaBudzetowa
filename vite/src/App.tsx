@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import './styles/Layout.css';
 import {ConfigProvider, Layout, theme as antdTheme} from "antd";
-import MyFooter from "./components/MyFooter.tsx";
+import MyFooter from "@components/common/MyFooter.tsx";
 import {Route, Routes} from "react-router-dom";
 import Home from "./components/Home.tsx";
-import Navbar from "./components/Navbar.tsx";
+import Navbar from "@components/common/Navbar.tsx";
 import Auth from "./components/Auth.tsx";
 import Details from "./components/Details.tsx";
 import Account from "./components/Account.tsx";
