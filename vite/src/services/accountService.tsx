@@ -1,11 +1,9 @@
 import type {Accounts} from "../models/Accounts.ts";
-import {fetchUserId} from "./userService.tsx";
 import {api} from "../axios.ts";
 
 export const fetchAccounts= async (): Promise<Accounts[]> =>{
-    const id = await fetchUserId();
     try {
-        const response = await api.get(`/Account/get/${id.id}`);
+        const response = await api.get(`/Account/all`);
         return await response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");

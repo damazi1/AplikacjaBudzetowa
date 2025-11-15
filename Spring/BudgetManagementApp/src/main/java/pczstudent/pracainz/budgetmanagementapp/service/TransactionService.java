@@ -3,6 +3,7 @@ package pczstudent.pracainz.budgetmanagementapp.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pczstudent.pracainz.budgetmanagementapp.dto.WalletExpensesAndIncome;
+import pczstudent.pracainz.budgetmanagementapp.model.Account;
 import pczstudent.pracainz.budgetmanagementapp.model.Transaction;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.repository.TransactionRepository;
@@ -16,6 +17,7 @@ import java.util.List;
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final WalletService walletService;
+    private final AccountService accountService;
 
     public Transaction walletNewTransaction(Transaction transaction){
         Wallet wallet = walletService.getWalletById(transaction.getWalletId());
@@ -42,5 +44,27 @@ public class TransactionService {
                 .setTotalExpenses(totalExpenses)
                 .setBalanceChange(netBalance);
     }
+
+    public Transaction accountNewTransaction(Transaction transaction){
+        Account account = accountService.getAccountDetails(transaction.getAccountId());
+        account.setBalance(account.getBalance()+(transaction.getAmount()));
+        accountService.updateAccount(account);
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction accountNewTransfer(Transaction transaction){
+        Account fromAccount = accountService.getAccountDetails(transaction.getAccountId());
+        Account toAccount = accountService.getAccountDetails(transaction.getAccountToId());
+        fromAccount.setBalance(fromAccount.getBalance() - Math.abs(transaction.getAmount()));
+        toAccount.setBalance(toAccount.getBalance() + Math.abs(transaction.getAmount()));
+        accountService.updateAccount(fromAccount);
+        accountService.updateAccount(toAccount);
+        return transactionRepository.save(transaction);
+    }
+
+    public List<Transaction> allAccountTransactions(String accountId){
+        return transactionRepository.findAllByAccountIdOrAccountToIdOrderByDateDesc(accountId, accountId);
+    }
+
 
 }

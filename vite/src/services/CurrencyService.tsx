@@ -3,7 +3,7 @@ import {api} from "../axios.ts";
 export const currencies = async (): Promise<{ value: string; label: string }[]> => {
     try {
         const response = await api.get<string[] | Record<string, any>>(
-            `/Account/currency`);
+            `/common/currency`);
 
         const data = response.data;
         let opts: { value: string; label: string }[] = [];

@@ -10,6 +10,7 @@ import pczstudent.pracainz.budgetmanagementapp.model.Currency;
 import pczstudent.pracainz.budgetmanagementapp.repository.AccountRepository;
 import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
 import pczstudent.pracainz.budgetmanagementapp.service.AccountService;
+import pczstudent.pracainz.budgetmanagementapp.service.CommonService;
 
 import java.util.List;
 
@@ -17,8 +18,6 @@ import java.util.List;
 @RequestMapping("/Account")
 @AllArgsConstructor
 public class AccountController {
-
-    private AccountRepository accountRepository;
 
     private final AccountService accountService;
 
@@ -33,15 +32,10 @@ public class AccountController {
         List<Account> account = accountService.getAccountByUserId();
         return ResponseEntity.ok(account);
     }
-    //TODO: Kontynuuj Wykorzystanie serwisów w backendzie
-    //  Zostało jeszcze w Transaction i tutaj w accounts
-    @GetMapping("/details/{number}")
-    public Account getAccountDetails(@PathVariable String number) {
-        return accountRepository.findByNumber(number).orElse(null);
-    }
-    @GetMapping("/currency")
-    public List<Currency> getCurrencies() {
-        List<Currency> currencies = List.of(Currency.values());
-        return currencies;
+
+    @GetMapping("/details")
+    public ResponseEntity<Account> getAccountDetails(@RequestParam String id) {
+        Account account = accountService.getAccountDetails(id);
+        return ResponseEntity.ok(account);
     }
 }

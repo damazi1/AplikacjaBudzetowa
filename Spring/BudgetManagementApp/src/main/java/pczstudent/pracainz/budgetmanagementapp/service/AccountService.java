@@ -43,4 +43,12 @@ public class AccountService {
         User currentUser = (User) authentication.getPrincipal();
         return accountRepository.findByUserId(currentUser.getId());
     }
+
+    public Account getAccountDetails(String id) {
+        return accountRepository.findById(id).orElse(null);
+    }
+
+    public void updateAccount(Account account) {
+        accountRepository.save(account);
+    }
 }

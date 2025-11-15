@@ -17,8 +17,6 @@ public class Transaction {
     private String id;
     private String userId;
     @Nullable
-    private String userToId;
-    @Nullable
     private String description;
     @CreatedDate
     private Date date;
@@ -29,6 +27,8 @@ public class Transaction {
     private String walletId;
     @Nullable
     private String accountId;
+    @Nullable
+    private String accountToId;
     @Nullable
     private TransactionTypes transactionType;
     @Nullable

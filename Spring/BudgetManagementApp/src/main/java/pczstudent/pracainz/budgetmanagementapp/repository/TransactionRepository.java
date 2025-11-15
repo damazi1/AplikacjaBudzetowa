@@ -14,4 +14,6 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
    List<Transaction> findByAccountId(String accountId);
 
     Collection<Transaction> findByWalletIdAndDateBetween(String walletId, Date dateAfter, Date dateBefore);
+
+    List<Transaction> findAllByAccountIdOrAccountToIdOrderByDateDesc(String accountId, String accountId1);
 }
