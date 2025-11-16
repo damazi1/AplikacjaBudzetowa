@@ -11,6 +11,7 @@ import pczstudent.pracainz.budgetmanagementapp.repository.TransactionRepository;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -63,7 +64,14 @@ public class TransactionService {
     }
 
     public List<Transaction> allAccountTransactions(String accountId){
-        return transactionRepository.findAllByAccountIdOrAccountToIdOrderByDateDesc(accountId, accountId);
+        List<Transaction> transactions = transactionRepository.findAllByAccountIdOrAccountToIdOrderByDateDesc(accountId, accountId);
+        transactions.forEach(t -> {
+            if (!Objects.equals(t.getAccountToId(), accountId) && t.getAccountToId() != null) {
+                t.setAmount(t.getAmount()*-1);
+            }
+        });
+        return transactions;
+
     }
 
 
