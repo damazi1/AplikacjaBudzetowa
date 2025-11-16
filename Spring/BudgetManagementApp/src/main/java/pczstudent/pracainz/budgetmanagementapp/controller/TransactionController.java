@@ -79,4 +79,12 @@ public class TransactionController {
         List<Transaction> transactions = transactionService.allAccountTransactions(id);
         return ResponseEntity.ok(transactions);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<Double> getAllTransactions() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        Double total = transactionService.allUserTransactionsSum(currentUser.getId());
+        return ResponseEntity.ok(total);
+    }
 }

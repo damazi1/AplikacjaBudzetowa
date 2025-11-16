@@ -6,6 +6,7 @@
 }
 
 .ant-home-card {
+    margin: 16px;
     border-radius: 16px;
     border: 2px solid;
     box-shadow: 0 4px 8px;

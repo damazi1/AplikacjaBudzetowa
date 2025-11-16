@@ -87,5 +87,21 @@ public class TransactionService {
 
     }
 
+    public double allUserTransactionsSum(String userId) {
+        List<Account> userAccounts = accountService.getAccountByUserId();
+        double totalSum = 0;
+        for (Account account : userAccounts) {
+            Currency currency = account.getCurrency();
+            double exchangeRate = currency.getToUSDExchangeRate();
+            totalSum += account.getBalance()*exchangeRate;
+        }
+        List<Wallet> userWallets = walletService.getWalletByUserId(userId);
+        for (Wallet wallet : userWallets) {
+            Currency currency = wallet.getCurrency();
+            double exchangeRate = currency.getToUSDExchangeRate();
+            totalSum += wallet.getBalance()*exchangeRate;
+        }
+        return totalSum;
+    }
 
 }

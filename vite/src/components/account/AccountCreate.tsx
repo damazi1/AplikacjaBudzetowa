@@ -59,6 +59,7 @@ export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", butto
                 type="primary"
                 {...buttonProps}
                 onClick={() => setOpen(true)}
+                style={{ width: "50%" }}
             >
                 {label}
             </Button>
@@ -74,7 +75,7 @@ export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", butto
                 okText="Zapisz"
                 cancelText="Anuluj"
                 confirmLoading={saving}
-                destroyOnClose
+                destroyOnHidden={true}
             >
                 <Form form={form} layout="vertical" onFinish={handleSubmit} preserve={false}>
                     <Form.Item

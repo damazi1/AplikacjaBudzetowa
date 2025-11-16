@@ -18,7 +18,6 @@ export function AccountDetails() {
     const fetchDetails = async () => {
         if (!accountId) return;
         const data = await fetchAccountDetails(accountId);
-        console.log(data);
         setDetails(data);
     }
 

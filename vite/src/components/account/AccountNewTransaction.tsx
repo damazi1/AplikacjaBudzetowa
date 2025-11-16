@@ -1,23 +1,30 @@
 import React from "react";
-import {Card, Tabs} from "antd";
+import {Card, Tabs, type TabsProps} from "antd";
 import {AccountTransactionForm} from "@components/account/AccountTransactionForm.tsx";
 import {AccountTransferForm} from "@components/account/AccountTransferForm.tsx";
 
 
 export function AccountNewTransaction() {
+    const items: TabsProps["items"] = [
+        {
+            key: "deposit",
+            label: "Wpłata",
+            children: <AccountTransactionForm type="deposit" />
+        },
+        {
+            key: "withdrawal",
+            label: "Wypłata",
+            children: <AccountTransactionForm type="withdrawal" />
+        },
+        {
+            key: "transfer",
+            label: "Przelew",
+            children: <AccountTransferForm />
+        }
+    ];
     return (
         <Card title={"Nowa transakcja"}>
-            <Tabs>
-                <Tabs.TabPane tab="Wpłata" key="deposit">
-                    <AccountTransactionForm type="deposit"/>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Wypłata" key="withdrawal">
-                    <AccountTransactionForm type="withdrawal"/>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Przelew" key="transfer">
-                    <AccountTransferForm/>
-                </Tabs.TabPane>
-            </Tabs>
+            <Tabs items={items}/>
         </Card>
     )
 }

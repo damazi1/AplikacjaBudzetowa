@@ -25,7 +25,7 @@ export function WalletCard({wallet, onClick}: WalletCardProps){
                 </Col>
                 <Col span={20}>
                     <h3><strong>Nazwa:</strong> {wallet.name}</h3>
-                    <strong> Balans:</strong> <div className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</div>
+                    <strong> Balans:</strong> <span className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</span>
                 </Col>
             </Row>
         </Card>

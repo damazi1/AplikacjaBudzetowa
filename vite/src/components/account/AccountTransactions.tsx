@@ -16,7 +16,6 @@ export function AccountTransactions() {
         if (!accountId) return;
         try {
             const data = await fetchTransactions(accountId);
-            console.log(data);
             setTransactions(data);
         } catch (error) {
             console.error("Error fetching transactions:", error);

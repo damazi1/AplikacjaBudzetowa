@@ -77,7 +77,8 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
                 okText="Zapisz"
                 cancelText="Anuluj"
                 confirmLoading={saving}
-                destroyOnClose
+                destroyOnHidden={true}
+
             >
                 <Form form={form} layout="vertical" onFinish={handleSubmit} preserve={false}>
                     <Form.Item

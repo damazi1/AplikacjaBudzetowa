@@ -36,4 +36,7 @@ public class WalletService {
     public Wallet updateWallet(Wallet wallet) {
         return walletRepository.save(wallet);
     }
+    public List<Wallet> getWalletByUserId(String id) {
+        return walletRepository.findByUserId(id);
+    }
 }

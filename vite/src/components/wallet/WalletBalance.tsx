@@ -40,7 +40,6 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
                     startDate: timeFrom!,
                     endDate: timeTo!
                 });
-                console.log(response);
                 setExpensesAndIncomes(response);
             } catch (e: any) {
                 console.error(e?.message || "Error fetching period transactions");
