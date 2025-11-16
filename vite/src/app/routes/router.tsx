@@ -2,7 +2,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppLayout } from '@app/layout/AppLayout.tsx';
 import { NotFound } from './NotFound';
-import {AccountDetails, AuthForm, RegisterForm, UserDetails} from './legacy.tsx';
+import { AuthForm, RegisterForm, UserDetails } from './legacy.tsx';
 import { HomePage } from '@pages/Home/HomePage.tsx';
 import { WalletPage } from "@pages/Wallet/WalletPage.tsx";
 import { AuthReq } from '@components/IsLogin.tsx';
@@ -19,9 +19,8 @@ const router = createBrowserRouter([
                 children: [
                     {index: true, element: <HomePage/>},
                     {path: "wallet/:id", element: <WalletPage />},
-                    {path: "account/:accountNumber", element: <AccountDetails />},
                     {path: "details/:name", element: <UserDetails />},
-                    {path: "account/test", element: <AccountPage />}
+                    {path: "account/:accountId", element: <AccountPage />}
                 ],
             },
         ]

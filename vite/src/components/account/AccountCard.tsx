@@ -34,7 +34,7 @@ export function AccountCard(){
                     <Col span={6}>
                         <Card
                             key={account.number} className="ant-home-card" variant="outlined"
-                            onClick={() => navigate(`/account/${account.number}`)}
+                            onClick={() => navigate(`/account/${account.id}`)}
                             style={{cursor: 'pointer'}}>
                             <p><strong>name:</strong> {account.name}</p>
                             <p><strong>balance:</strong> {account.balance} {account.currency}</p>

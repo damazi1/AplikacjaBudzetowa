@@ -10,9 +10,13 @@ export const fetchAccounts= async (): Promise<Accounts[]> =>{
     }
 }
 
-export const fetchAccountDetails = async (account: string): Promise<Accounts> => {
+export const fetchAccountDetails = async (accountId: string): Promise<Accounts> => {
     try {
-        const response = await api.get(`/Account/details/${account}`);
+        const response = await api.get(`/Account/details`, {
+            params: {
+                id: accountId
+            }
+        });
         return response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania szczegółów konta");

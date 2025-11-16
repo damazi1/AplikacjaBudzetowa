@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pczstudent.pracainz.budgetmanagementapp.dto.WalletExpensesAndIncome;
 import pczstudent.pracainz.budgetmanagementapp.model.Account;
+import pczstudent.pracainz.budgetmanagementapp.model.Currency;
 import pczstudent.pracainz.budgetmanagementapp.model.Transaction;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.repository.TransactionRepository;
@@ -57,7 +58,19 @@ public class TransactionService {
         Account fromAccount = accountService.getAccountDetails(transaction.getAccountId());
         Account toAccount = accountService.getAccountDetails(transaction.getAccountToId());
         fromAccount.setBalance(fromAccount.getBalance() - Math.abs(transaction.getAmount()));
-        toAccount.setBalance(toAccount.getBalance() + Math.abs(transaction.getAmount()));
+        if (fromAccount.getCurrency().equals(toAccount.getCurrency())) {
+            toAccount.setBalance(toAccount.getBalance() + Math.abs(transaction.getAmount()));
+        } else {
+            Currency currency = fromAccount.getCurrency();
+            double exchangeRate = currency.getToUSDExchangeRate(); // 0.22
+            double amountInUSD = transaction.getAmount()*exchangeRate;
+            Currency toCurrency = toAccount.getCurrency();
+            double toExchangeRate = toCurrency.getToUSDExchangeRate(); // 0.13
+            double toAmountInUsd = toAccount.getBalance()*toExchangeRate;
+            double finalAmount = amountInUSD + toAmountInUsd;
+            double convertBack = toCurrency.getFromUSDExchangeRate();
+            toAccount.setBalance(Math.round((finalAmount * convertBack)* 100.0) / 100.0);
+        }
         accountService.updateAccount(fromAccount);
         accountService.updateAccount(toAccount);
         return transactionRepository.save(transaction);

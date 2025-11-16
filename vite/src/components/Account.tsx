@@ -12,7 +12,7 @@ const Account: React.FC = () => {
     const [accountData, setAccountData] = React.useState<Accounts | null>(null); // Typowanie można dostosować do modelu konta
     const [transactionData, setTransactionData] = React.useState<Transaction[] | null>(null); // Typowanie można dostosować do modelu konta
     const [viewMode, setViewMode] = React.useState<"all" | "weekly">("all");
-    const { accountNumber } = useParams<{ accountNumber: string }>();
+    const { accountId } = useParams<{ accountId: string }>();
 
 
     // ...w komponencie Account:
@@ -23,7 +23,6 @@ const Account: React.FC = () => {
     const handleDepositCancel = () => setIsDepositModalOpen(false);
 
     type handleDepositPayload = {
-        accountNumber: number
         amount: number
         description: string
     }
@@ -31,7 +30,10 @@ const Account: React.FC = () => {
     const handleDeposit = async (values: handleDepositPayload) => {
         setDepositLoading(true);
         try {
-            await newPayment(values);
+            await newPayment({
+                ...values,
+                accountId: accountId!
+            });
             message.success("Wpłata zakończona sukcesem");
             setIsDepositModalOpen(false);
             // odśwież dane konta/transakcji jeśli trzeba
@@ -44,14 +46,14 @@ const Account: React.FC = () => {
 
     useEffect(() => {
         const fetchAccountData = async () => {
-            if (!accountNumber) {
+            if (!accountId) {
                 message.error("Nie podano numeru konta.");
                 return;
             }
             try {
-                const account = await fetchAccountDetails(accountNumber);
+                const account = await fetchAccountDetails(accountId);
                 setAccountData(account);
-                console.log("Fetched account data:", accountNumber);
+                console.log("Fetched account data:", accountId);
             } catch (error: any) {
                 if (error.response && error.response.status === 404) {
                     message.error("Nie znaleziono konta o podanym numerze.");

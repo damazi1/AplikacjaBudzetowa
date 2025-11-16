@@ -1,10 +1,18 @@
-import type {Transaction} from "@models/Transactions"
 import {api} from "../axios.ts";
 
+type AccountTransactionsPayload = {
+    amount: number;
+    description?: string;
+    date?: Date;
+}
 
-export const fetchTransactions = async (id: number): Promise<Transaction[]> => {
+export const fetchTransactions = async (id: string): Promise<AccountTransactionsPayload[]> => {
     try {
-        const response = await api.get(`/Transaction/get/${id}`);
+        const response = await api.get(`/Transaction/account/transactions`, {
+            params: {
+                id : id
+            }
+        });
         return await response.data;
     } catch (error:any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji");
@@ -12,16 +20,32 @@ export const fetchTransactions = async (id: number): Promise<Transaction[]> => {
 
 }
 
-export type newPaymentPayload = {
-    accountNumber: number;
+type newPaymentPayload = {
+    accountId: string;
     amount: number;
-    description: string;
+    description?: string;
 }
 
 export const newPayment = async (data: newPaymentPayload): Promise<void> => {
     try {
-        await api.post(`http://localhost:8080/Transaction/create/deposit`, data);
+        const response = await api.post(`/Transaction/account/newTransaction`, data);
+        return response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas realizacji płatności");
+    }
+}
+
+type newTransferPayload = {
+    accountId: string;
+    accountToId: string;
+    amount: number;
+    description?: string;
+}
+export const newTransfer = async (data: newTransferPayload): Promise<void> => {
+    try {
+        const response = await api.post(`/Transaction/account/newTransfer`, data);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas realizacji przelewu");
     }
 }
