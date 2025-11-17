@@ -68,3 +68,12 @@ export const fetchWalletTransactionsToPieChart = async ( data: walletToPieChartP
         throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji do wykresu kołowego");
     }
 }
+
+export const fetchWalletTransactionsToBarChart = async ( data: walletToPieChartPayload): Promise<any> => {
+    try {
+        const response = await api.post(`/Transaction/wallet/barChartData`,data);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji do wykresu słupkowego");
+    }
+}

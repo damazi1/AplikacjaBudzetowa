@@ -2,8 +2,8 @@ import React from "react";
 
 import { Card, Col, Row } from "antd";
 import {LineCharts} from "@components/common/charts/LineCharts.tsx";
-import {BarCharts} from "@components/common/charts/BarCharts.tsx";
 import {WalletPieChart} from "@components/wallet/WalletPieChart.tsx";
+import {WalletBarChart} from "@components/wallet/WalletBarChart.tsx";
 
 type WalletTransactionsProps = {
     walletId: string;
@@ -12,10 +12,10 @@ type WalletTransactionsProps = {
 };
 
 export const WalletCharts: React.FC<WalletTransactionsProps> = ({
-        walletId,
-        dateFrom,
-        dateTo,
-    })=> {
+                                                                    walletId,
+                                                                    dateFrom,
+                                                                    dateTo,
+                                                                })=> {
     return (
         <Row>
             <Col span={12}>
@@ -25,7 +25,11 @@ export const WalletCharts: React.FC<WalletTransactionsProps> = ({
             </Col>
             <Col span={12}>
                 <Card title="Balans slupki">
-                    <BarCharts/>
+                    <WalletBarChart
+                        walletId={walletId}
+                        from={dateFrom}
+                        to={dateTo}
+                    />
                 </Card>
             </Col>
             <Col span={24}>

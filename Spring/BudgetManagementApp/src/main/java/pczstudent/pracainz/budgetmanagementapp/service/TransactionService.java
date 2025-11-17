@@ -2,17 +2,17 @@ package pczstudent.pracainz.budgetmanagementapp.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pczstudent.pracainz.budgetmanagementapp.dto.PeriodChangeDto;
-import pczstudent.pracainz.budgetmanagementapp.dto.WalletExpensesAndIncome;
-import pczstudent.pracainz.budgetmanagementapp.dto.WalletPeriodDto;
-import pczstudent.pracainz.budgetmanagementapp.dto.WalletPieChartDto;
+import pczstudent.pracainz.budgetmanagementapp.dto.*;
 import pczstudent.pracainz.budgetmanagementapp.model.Account;
 import pczstudent.pracainz.budgetmanagementapp.model.Currency;
 import pczstudent.pracainz.budgetmanagementapp.model.Transaction;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.repository.TransactionRepository;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -125,6 +125,51 @@ public class TransactionService {
                 .toList();
 
         return pieChartData;
+    }
+
+    public List<WalletBarChartDto> getBarChartData(PeriodChangeDto wallet){
+        Collection<Transaction> transactions = transactionRepository.findByWalletIdAndDateBetween(
+                wallet.getId(),
+                wallet.getFrom(),
+                wallet.getTo()
+        );
+
+        ZoneId zoneId = ZoneId.of("UTC"); // Użyj tej samej strefy wszędzie
+
+        LocalDate startDate = wallet.getFrom().toInstant().atZone(zoneId).toLocalDate();
+        LocalDate endDate = wallet.getTo().toInstant().atZone(zoneId).toLocalDate();
+
+        Map<LocalDate, List<Transaction>> transactionsByDate = transactions.stream()
+                .collect(Collectors.groupingBy(t ->
+                        t.getDate().toInstant().atZone(zoneId).toLocalDate() // Ta sama strefa
+                ));
+
+        List<WalletBarChartDto> result = new ArrayList<>();
+        LocalDate currentDate = startDate;
+
+        while (!currentDate.isAfter(endDate)) {
+            List<Transaction> dailyTransactions = transactionsByDate.getOrDefault(currentDate, Collections.emptyList());
+
+            double income = dailyTransactions.stream()
+                    .filter(t -> t.getAmount() > 0)
+                    .mapToDouble(Transaction::getAmount)
+                    .sum();
+
+            double expenses = Math.abs(dailyTransactions.stream()
+                    .filter(t -> t.getAmount() < 0)
+                    .mapToDouble(Transaction::getAmount)
+                    .sum());
+
+            WalletBarChartDto dto = new WalletBarChartDto();
+            dto.date = Date.from(currentDate.atStartOfDay(zoneId).toInstant()); // Ta sama strefa
+            dto.income = income;
+            dto.expenses = expenses;
+            result.add(dto);
+
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return result;
     }
 
 }

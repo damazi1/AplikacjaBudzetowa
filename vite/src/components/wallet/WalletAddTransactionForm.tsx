@@ -1,8 +1,9 @@
 import React from "react";
-import {Card, Button, Form, InputNumber, Input, message} from "antd";
+import {Card, Button, Form, InputNumber, message} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import {CategorySelect} from "./WalletCategorySelect.tsx";
 import {newWalletTransaction} from "../../services/WalletService.tsx";
+import TextArea from "antd/es/input/TextArea";
 
 interface WalletAddTransactionFormProps {
     walletId: string;
@@ -24,18 +25,24 @@ export function WalletAddTransactionForm({walletId}: WalletAddTransactionFormPro
             <FormItem
                 label="Amount"
                 name="amount"
+                rules={[
+                    { required: true, message: 'Kwota jest wymagana' }
+                        ]}
             >
                 <InputNumber style={{width: "100%"}} placeholder={"kwota"}/>
             </FormItem>
             <FormItem
-                label={"Description (optional)"}
+                label={"Description"}
                 name="description"
             >
-                <Input placeholder={"Put description here..."}/>
+                <TextArea placeholder={"Put description here..."}/>
             </FormItem>
             <FormItem
                 label={"Category"}
                 name={"category"}
+                rules={[
+                    { required: true, message: 'Wybierz kategorie' }
+                ]}
             >
                 <CategorySelect/>
             </FormItem>
