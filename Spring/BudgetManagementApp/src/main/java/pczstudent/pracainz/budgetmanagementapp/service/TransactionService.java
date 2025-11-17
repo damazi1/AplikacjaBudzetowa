@@ -172,4 +172,55 @@ public class TransactionService {
         return result;
     }
 
+   public List<WalletLineChartDto> getLineChartData(PeriodChangeDto wallet) {
+        // Pobierz portfel aby uzyskać aktualny balans
+        Wallet walletEntity = walletService.getWalletById(wallet.getId());
+        double currentBalance = walletEntity.getBalance();
+
+        // Pobierz transakcje z wybranego okresu
+        Collection<Transaction> transactions = transactionRepository.findByWalletIdAndDateBetween(
+                wallet.getId(),
+                wallet.getFrom(),
+                wallet.getTo()
+        );
+
+        // Oblicz sumę transakcji z okresu (aby odliczyć od aktualnego salda)
+        double periodSum = transactions.stream().mapToDouble(Transaction::getAmount).sum();
+        double balanceBeforePeriod = currentBalance - periodSum;
+
+        ZoneId zoneId = ZoneId.of("UTC");
+        LocalDate startDate = wallet.getFrom().toInstant().atZone(zoneId).toLocalDate();
+        LocalDate endDate = wallet.getTo().toInstant().atZone(zoneId).toLocalDate();
+
+        // Zgrupuj transakcje po dniach
+        Map<LocalDate, List<Transaction>> transactionsByDate = transactions.stream()
+                .collect(Collectors.groupingBy(t ->
+                        t.getDate().toInstant().atZone(zoneId).toLocalDate()
+                ));
+
+        List<WalletLineChartDto> walletLineChartDtos = new ArrayList<>();
+        LocalDate currentDate = startDate;
+        double runningBalance = balanceBeforePeriod;
+
+        // Iteruj przez wszystkie dni w okresie
+        while (!currentDate.isAfter(endDate)) {
+            // Dodaj transakcje z tego dnia do bilansu
+            List<Transaction> dailyTransactions = transactionsByDate.getOrDefault(currentDate, Collections.emptyList());
+            double dailyChange = dailyTransactions.stream()
+                    .mapToDouble(Transaction::getAmount)
+                    .sum();
+
+            runningBalance += dailyChange;
+
+            // Utwórz DTO dla tego dnia
+            WalletLineChartDto dto = new WalletLineChartDto();
+            dto.date = Date.from(currentDate.atStartOfDay(zoneId).toInstant());
+            dto.balance = runningBalance;
+            walletLineChartDtos.add(dto);
+
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return walletLineChartDtos;
+    }
 }
