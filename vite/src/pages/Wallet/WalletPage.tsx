@@ -48,7 +48,11 @@ export function WalletPage (){
                     />
                 </Col>
                 <Col span={24}>
-                    <WalletCharts/>
+                    <WalletCharts
+                        walletId={id!}
+                        dateFrom={dateRange[0].format("YYYY-MM-DD HH:mm:ss")}
+                        dateTo={dateRange[1].format("YYYY-MM-DD HH:mm:ss")}
+                    />
                 </Col>
             </Row>
         </div>

@@ -49,3 +49,22 @@ export const newTransfer = async (data: newTransferPayload): Promise<void> => {
         throw new Error(error.message || "Wystąpił błąd podczas realizacji przelewu");
     }
 }
+
+type walletToPieChartPayload = {
+    id: string;
+    from: string;
+    to: string;
+}
+
+export const fetchWalletTransactionsToPieChart = async ( data: walletToPieChartPayload, operator: string): Promise<any> => {
+    try {
+        const response = await api.post(`/Transaction/wallet/pieChartData`,data, {
+            params: {
+                operator: operator
+            }
+        });
+        return response.data;
+    } catch (error:any) {
+        throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji do wykresu kołowego");
+    }
+}

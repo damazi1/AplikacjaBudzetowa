@@ -2,7 +2,7 @@ import React from "react";
 import LegacyApp from "../../App";
 import LegacyAuth from "@components/Auth";
 import LegacyRegister from "@components/Signup";
-import LegacyAccount from "@components/Account";
+import LegacyAccount from "@components/legacy/Account.tsx";
 import LegacyDetails from "@components/Details";
 
 export function LegacyHome() {

@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pczstudent.pracainz.budgetmanagementapp.dto.PeriodChangeDto;
 import pczstudent.pracainz.budgetmanagementapp.dto.WalletExpensesAndIncome;
-import pczstudent.pracainz.budgetmanagementapp.dto.WalletPeriodDto;
+import pczstudent.pracainz.budgetmanagementapp.dto.WalletPieChartDto;
 import pczstudent.pracainz.budgetmanagementapp.model.*;
-import pczstudent.pracainz.budgetmanagementapp.repository.*;
 import pczstudent.pracainz.budgetmanagementapp.service.TransactionService;
 
 import java.util.Date;
@@ -56,6 +56,13 @@ public class TransactionController {
                 transactionService.totalPiriodBalance(walletId, from, to);
         return ResponseEntity.ok(balance);
     }
+
+    @PostMapping("/wallet/pieChartData")
+    public ResponseEntity<List<WalletPieChartDto>> getPieChartData (@RequestBody PeriodChangeDto periodData, @RequestParam String operator) {
+        List<WalletPieChartDto> wallets = transactionService.getPieChartData(periodData, operator);
+        return ResponseEntity.ok(wallets);
+    }
+
 
     @PostMapping("/account/newTransfer")
     public ResponseEntity<Transaction> newTransfer(@Valid @RequestBody Transaction transaction) {
