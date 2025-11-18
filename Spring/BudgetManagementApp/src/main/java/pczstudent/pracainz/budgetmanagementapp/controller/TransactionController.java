@@ -120,7 +120,15 @@ public class TransactionController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         PeriodChangeDto periodData = new PeriodChangeDto(currentUser.getId(), periodChangeNoIdDto.from, periodChangeNoIdDto.to);
-        List<WalletBarChartDto> barData = transactionService.getAlltoBarChart(periodData);
+        List<WalletBarChartDto> barData = transactionService.getAllToBarChart(periodData);
         return ResponseEntity.ok(barData);
+    }
+    @PostMapping("/all/lineChartData")
+    public ResponseEntity<List<WalletLineChartDto>> getAllLineChartData (@RequestBody PeriodChangeNoIdDto periodChangeNoIdDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        PeriodChangeDto periodData = new PeriodChangeDto(currentUser.getId(), periodChangeNoIdDto.from, periodChangeNoIdDto.to);
+        List<WalletLineChartDto> lineData = transactionService.getAllToLineChart(periodData);
+        return ResponseEntity.ok(lineData);
     }
 }

@@ -107,7 +107,17 @@ export const fetchAccountTransactionsToLineChart = async ( data: walletToPieChar
 
 export const fetchAllTransactionsToBarChart = async ( data: {from: string; to: string}): Promise<any> => {
     try {
-        const response = await api.post(`/Transaction/all/barChartData`,data);
+        const response = await api.post(`/Transaction/all/barChartData`, data);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji do wykresu słupkowego");
+    }
+}
+
+
+export const fetchAllTransactionsToLineChart = async ( data: {from: string; to: string}): Promise<any> => {
+    try {
+        const response = await api.post(`/Transaction/all/lineChartData`, data);
         return response.data;
     } catch (error: any) {
         throw new Error(error.message || "Wystąpił błąd podczas pobierania transakcji do wykresu słupkowego");

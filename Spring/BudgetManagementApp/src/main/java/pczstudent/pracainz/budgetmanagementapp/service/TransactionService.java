@@ -92,15 +92,11 @@ public class TransactionService {
         List<Account> userAccounts = accountService.getAccountByUserId();
         double totalSum = 0;
         for (Account account : userAccounts) {
-            Currency currency = account.getCurrency();
-            double exchangeRate = currency.getToUSDExchangeRate();
-            totalSum += account.getBalance()*exchangeRate;
+            totalSum += account.getBalance() * account.getCurrency().getToUSDExchangeRate();
         }
         List<Wallet> userWallets = walletService.getWalletByUserId(userId);
         for (Wallet wallet : userWallets) {
-            Currency currency = wallet.getCurrency();
-            double exchangeRate = currency.getToUSDExchangeRate();
-            totalSum += wallet.getBalance()*exchangeRate;
+            totalSum += wallet.getBalance() * wallet.getCurrency().getToUSDExchangeRate();
         }
         return totalSum;
     }
@@ -189,38 +185,7 @@ public class TransactionService {
         Wallet walletEntity = walletService.getWalletById(wallet.getId());
         double currentBalance = walletEntity.getBalance();
 
-        double periodSum = transactions.stream().mapToDouble(Transaction::getAmount).sum();
-        double balanceBeforePeriod = currentBalance - periodSum;
-
-        ZoneId zoneId = ZoneId.of("UTC");
-
-        Map<LocalDate, List<Transaction>> transactionsByDate = transactionsGroupedByDate(transactions, zoneId);
-
-        List<WalletLineChartDto> walletLineChartDtos = new ArrayList<>();
-        LocalDate currentDate = wallet.getFrom().toInstant().atZone(zoneId).toLocalDate();
-        LocalDate endDate = wallet.getTo().toInstant().atZone(zoneId).toLocalDate();
-        double runningBalance = balanceBeforePeriod;
-
-        // Iteruj przez wszystkie dni w okresie
-        while (!currentDate.isAfter(endDate)) {
-            // Dodaj transakcje z tego dnia do bilansu
-            List<Transaction> dailyTransactions = transactionsByDate.getOrDefault(currentDate, Collections.emptyList());
-            double dailyChange = dailyTransactions.stream()
-                    .mapToDouble(Transaction::getAmount)
-                    .sum();
-
-            runningBalance += dailyChange;
-
-            // Utwórz DTO dla tego dnia
-            WalletLineChartDto dto = new WalletLineChartDto();
-            dto.date = Date.from(currentDate.atStartOfDay(zoneId).toInstant());
-            dto.balance = runningBalance;
-            walletLineChartDtos.add(dto);
-
-            currentDate = currentDate.plusDays(1);
-        }
-
-        return walletLineChartDtos;
+        return getWalletLineChartDtos(wallet, transactions, currentBalance);
     }
 
     public List<WalletBarChartDto> getBarChartAccountData(PeriodChangeDto account) {
@@ -265,10 +230,7 @@ public class TransactionService {
         return result;
     }
 
-    public List<WalletLineChartDto> getLineChartAccountData(PeriodChangeDto account) {
-        Collection<Transaction> transactions = getAllTransactionForAccount(account);
-        Account accountEntity = accountService.getAccountDetails(account.getId());
-        double currentBalance = accountEntity.getBalance();
+    private List<WalletLineChartDto> getWalletLineChartDtos(PeriodChangeDto account, Collection<Transaction> transactions, double currentBalance) {
 
         double periodSum = transactions.stream().mapToDouble(Transaction::getAmount).sum();
         double balanceBeforePeriod = currentBalance - periodSum;
@@ -277,7 +239,7 @@ public class TransactionService {
 
         Map<LocalDate, List<Transaction>> transactionsByDate = transactionsGroupedByDate(transactions, zoneId);
 
-        List<WalletLineChartDto> accountLineChartDto = new ArrayList<>();
+        List<WalletLineChartDto> walletLineChartDtos = new ArrayList<>();
         LocalDate currentDate = account.getFrom().toInstant().atZone(zoneId).toLocalDate();
         LocalDate endDate = account.getTo().toInstant().atZone(zoneId).toLocalDate();
         double runningBalance = balanceBeforePeriod;
@@ -296,18 +258,40 @@ public class TransactionService {
             WalletLineChartDto dto = new WalletLineChartDto();
             dto.date = Date.from(currentDate.atStartOfDay(zoneId).toInstant());
             dto.balance = runningBalance;
-            accountLineChartDto.add(dto);
+            walletLineChartDtos.add(dto);
 
             currentDate = currentDate.plusDays(1);
         }
 
-        return accountLineChartDto;
+        return walletLineChartDtos;
     }
 
-    public List<WalletBarChartDto> getAlltoBarChart(PeriodChangeDto user){
+    public List<WalletLineChartDto> getLineChartAccountData(PeriodChangeDto account) {
+        Collection<Transaction> transactions = getAllTransactionForAccount(account);
+        Account accountEntity = accountService.getAccountDetails(account.getId());
+        double currentBalance = accountEntity.getBalance();
+
+        return getWalletLineChartDtos(account, transactions, currentBalance);
+    }
+
+    public List<WalletBarChartDto> getAllToBarChart(PeriodChangeDto user){
         Collection<Wallet> userWallets = walletService.getWalletByUserId(user.getId());
         Collection<Account> userAccounts = accountService.getAccountByUserId();
         List<Transaction> transactions = new ArrayList<>();
+        allTransactionCollection(user, userWallets, userAccounts, transactions);
+        return getWalletBarChartDtos(user, transactions);
+    }
+
+    public List<WalletLineChartDto> getAllToLineChart(PeriodChangeDto user){
+        Collection<Wallet> userWallets = walletService.getWalletByUserId(user.getId());
+        Collection<Account> userAccounts = accountService.getAccountByUserId();
+        List<Transaction> transactions = new ArrayList<>();
+        double currentBalance = allUserTransactionsSum(user.id);
+        allTransactionCollection(user, userWallets, userAccounts, transactions);
+        return getWalletLineChartDtos(user, transactions, currentBalance);
+    }
+
+    private void allTransactionCollection(PeriodChangeDto user, Collection<Wallet> userWallets, Collection<Account> userAccounts, List<Transaction> transactions) {
         for (Wallet wallet : userWallets) {
             Collection<Transaction> walletTransactions = transactionRepository.findByWalletIdAndDateBetween(
                     wallet.getId(),
@@ -330,8 +314,5 @@ public class TransactionService {
             }
             transactions.addAll(accountTransactions);
         }
-
-
-        return getWalletBarChartDtos(user, transactions);
     }
 }

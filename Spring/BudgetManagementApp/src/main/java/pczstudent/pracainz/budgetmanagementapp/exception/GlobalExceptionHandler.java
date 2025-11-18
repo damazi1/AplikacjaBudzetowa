@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "JWT Token has expired.");
         }
         if (errorDetail == null) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), "Internal Server Error");
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "An unexpected error occurred.");
         }
         return errorDetail;

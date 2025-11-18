@@ -1,5 +1,6 @@
 import React from "react";
 import {HomeBarChart} from "@components/home/HomeBarChart.tsx";
+import {HomeLineChart} from "@components/home/HomeLineCharts.tsx";
 
 type HomeChartsProps = {
     dateFrom: string;
@@ -13,6 +14,7 @@ export const HomeCharts: React.FC<HomeChartsProps> = ({
     return (
         <div>
             <HomeBarChart from={dateFrom} to={dateTo}/>
+            <HomeLineChart from={dateFrom} to={dateTo}/>
         </div>
     );
 }

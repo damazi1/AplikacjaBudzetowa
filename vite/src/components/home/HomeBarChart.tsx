@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {fetchAllTransactionsToBarChart,} from "@services/transactionService.tsx";
+import {fetchAllTransactionsToBarChart} from "@services/transactionService.tsx";
 import {BarCharts} from "@components/common/charts/BarCharts.tsx";
 
 

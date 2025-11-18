@@ -113,7 +113,7 @@ export function HomePage() {
                 </Col>
                 <Col span={24}>
                     <Card title="Łączny balans wszystkich portfeli i info">
-                        <h1>Balans: {balance} USD</h1>
+                        <h1>Balans: {balance.toFixed(2)} USD</h1>
                         <HomeCharts
                             dateFrom={dateRange[0].format("YYYY-MM-DD HH:mm:ss")}
                             dateTo={dateRange[1].format("YYYY-MM-DD HH:mm:ss")}
