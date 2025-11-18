@@ -1,16 +1,12 @@
 package pczstudent.pracainz.budgetmanagementapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Getter
-@AllArgsConstructor
-public class PeriodChangeDto {
-    public String id;
+public class PeriodChangeNoIdDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date from;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

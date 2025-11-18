@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Wallet {
+public class Wallet implements PaymentAcc{
     @Id
     private String id;
     private String name;

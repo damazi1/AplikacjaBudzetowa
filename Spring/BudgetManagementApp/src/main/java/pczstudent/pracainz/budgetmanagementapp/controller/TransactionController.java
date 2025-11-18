@@ -114,4 +114,13 @@ public class TransactionController {
         Double total = transactionService.allUserTransactionsSum(currentUser.getId());
         return ResponseEntity.ok(total);
     }
+
+    @PostMapping("/all/barChartData")
+    public ResponseEntity<List<WalletBarChartDto>> getAllBarChartData (@RequestBody PeriodChangeNoIdDto periodChangeNoIdDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        PeriodChangeDto periodData = new PeriodChangeDto(currentUser.getId(), periodChangeNoIdDto.from, periodChangeNoIdDto.to);
+        List<WalletBarChartDto> barData = transactionService.getAlltoBarChart(periodData);
+        return ResponseEntity.ok(barData);
+    }
 }

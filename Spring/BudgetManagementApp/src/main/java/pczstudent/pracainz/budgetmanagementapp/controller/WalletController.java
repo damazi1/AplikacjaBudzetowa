@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pczstudent.pracainz.budgetmanagementapp.model.User;
 import pczstudent.pracainz.budgetmanagementapp.model.Wallet;
 import pczstudent.pracainz.budgetmanagementapp.dto.WalletAdd;
 import pczstudent.pracainz.budgetmanagementapp.service.WalletService;
@@ -25,8 +26,8 @@ public class WalletController {
     @GetMapping("/")
     public ResponseEntity<?> getWalletsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        return ResponseEntity.ok(walletService.getWalletsForUser(login));
+        User currentUser = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(walletService.getWalletsForUser(currentUser.getId()));
     }
     @GetMapping("/{id}")
     public ResponseEntity<Wallet> getWalletById(@PathVariable String id) {

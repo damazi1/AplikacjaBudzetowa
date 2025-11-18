@@ -303,4 +303,35 @@ public class TransactionService {
 
         return accountLineChartDto;
     }
+
+    public List<WalletBarChartDto> getAlltoBarChart(PeriodChangeDto user){
+        Collection<Wallet> userWallets = walletService.getWalletByUserId(user.getId());
+        Collection<Account> userAccounts = accountService.getAccountByUserId();
+        List<Transaction> transactions = new ArrayList<>();
+        for (Wallet wallet : userWallets) {
+            Collection<Transaction> walletTransactions = transactionRepository.findByWalletIdAndDateBetween(
+                    wallet.getId(),
+                    user.getFrom(),
+                    user.getTo()
+            );
+            for (Transaction transaction : walletTransactions) {
+                currencyExchange(transaction, wallet, Currency.USD);
+            }
+            transactions.addAll(walletTransactions);
+        }
+        for (Account account : userAccounts) {
+            Collection<Transaction> accountTransactions = transactionRepository.findByAccountIdAndDateBetween(
+                    account.getId(),
+                    user.getFrom(),
+                    user.getTo()
+            );
+            for (Transaction transaction : accountTransactions) {
+                currencyExchange(transaction, account, Currency.USD);
+            }
+            transactions.addAll(accountTransactions);
+        }
+
+
+        return getWalletBarChartDtos(user, transactions);
+    }
 }

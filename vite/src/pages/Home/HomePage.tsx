@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {fetchWallets} from "@services/WalletService.tsx";
-import {Card, Col, DatePicker, Row} from "antd";
+import {Card, Col, Row} from "antd";
 import {WalletCard} from "@components/wallet/WalletCard.tsx";
 import {useNavigate} from "react-router-dom";
 import {WalletCreate} from "@components/wallet/WalletCreate.tsx";
@@ -12,12 +12,13 @@ import type {Accounts} from "@models/Accounts.ts";
 import {api} from "../../axios.ts";
 import {DateRangePicker} from "@components/common/DataRangePicker.tsx";
 import dayjs, {type Dayjs} from "dayjs";
+import {HomeCharts} from "@components/home/HomeCharts.tsx";
 
 export function HomePage() {
     const navigate = useNavigate();
 
     const [wallets, setWallets] = React.useState<Wallet[]>([])
-    const [accounts, setAccounts] = React.useState<Accounts[]>([])
+    const [, setAccounts] = React.useState<Accounts[]>([])
 
     const [balance, setBalance] = useState<number>(0)
 
@@ -111,8 +112,12 @@ export function HomePage() {
                     <DateRangePicker value={dateRange} onChange={setDateRange}/>
                 </Col>
                 <Col span={24}>
-                    <Card title="Łączny balans wszystkich portfeli">
+                    <Card title="Łączny balans wszystkich portfeli i info">
                         <h1>Balans: {balance} USD</h1>
+                        <HomeCharts
+                            dateFrom={dateRange[0].format("YYYY-MM-DD HH:mm:ss")}
+                            dateTo={dateRange[1].format("YYYY-MM-DD HH:mm:ss")}
+                        />
                     </Card>
                 </Col>
             </Row>
