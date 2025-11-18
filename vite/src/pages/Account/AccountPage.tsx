@@ -5,9 +5,12 @@ import dayjs, {type Dayjs} from "dayjs";
 import {AccountDetails} from "@components/account/AccountDetails.tsx";
 import {AccountNewTransaction} from "@components/account/AccountNewTransaction.tsx";
 import {AccountTransactions} from "@components/account/AccountTransactions.tsx";
+import {AccountCharts} from "@components/account/AccountCharts.tsx";
+import {useParams} from "react-router-dom";
 
 
 export function AccountPage() {
+    const {accountId} = useParams<{accountId?: string}>();
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([
         dayjs().startOf("month"),
         dayjs().endOf("month"),
@@ -28,6 +31,13 @@ export function AccountPage() {
             </Col>
             <Col span={12}>
                 <AccountTransactions/>
+            </Col>
+            <Col span={24}>
+                <AccountCharts
+                    accountId={accountId!}
+                    dateFrom={dateRange[0].format("YYYY-MM-DD HH:mm:ss")}
+                    dateTo={dateRange[1].format("YYYY-MM-DD HH:mm:ss")}
+                />
             </Col>
         </Row>
     )

@@ -96,6 +96,17 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
+    @PostMapping("/account/barChartData")
+    public ResponseEntity<List<WalletBarChartDto>> getAccountBarChartData (@RequestBody PeriodChangeDto periodData){
+        List<WalletBarChartDto> barData = transactionService.getBarChartAccountData(periodData);
+        return ResponseEntity.ok(barData);
+    }
+    @PostMapping("/account/lineChartData")
+    public ResponseEntity<List<WalletLineChartDto>> getAccountLineChartData (@RequestBody PeriodChangeDto periodData) {
+        List<WalletLineChartDto> lineData = transactionService.getLineChartAccountData(periodData);
+        return ResponseEntity.ok(lineData);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Double> getAllTransactions() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

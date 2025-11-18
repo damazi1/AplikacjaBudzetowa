@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @Document
 @Accessors(chain = true)
-public class Account {
+public class Account implements PaymentAcc {
     @Id
     private String id;
     private String name;
