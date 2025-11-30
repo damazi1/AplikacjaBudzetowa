@@ -53,9 +53,9 @@ export const logoutUser = async (): Promise<void> => {
     }
 }
 
-export const registerUser = async (data : { login: string; password: string; role: string }): Promise<void> => {
+export const registerUser = async (data : { username: string; password: string}): Promise<void> => {
     try {
-        await api.post(`/user/register`, data);
+        await api.post(`/auth/signup`, data);
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.message);
     }

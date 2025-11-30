@@ -3,7 +3,7 @@ import React from "react";
 import {useEffect, useState} from "react";
 import {Navigate, Outlet, useLocation} from "react-router-dom";
 
-export function AuthReq() {
+export function AuthorizationRequest() {
     const [state, setState] = useState<"ok" | "no"|"checking">("checking");
     const location = useLocation();
 
