@@ -16,7 +16,6 @@ export function HomeLineChart({ from, to }: homePieChartProps) {
             const data = await fetchAllTransactionsToLineChart(
                 {from, to}
             )
-            console.log(data)
             setHomeLineChartData(data)
         } catch (error) {
             console.error("Error fetching home line chart data:", error);

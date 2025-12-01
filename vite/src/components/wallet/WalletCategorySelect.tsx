@@ -107,6 +107,10 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({ value, onChange 
             isSearchable={false}
             menuPortalTarget={document.body}
             menuPosition="fixed"
+            styles={{
+                menuPortal: base => ({ ...base, zIndex: 10000 }),
+                menu: base => ({ ...base, zIndex: 10000 }),
+            }}
         />
     );
 };

@@ -4,6 +4,7 @@ type AccountTransactionsPayload = {
     amount: number;
     description?: string;
     date?: Date;
+    currency: string;
 }
 
 export const fetchTransactions = async (id: string): Promise<AccountTransactionsPayload[]> => {
@@ -36,8 +37,8 @@ export const newPayment = async (data: newPaymentPayload): Promise<void> => {
 }
 
 type newTransferPayload = {
-    accountId: string;
-    accountToId: string;
+    accountFromId: string;
+    accountToNumber: string;
     amount: number;
     description?: string;
 }

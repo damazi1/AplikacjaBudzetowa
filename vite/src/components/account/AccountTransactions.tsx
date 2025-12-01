@@ -7,6 +7,7 @@ type AccountTransactionsProps = {
     amount: number;
     description?: string;
     date?: Date;
+    currency: string;
 }
 
 export function AccountTransactions() {
@@ -40,7 +41,7 @@ export function AccountTransactions() {
             </Row>
             {transactions.map((transaction, index) => (
                 <Row key={index} style={{marginTop: "10px"}}>
-                    <Col span={8}>{transaction.amount.toFixed(2)} PLN</Col>
+                    <Col span={8}>{transaction.amount.toFixed(2)} {transaction.currency}</Col>
                     <Col span={8}>{transaction.description || "-"}</Col>
                     <Col span={8}>{transaction.date ? new Date(transaction.date).toLocaleDateString() : "-"}</Col>
                 </Row>

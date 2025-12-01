@@ -17,7 +17,6 @@ export function AccountBarChart({ accountId, from, to }: AccountPieChartProps) {
         try {
             const data = await fetchAccountTransactionsToBarChart(
                 {id: accountId, from, to})
-            console.log(data)
             setAccountBarChartData(data)
         } catch (error) {
             console.error("Error fetching account bar chart data:", error);

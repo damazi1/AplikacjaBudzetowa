@@ -16,7 +16,6 @@ export function AccountLineChart({ accountId, from, to }: accountPieChartProps) 
         try {
             const data = await fetchAccountTransactionsToLineChart(
                 {id: accountId, from, to})
-            console.log(data)
             setAccountLineChartData(data)
         } catch (error) {
             console.error("Error fetching account line chart data:", error);

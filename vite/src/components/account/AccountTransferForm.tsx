@@ -6,7 +6,7 @@ import {newTransfer} from "@services/transactionService.tsx";
 import {useParams} from "react-router-dom";
 
 type AccountTransferFormProps = {
-    accountToId: string;
+    accountToNumber: string;
     amount: number;
     description?: string;
 }
@@ -18,13 +18,13 @@ export function AccountTransferForm() {
         if (!accountId) return;
         newTransfer({
             ...values,
-            accountId: accountId,
+            accountFromId: accountId,
         })
     }
     return (
         <Form onFinish={onSubmit}>
             <FormItem
-                name={"accountToId"}
+                name={"accountToNumber"}
                 label={"Numer konta odbiorcy"}>
 
                 <Input></Input>

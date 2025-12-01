@@ -16,7 +16,6 @@ export function WalletLineChart({ walletId, from, to }: WalletPieChartProps) {
         try {
             const data = await fetchWalletTransactionsToLineChart(
                 {id: walletId, from, to})
-            console.log(data)
             setWalletLineChartData(data)
         } catch (error) {
             console.error("Error fetching wallet pie chart data:", error);

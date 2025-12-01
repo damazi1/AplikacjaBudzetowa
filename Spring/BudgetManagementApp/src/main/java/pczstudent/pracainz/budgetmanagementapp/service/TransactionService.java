@@ -55,9 +55,10 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public Transaction accountNewTransfer(Transaction transaction){
-        Account fromAccount = accountService.getAccountDetails(transaction.getAccountId());
-        Account toAccount = accountService.getAccountDetails(transaction.getAccountToId());
+    public Transaction accountNewTransfer(AccountTransferDto transaction){
+        Account fromAccount = accountService.getAccountDetails(transaction.accountFromId);
+        Account toAccount = accountRepository.findByNumber(transaction.getAccountToNumber())
+                .orElseThrow(() -> new RuntimeException("Nie znaleziono konta docelowego"));
         fromAccount.setBalance(fromAccount.getBalance() - Math.abs(transaction.getAmount()));
         if (fromAccount.getCurrency().equals(toAccount.getCurrency())) {
             toAccount.setBalance(toAccount.getBalance() + Math.abs(transaction.getAmount()));
@@ -74,18 +75,53 @@ public class TransactionService {
         }
         accountService.updateAccount(fromAccount);
         accountService.updateAccount(toAccount);
-        return transactionRepository.save(transaction);
+        Transaction transactionRecord = new Transaction()
+                .setAccountId(fromAccount.getId())
+                .setAccountToId(toAccount.getId())
+                .setAmount(-Math.abs(transaction.getAmount()))
+                .setDescription(transaction.getDescription())
+                .setDate(new Date());
+        return transactionRepository.save(transactionRecord);
     }
 
-    public List<Transaction> allAccountTransactions(String accountId){
+    public List<AccountTransactionsDto> allAccountTransactions(String accountId){
         List<Transaction> transactions = transactionRepository.findAllByAccountIdOrAccountToIdOrderByDateDesc(accountId, accountId);
         transactions.forEach(t -> {
             if (!Objects.equals(t.getAccountToId(), accountId) && t.getAccountToId() != null) {
                 t.setAmount(t.getAmount()*-1);
             }
         });
-        return transactions;
+        List<AccountTransactionsDto> dtoList = transactions.stream().map(t -> {
+            AccountTransactionsDto dto = new AccountTransactionsDto();
+            dto.amount = t.getAmount();
+            dto.description = t.getDescription();
+            dto.date = t.getDate();
+            if (t.getAccountId() != null) {
+                Account account = accountService.getAccountDetails(t.getAccountId());
+                dto.currency = account.getCurrency();
+            } else {
+                Account accountTo = accountService.getAccountDetails(t.getAccountToId());
+                dto.currency = accountTo.getCurrency();
+            }
+            return dto;
+        }).toList();
+        return dtoList;
 
+    }
+
+    public Transaction updateAccountTransaction(Transaction transaction) {
+        Transaction existingTransaction = transactionRepository.findById(transaction.getId()).orElse(null);
+        if (existingTransaction == null) {
+            throw new RuntimeException("Transaction not found");
+        }
+        Account account = accountService.getAccountDetails(transaction.getAccountId());
+        double balanceDifference = transaction.getAmount() - existingTransaction.getAmount();
+        account.setBalance(account.getBalance() + balanceDifference);
+        accountService.updateAccount(account);
+        existingTransaction.setAmount(transaction.getAmount());
+        existingTransaction.setDescription(transaction.getDescription());
+        existingTransaction.setCategory(transaction.getCategory());
+        return transactionRepository.save(existingTransaction);
     }
 
     public double allUserTransactionsSum(String userId) {

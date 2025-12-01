@@ -1,7 +1,8 @@
 import React, {Fragment, useEffect, useState } from "react";
-import {Card, Col, Row, Spin, Empty, Button} from "antd";
+import {Card, Col, Row, Spin, Empty, Button, Modal} from "antd";
 import {deleteWalletById, periodWalletTransaction} from "../../services/WalletService";
 import dayjs from "dayjs";
+import {WalletUpdateTransaction} from "@components/wallet/WalletUpdateTransaction.tsx";
 
 type WalletTransactionsProps = {
     walletId: string;
@@ -28,9 +29,11 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalInitials, setModalInitials] = useState<{ amount?: number; description?: string; category?: string }>({});
+
     const toggleExpand = (t: string) => {
         const id: string | null = t ?? null;
-        console.log(t);
         setExpandedId(prev => (prev === id ? null : id));
     };
 
@@ -54,7 +57,6 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
                     const ta = a?.date ? dayjs(a.date).valueOf() : 0;
                     return tb - ta; // najnowsze u góry
                 });
-                console.log(list);
                 setTransactions(list);
             } catch (e: any) {
                 setError(e?.message || "Błąd pobierania transakcji");
@@ -68,14 +70,23 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
 
     const deleteTransaction = async (transactionId: string) => {
         try {
-            console.log(transactionId)
-            const response = await deleteWalletById(transactionId)
-            console.log("Transakcja usunięta:", response);
+            await deleteWalletById(transactionId);
             window.location.reload();
         } catch (error) {
             console.error("Błąd usuwania transakcji:", error);
         }
     }
+
+    const openAddModalPrefilled = (t?: TransactionItem) => {
+        setModalInitials({
+            amount: t?.amount,
+            description: t?.description,
+            category: t?.category,
+        });
+        setModalOpen(true);
+        console.log(modalInitials)
+    };
+
     return (
         <Card title={`Historia transakcji od ${dateFrom ? dayjs(dateFrom).format("DD-MM-YYYY") : "-"} do ${dateTo ? dayjs(dateTo).format("DD-MM-YYYY") : "-"}`}>            {loading ? (
                 <div style={{ textAlign: "center", padding: 16 }}>
@@ -124,7 +135,8 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
                                 {isExpanded && (
                                     <Row>
                                         <Col span={12} style={{ display: "flex", justifyContent: "flex-start", padding: "10px"}}>
-                                            <Button type={"primary"}  style={{background: "orange", width: "100%"}} >
+                                            <Button type={"primary"}  style={{background: "orange", width: "100%"}} onClick={() =>
+                                                openAddModalPrefilled(t)}>
                                                 Edytuj transakcję
                                             </Button>
                                         </Col>
@@ -139,6 +151,23 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
                         )
 
                     })}
+                    <Modal
+                        title="Dodaj transakcję"
+                        open={modalOpen}
+                        onCancel={() => setModalOpen(false)}
+                        footer={null}
+                        destroyOnClose
+                    >
+                        <WalletUpdateTransaction
+                            walletId={walletId}
+                            initialValues={modalInitials}
+                            onSuccess={() => {
+                                setModalOpen(false);
+                                // Odświeżenie listy transakcji po dodaniu/edycji
+                                setLoading(true);
+                            }}
+                        />
+                    </Modal>
                 </>
             )}
         </Card>

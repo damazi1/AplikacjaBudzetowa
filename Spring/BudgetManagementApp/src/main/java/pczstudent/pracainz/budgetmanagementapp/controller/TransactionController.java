@@ -78,10 +78,17 @@ public class TransactionController {
         return ResponseEntity.ok(deletedTransaction);
     }
 
+    //TODO: update transaction service method and tests
+    @PutMapping("/wallet/updateTransaction")
+    public ResponseEntity<Transaction> updateTransaction(@Valid @RequestBody Transaction transaction) {
+        Transaction updatedTransaction = transactionService.updateAccountTransaction(transaction);
+        return ResponseEntity.ok(updatedTransaction);
+    }
+
     @PostMapping("/account/newTransfer")
-    public ResponseEntity<Transaction> newTransfer(@Valid @RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> newTransfer(@RequestBody AccountTransferDto accountTransfer) {
         try {
-            Transaction newTransaction = transactionService.accountNewTransfer(transaction);
+            Transaction newTransaction = transactionService.accountNewTransfer(accountTransfer);
             return ResponseEntity.ok(newTransaction);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -96,8 +103,8 @@ public class TransactionController {
 
 
     @GetMapping("/account/transactions")
-    public ResponseEntity<List<Transaction>> getTransactionByAccountNumber(@RequestParam String id) {
-        List<Transaction> transactions = transactionService.allAccountTransactions(id);
+    public ResponseEntity<List<AccountTransactionsDto>> getTransactionByAccountNumber(@RequestParam String id) {
+        List<AccountTransactionsDto> transactions = transactionService.allAccountTransactions(id);
         return ResponseEntity.ok(transactions);
     }
 
