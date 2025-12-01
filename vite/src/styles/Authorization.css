@@ -1,0 +1,18 @@
+/* src/styles/Authorization.css */
+
+.authorization-form-wrapper {
+    width: 50%;
+    margin-inline: auto;         /* centruje całość */
+    padding: 32px;
+    border: 2px solid;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px;
+}
+
+
+.authorization-form-header {
+    display: block;
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import {Pie, PieChart, ResponsiveContainer, Sector, type SectorProps, Tooltip} from 'recharts';
+import {Cell, Pie, PieChart, ResponsiveContainer, Sector, type SectorProps, Tooltip} from 'recharts';
 import type {TooltipIndex} from 'recharts/types/state/tooltipSlice';
 
 type Coordinate = {
@@ -80,14 +80,14 @@ const renderActiveShape = ({
 
 export default function PieCharts({
                                       data,
-                                      color,
+                                      colorMapper,
                                       isAnimationActive = true,
                                       defaultIndex = undefined,
                                   }: {
     isAnimationActive?: boolean;
     defaultIndex?: TooltipIndex;
     data: { name: string; value: number }[];
-    color: string;
+    colorMapper?: (item: { name: string; value: number; type?: string }, index: number) => string;
 }) {
     return (
         <div style={{ width: "100%", maxWidth: 500, height: 400 }}>
@@ -100,10 +100,13 @@ export default function PieCharts({
                         cy="50%"
                         innerRadius="30%"
                         outerRadius="50%"
-                        fill={color}
                         dataKey="value"
                         isAnimationActive={isAnimationActive}
-                    />
+                    >
+                        {data.map((item, i) => (
+                            <Cell key={i} fill={colorMapper ? colorMapper(item, i) : "#8884d8"} />
+                        ))}
+                    </Pie>
                     <Tooltip content={() => null} defaultIndex={defaultIndex} />
                 </PieChart>
             </ResponsiveContainer>

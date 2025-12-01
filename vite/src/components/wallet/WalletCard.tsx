@@ -1,7 +1,9 @@
 import React from 'react';
 import {Card, Col, Row} from "antd";
-import type { Wallet } from "../../models/Wallet.ts";
+import type { Wallet } from "@models/Wallet.ts";
 import {Icon} from "@iconify/react";
+import "@styles/Home.css";
+
 
 interface WalletCardProps {
     wallet: Wallet;

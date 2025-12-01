@@ -77,3 +77,14 @@ export const periodWalletBalance = async(data: payloadPeriodTransaction) => {
        throw new Error(error instanceof Error ? error.message : "Unknown error");
    }
 }
+
+export const deleteWalletById = async (id: string): Promise<void> => {
+    try {
+        await api.delete(`/Transaction/wallet/deleteTransaction`, {
+            params: {
+                id: id,
+            },
+        });
+    } catch (error) {
+    throw new Error(error instanceof Error ? error.message : "Unknown error");}
+}

@@ -72,6 +72,11 @@ public class TransactionController {
         List<WalletLineChartDto> lineData = transactionService.getLineChartData(periodData);
         return ResponseEntity.ok(lineData);
     }
+    @DeleteMapping("/wallet/deleteTransaction")
+    public ResponseEntity<Transaction> deleteTransaction(@RequestParam String id) {
+        Transaction deletedTransaction = transactionService.deleteWalletTransaction(id);
+        return ResponseEntity.ok(deletedTransaction);
+    }
 
     @PostMapping("/account/newTransfer")
     public ResponseEntity<Transaction> newTransfer(@Valid @RequestBody Transaction transaction) {

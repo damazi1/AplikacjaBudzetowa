@@ -43,7 +43,7 @@ export function AuthorizationSingupForm() {
             autoComplete="off"
             onFieldsChange={onFieldsChange}
         >
-            <div className="ant-Auth-form-header">
+            <div className="authorization-form-header">
                 <h2>
                     <Trans i18nKey="registerMessage">
                         <strong>Login</strong> to E-Wallet

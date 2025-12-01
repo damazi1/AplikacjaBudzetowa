@@ -33,6 +33,7 @@ public class AccountService {
                 .setName(accountAdd.getName())
                 .setType(accountAdd.getType())
                 .setUserId(user.getId())
+                .setCurrency(accountAdd.getCurrency())
                 .setNumber(accountNumber.toString())
                 .setBalance(0);
         return accountRepository.save(newAccount);

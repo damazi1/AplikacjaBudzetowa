@@ -37,7 +37,7 @@ export const WalletCharts: React.FC<WalletTransactionsProps> = ({
                 </Card>
             </Col>
             <Col span={24}>
-                <Card title="Wydatki i przychody">
+                <Card title="Wydatki i przychody" style={{textAlign: "center", }} styles={{body: {placeItems: "center"}}}>
                     <WalletPieChart
                         walletId={walletId}
                         from={dateFrom}

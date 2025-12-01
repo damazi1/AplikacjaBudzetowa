@@ -1,5 +1,6 @@
 package pczstudent.pracainz.budgetmanagementapp.model;
 
+import com.mongodb.lang.Nullable;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
@@ -27,6 +28,22 @@ public class User implements UserDetails {
     private String password;
     private UserRoles role;
     private LocalDate createdAt;
+    @Nullable
+    private String firstName;
+    @Nullable
+    private String lastName;
+    @Nullable
+    private String email;
+    @Nullable
+    private String phoneNumber;
+    @Nullable
+    private String city;
+    @Nullable
+    private String street;
+    @Nullable
+    private String houseNumber;
+    @Nullable
+    private String postalCode;
 
 
     @Override

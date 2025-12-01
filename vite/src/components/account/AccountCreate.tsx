@@ -38,6 +38,7 @@ export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", butto
     const handleSubmit = async (values: FormValues) => {
         try {
             setSaving(true);
+            console.log(values);
             await createAccount({
                 name: values.name,
                 currency: values.currency,

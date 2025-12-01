@@ -73,6 +73,25 @@ export const searchUsers = async (query: string): Promise<string[]> => {
     }
 }
 
+type userDetails = {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phoneNumber?: string;
+    city?: string;
+    houseNumber?: string;
+    street?: string;
+    postalCode?: string;
+};
+
+export const updateUser = async (data: userDetails)=> {
+    try {
+        await api.put(`/user/update`, data);
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+}
+
 export const deleteUser = async (id: string): Promise<void> => {
     try {
         await api.delete(`/user/delete/${id}`);

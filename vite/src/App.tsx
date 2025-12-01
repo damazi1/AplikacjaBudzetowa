@@ -6,7 +6,7 @@ import {Route, Routes} from "react-router-dom";
 import Home from "@components/legacy/Home.tsx";
 import Navbar from "@components/common/Navbar.tsx";
 import Auth from "@components/legacy/Auth.tsx";
-import Details from "./components/Details.tsx";
+import Details from "@components/legacy/Details.tsx";
 import Account from "@components/legacy/Account.tsx";
 import {ThemeProvider, useTheme } from "./theme/ThemeContext.tsx";
 import Signup from "@components/legacy/Signup.tsx";

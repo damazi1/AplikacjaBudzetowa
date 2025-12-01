@@ -1,10 +1,12 @@
 import React from "react";
 import {AuthorizationLoginForm} from "@components/authorization/AuthorizationLoginForm.tsx";
+import {Card} from "antd";
+import "@styles/Authorization.css";
 
 export function AuthorizationLoginPage() {
     return (
-        <div className="ant-Auth-form-bg">
+        <Card className="authorization-form-wrapper">
             <AuthorizationLoginForm/>
-        </div>
+        </Card>
     )
 }

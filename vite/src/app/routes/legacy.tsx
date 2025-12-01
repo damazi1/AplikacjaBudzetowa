@@ -3,7 +3,7 @@ import LegacyApp from "../../App";
 import LegacyAuth from "@components/legacy/Auth.tsx";
 import LegacyRegister from "@components/legacy/Signup.tsx";
 import LegacyAccount from "@components/legacy/Account.tsx";
-import LegacyDetails from "@components/Details";
+import LegacyDetails from "@components/legacy/Details.tsx";
 
 export function LegacyHome() {
     return <LegacyApp />;

@@ -27,18 +27,15 @@ export const WalletDetails =() => {
         loadData();
     }, [id]);
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px 0' }}>
         {
             loading ? ( <Spin/>) : wallet ? (
                 <Card style={{textAlign: "center"}} title={"Dane o portfelu"}>
                     <Row style={{textAlign: "center"}}>
-                        <Col span={8}>
+                        <Col span={12}>
                             <strong>Nazwa portfela:</strong> {wallet.name}
                         </Col>
-                        <Col span={8}>
-                            <strong>Użytkownik:</strong> {wallet.userId}
-                        </Col>
-                        <Col span={8}>
+                        <Col span={12}>
                             <strong>Waluta:</strong> {wallet.currency}
                         </Col>
                     </Row>

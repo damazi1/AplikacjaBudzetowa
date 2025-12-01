@@ -1,10 +1,11 @@
 import React from "react";
 import {AuthorizationSingupForm} from "@components/authorization/AuthorizationSingupForm.tsx";
+import {Card} from "antd";
 
 export function AuthorizationSingupPage() {
     return (
-        <div className="ant-Auth-form-bg">
+        <Card className="authorization-form-wrapper">
             <AuthorizationSingupForm/>
-        </div>
+        </Card>
     )
 }

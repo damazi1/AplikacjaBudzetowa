@@ -4,7 +4,7 @@ import type {Accounts} from "@models/Accounts.ts";
 import {fetchAccounts} from "@services/accountService.tsx";
 import {useNavigate} from "react-router-dom";
 import {Icon} from "@iconify/react";
-
+import "@styles/Home.css";
 
 export function AccountCard(){
     const [AccountData, setAccounts] = useState<Accounts [] | null>(null);

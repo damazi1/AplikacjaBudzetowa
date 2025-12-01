@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pczstudent.pracainz.budgetmanagementapp.dto.UserDetails;
 import pczstudent.pracainz.budgetmanagementapp.model.User;
 import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
 
@@ -39,5 +40,21 @@ public class UserService {
         tokenCookie.setMaxAge(0); // Usuń ciasteczko
         tokenCookie.setSecure(false);
         response.addCookie(tokenCookie);
+    }
+
+    public User setUserDetails(UserDetails userDetails) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        currentUser.setFirstName(userDetails.getFirstName());
+        currentUser.setLastName(userDetails.getLastName());
+        currentUser.setEmail(userDetails.getEmail());
+        currentUser.setPhoneNumber(String.valueOf(userDetails.getPhoneNumber()));
+        currentUser.setCity(userDetails.city);
+        currentUser.setStreet(userDetails.street);
+        currentUser.setHouseNumber(userDetails.houseNumber);
+        currentUser.setPostalCode(userDetails.postalCode);
+
+        return userRepository.save(currentUser);
     }
 }

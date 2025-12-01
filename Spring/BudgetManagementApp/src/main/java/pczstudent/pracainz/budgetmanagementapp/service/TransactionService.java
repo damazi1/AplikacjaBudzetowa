@@ -315,4 +315,14 @@ public class TransactionService {
             transactions.addAll(accountTransactions);
         }
     }
+
+    public Transaction deleteWalletTransaction(String transactionId) {
+        Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
+        assert transaction != null;
+        Wallet wallet = walletService.getWalletById(transaction.getWalletId());
+        wallet.setBalance(wallet.getBalance() - (transaction.getAmount()));
+        walletService.updateWallet(wallet);
+        transactionRepository.delete(transaction);
+        return transaction;
+    }
 }

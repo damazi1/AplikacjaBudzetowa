@@ -1,7 +1,6 @@
 import PieCharts from "@components/common/charts/PieCharts.tsx";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {fetchWalletTransactionsToPieChart} from "@services/transactionService.tsx";
-import {Col, Row} from "antd";
 
 type WalletPieChartProps = {
     walletId: string;
@@ -10,42 +9,36 @@ type WalletPieChartProps = {
 }
 
 export function WalletPieChart({ walletId, from, to }: WalletPieChartProps) {
-    const [walletIncomeData, setWalletIncomeData] = React.useState([]);
-    const [walletExpenseData, setWalletExpenseData] = React.useState([]);
+    const [data, setData] = useState<{ name: string; value: number; type: string }[]>([]);
 
-    const fetchWalletData = async(operator: string)=>  {
+    const load = async () => {
         try {
-            const data = await fetchWalletTransactionsToPieChart(
-                {id: walletId, from, to}
-                , operator)
-            const mappedData = data.map((item: { category: string; amount: number }) => ({
-                name: item.category,
-                value: item.amount
+            const income = await fetchWalletTransactionsToPieChart({ id: walletId, from, to }, "income");
+            const expense = await fetchWalletTransactionsToPieChart({ id: walletId, from, to }, "else");
+
+            const mappedIncome = income.map((i: { category: string; amount: number }) => ({
+                name: i.category,
+                value: i.amount,
+                type: "income"
             }));
-            console.log(data)
-            if (operator === "income") {
-                setWalletIncomeData(mappedData);
-            } else {
-                setWalletExpenseData(mappedData);
-            }
-        } catch (error) {
-            console.error("Error fetching wallet pie chart data:", error);
+            const mappedExpense = expense.map((e: { category: string; amount: number }) => ({
+                name: e.category,
+                value: e.amount,
+                type: "expense"
+            }));
+
+            setData([...mappedIncome, ...mappedExpense]);
+        } catch (e) {
+            console.error("Błąd pobierania:", e);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchWalletData("income");
-        fetchWalletData("else");
+        load()
     }, [walletId, from, to]);
-    return (
-        <Row>
-            <Col span={12}>
-                <PieCharts data={walletIncomeData} color={"#008000"}/>
 
-            </Col>
-            <Col span={12}>
-                <PieCharts data={walletExpenseData} color={"#FF2C2C"}/>
-            </Col>
-        </Row>
-    )
+    const colorMapper = (item: { type?: string }) =>
+        item.type === "income" ? "#008000" : "#FF2C2C";
+    return <PieCharts data={data} colorMapper={colorMapper}/>
+
 }

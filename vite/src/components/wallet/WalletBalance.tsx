@@ -65,7 +65,7 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
                         <Card style={{height: "80%"}} title={"Period balance change"}>
                             {ExpensesAndIncomes.balanceChange >= 0 ?
                                 <p className={"PositiveTransaction"}>{ExpensesAndIncomes.balanceChange.toFixed(2)} {wallet.currency}</p>:
-                                <p className={"NegativeTransaction"}>{ExpensesAndIncomes} {wallet.currency}</p>
+                                <p className={"NegativeTransaction"}>{ExpensesAndIncomes.balanceChange.toFixed(2)} {wallet.currency}</p>
                             }
                         </Card>
                     </Col> : <Spin/>

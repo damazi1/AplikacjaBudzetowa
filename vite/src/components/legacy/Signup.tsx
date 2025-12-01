@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { FormProps } from 'antd';
-import '@styles/Auth.css'; // Import CSS for styling
+import '@styles/Authorization.css'; // Import CSS for styling
 import { Button, Form, Input, message } from 'antd';
 import {loginUser} from "@services/userService.tsx";
 import {useState} from "react";
