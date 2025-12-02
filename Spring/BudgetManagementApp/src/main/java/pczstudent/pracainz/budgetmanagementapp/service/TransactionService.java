@@ -109,15 +109,15 @@ public class TransactionService {
 
     }
 
-    public Transaction updateAccountTransaction(Transaction transaction) {
+    public Transaction updateWalletTransaction(Transaction transaction) {
         Transaction existingTransaction = transactionRepository.findById(transaction.getId()).orElse(null);
         if (existingTransaction == null) {
             throw new RuntimeException("Transaction not found");
         }
-        Account account = accountService.getAccountDetails(transaction.getAccountId());
+        Wallet wallet = walletService.getWalletById(existingTransaction.getWalletId());
         double balanceDifference = transaction.getAmount() - existingTransaction.getAmount();
-        account.setBalance(account.getBalance() + balanceDifference);
-        accountService.updateAccount(account);
+        wallet.setBalance(wallet.getBalance() + balanceDifference);
+        walletService.updateWallet(wallet);
         existingTransaction.setAmount(transaction.getAmount());
         existingTransaction.setDescription(transaction.getDescription());
         existingTransaction.setCategory(transaction.getCategory());

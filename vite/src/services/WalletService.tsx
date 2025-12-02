@@ -42,6 +42,15 @@ export const newWalletTransaction = async (data: payloadNewTransaction, id: Stri
     }
 }
 
+export const updateWalletTransaction = async (data: {id: string; amount: number; description?: string; category: string;})=>{
+    try {
+        const response = await api.put(`/Transaction/wallet/updateTransaction`, data);
+        return response.data;
+    } catch (error) {
+        throw new Error(error instanceof Error ? error.message : "Unknown error");
+    }
+}
+
 export type payloadPeriodTransaction = {
     walletId: string;
     startDate: string;

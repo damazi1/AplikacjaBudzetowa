@@ -30,7 +30,7 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalInitials, setModalInitials] = useState<{ amount?: number; description?: string; category?: string }>({});
+    const [modalInitials, setModalInitials] = useState<{id?: string; amount?: number; description?: string; category?: string }>({});
 
     const toggleExpand = (t: string) => {
         const id: string | null = t ?? null;
@@ -77,14 +77,14 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
         }
     }
 
-    const openAddModalPrefilled = (t?: TransactionItem) => {
+    const openUpdateModalPrefilled = (t?: TransactionItem) => {
         setModalInitials({
+            id: t?.id,
             amount: t?.amount,
             description: t?.description,
             category: t?.category,
         });
         setModalOpen(true);
-        console.log(modalInitials)
     };
 
     return (
@@ -136,7 +136,7 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
                                     <Row>
                                         <Col span={12} style={{ display: "flex", justifyContent: "flex-start", padding: "10px"}}>
                                             <Button type={"primary"}  style={{background: "orange", width: "100%"}} onClick={() =>
-                                                openAddModalPrefilled(t)}>
+                                                openUpdateModalPrefilled(t)}>
                                                 Edytuj transakcję
                                             </Button>
                                         </Col>

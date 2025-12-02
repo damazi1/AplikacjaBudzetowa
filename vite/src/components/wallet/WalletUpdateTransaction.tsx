@@ -1,6 +1,6 @@
 // src/components/wallet/WalletUpdateTransaction.tsx
 import React from "react";
-import { newWalletTransaction } from "@services/WalletService.tsx";
+import {updateWalletTransaction} from "@services/WalletService.tsx";
 import { Button, Card, Form, InputNumber, message } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
@@ -8,18 +8,21 @@ import { CategorySelect } from "@components/wallet/WalletCategorySelect.tsx";
 
 interface WalletUpdateTransactionProps {
     walletId: string;
-    initialValues?: { amount?: number; description?: string; category?: string };
+    initialValues?: {id?: string; amount?: number; description?: string; category?: string };
     onSuccess?: () => void;
 }
 
 export function WalletUpdateTransaction({ walletId, initialValues, onSuccess }: WalletUpdateTransactionProps) {
     const [form] = Form.useForm();
 
-    const onSubmit = async (values: { amount: number; description?: string; category: string }) => {
+    const onSubmit = async (values: {id: string; amount: number; description?: string; category: string }) => {
         if (!walletId) return;
         try {
-            await newWalletTransaction(values, walletId);
+            values.id = initialValues!.id as string;
+            console.log(values)
+            await updateWalletTransaction(values);
             onSuccess?.();
+            window.location.reload();
         } catch (e: any) {
             message.error(e?.message || "Błąd dodawania transakcji");
         }

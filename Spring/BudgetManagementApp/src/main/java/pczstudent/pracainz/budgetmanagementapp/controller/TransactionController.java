@@ -78,10 +78,9 @@ public class TransactionController {
         return ResponseEntity.ok(deletedTransaction);
     }
 
-    //TODO: update transaction service method and tests
     @PutMapping("/wallet/updateTransaction")
     public ResponseEntity<Transaction> updateTransaction(@Valid @RequestBody Transaction transaction) {
-        Transaction updatedTransaction = transactionService.updateAccountTransaction(transaction);
+        Transaction updatedTransaction = transactionService.updateWalletTransaction(transaction);
         return ResponseEntity.ok(updatedTransaction);
     }
 
