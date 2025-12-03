@@ -13,12 +13,18 @@ export function WalletAddTransactionForm({walletId}: WalletAddTransactionFormPro
     const onSubmit = async (values: { amount: number; description?: string; category: string }) => {
         if (!walletId) {return}
         try {
-            console.log(walletId);
-            await newWalletTransaction(values, walletId);
+
+            const response = await newWalletTransaction(values, walletId);
+            console.log(response);
             window.location.reload();
         } catch (e: any) {
-            message.error(e?.message || "Błąd dodawania transakcji");
-        }
+            console.log(e);
+            const description =
+                e?.response?.data?.description ||
+                e?.response?.data?.detail ||
+                e?.message ||
+                "Błąd dodawania transakcji";
+            message.error(description);        }
     }
     return <Card title={"Add transaction"}>
         <Form layout="horizontal" onFinish={onSubmit}>

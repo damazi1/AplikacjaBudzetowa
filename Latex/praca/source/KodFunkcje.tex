@@ -1,10 +1,21 @@
 \chapter{Implementacja systemu}
 Rozdział  przedstawia proces implementacji systemu. Omówiono w nim wykorzystane technologie oraz poszczególne warstwy aplikacji. Celem tego rozdziału jest zaprezentowanie działania wykorzystanej architektury oraz korelacje między poszczególnymi elementami systemu.
 \section{Backend – logika biznesowa i API}
-Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot, który upraszcza proces tworzenia aplikacji.
+Warstwa serwerowa odpowiada ze przetwarzanie żądań od warstwy prezentacji oraz za komunikację z bazą danych. Elementy z których jest skonstruowana to m.in. kontrolery, repozytoria, czy pliki konfiguracyjne. Została zrealizowana w oparciu o framework Spring Boot.
 
 \subsection*{Spring Boot i ekosystem bibliotek}
 Freamework spring boot oferuje moduły oraz biblioteki wykorzystane do budowy REST API, dostępu do baz danych, bezpieczeństwa i testowania. Wykorzystywane biblioteki są deklarowane w pliku \texttt{pom.xml}. Są one wstępnie skonfigurowane. Takie rozwiązanie znacząco zwiększa tępo rozwoju aplikacji, pozwala na lepszą pracę w grupach oraz redukuje ilość kodu szablonowego (ang. \textit{boilerplate code}).
+
+\subsubsection*{Struktura katalogów}
+Projekt posiada uporządkowaną strukturę katalogów składającą się z:
+\begin{itemize}
+	\item Config - pliki konfiguracyjne i zabezpieczające
+	\item Controller - kontrolery udostępniające endpointy i walidujące
+	\item Dto - modele danych do transferu (ang. \textit{Data Transfer Object})
+	\item Model - Opisują strukturę dokumentów
+	\item Repository - Obsługują zapytania z bazą danych
+	\item Service - Logika biznesowa aplikacji
+\end{itemize}
 \subsubsection*{Zarządzanie zależnościami i startery}
 Spring boot łączy biblioteki w postaci starterów. Pozwala to zminimalizować ryzyko konfliktów wersji oraz skrócić czas konfiguracji. Kluczowe startery wykorzystywane w aplikacji webowej to:
 \begin{itemize}
@@ -26,11 +37,11 @@ Umożliwia komunikację z wykorzystywaniem standardu REST API (ang. \textit{Repr
 Mapowanie endpointów w kontrolerze jest pokazane w listingu \ref{lst:java-endpoints}.
 \begin{lstlisting}[language={Java}, caption={Przykładowe Endpointy}, label={lst:java-endpoints}]
 @RestController 
-@RequestMapping("/User") // Wszystkie endpointy zaczynają się od /User
-	@PostMapping("/register")		// Dostęp pod POST /User/register
-	@GetMapping("/search")			// Dostęp pod GET /User/search
-	@PutMapping("/update/{id}")		// Dostęp pod PUT /User/update/{id}
-	@DeleteMapping("/delete/{id}")	// Dostęp pod DELETE /User/delete{id}
+
+@PostMapping("/signup")			// Dostęp pod POST /auth/signup
+@GetMapping("/wallet/periodTransactions")	// Dostęp pod GET /Transaction/wallet/periodTransaction
+@PutMapping("/wallet/updateTransaction")		// Dostęp pod PUT /Transaction/wallet/updateTransaction
+@DeleteMapping("/wallet/deleteTransaction")	// Dostęp pod DELETE /Transaction/wallet/deleteTransaction
 \end{lstlisting}
 
 Implementacja powyższych endpointów znajduje się w listingach (\ref{lst:java-register}, \ref{lst:java-list}, \ref{lst:java-delete}, \ref{lst:java-update})
@@ -94,116 +105,300 @@ Nagłówek (ang. \textit{Header}) &
 
 \end{longtable}
 
-\subsubsection*{TODO::Testowanie}
-Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z wykorzystaniem biblioteki JUnit. Polegają na wysłaniu żądania HTTP do serwera i porównaniu odpowiedzi otrzymanej z oczekiwaną (przykładowe kody odpowiedzi w tabeli \ref{tab:Kody-HTTP}). W testach tego typu ważną cechą jest sprawdzenie wartości granicznych (listing \ref{lst:java-UnitTest}). 
+\subsubsection*{Testowanie}
+Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z wykorzystaniem biblioteki JUnit, a dane do testów są tworzone przy pomocy narzędzia Mockito. Mock to obiekt klasy, od której zależy część kodu, ale w środku jest pusta. Aby wykorzystać tą pustą klasę używa się składni \texttt{when(...).thenReturn(...)}, w której when oznacza ,,Kiedy zostanie wywołana ta metoda ...'', a thenReturn ,, ... zwróć ten obiekt''.
 
-Testy integracyjne pozwalają sprawdzić interakcje między komponentami aplikacji dzięki narzędziu MockMVC.
+Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli argumentów które przyjmuje test. 
+\begin{lstlisting}[language={Java}, caption={Strumień argumentów}, label={lst:arg-stream}]
+ private static Stream<Arguments> walletTransactionsProvider() {
+	return Stream.of(
+	Arguments.of(100.0, 50.0, 150.0, "Test_Category", "Test_Description"),
+	Arguments.of(200.0, -20.0, 180.0, "Groceries", null),
+	Arguments.of(0.0, 10.5, 10.5, "Salary", "June Salary")
+	);
+}
+\end{lstlisting}
+Aby wykonać wiele testów dla jednej metody należy skorzystać z testów parametryzowanych, które są opisane adnotacją \texttt{@ParametrizedTest}. Pozwalają one określić zbiór na przykład podanie metody, która zwraca dane \texttt{@MethodSource("nazwa")}. Deklaracja testu dla wcześniej określonych wygląda następująco:
+\begin{lstlisting}[language={Java}, caption={Deklaracja testu}, label={lst:arg-stream}]
+@ParameterizedTest
+@MethodSource("walletTransactionsProvider")
+	void walletNewTransactionTestOK(
+	double initialBalance,
+	double amount,
+	double expectedBalance,
+	String category,
+	String description
+)
+\end{lstlisting}
 
-\textbf{TODO: Napisać więcej testów i wstawić jakieś przykłady. Widze że sekcja testowania powtarza się w wielu fragmentach kodu i nie wiem do końca w których powinienem ją zostawić.}
+Test ten ma określać, czy dodanie nowej transakcji się powiodło. Wszystkie mocki, które mamy należy nauczyć zachowań (ang. \textit{stubbing}), czyli wytłumaczyć jak mają reagować na metody.
+
+\begin{lstlisting}[language={Java}, caption={Stubbing}, label={lst:arg-stream}]
+String walletId = "Test_Wallet_ID";
+String userId = "Test_User_ID";
+
+Wallet wallet = new Wallet();
+wallet.setId(walletId);
+wallet.setUserId(userId); // Ustawienie userId w portfelu
+wallet.setBalance(initialBalance);
+
+User user = new User();
+user.setId(userId);
+
+WalletNewTransactionDTO dto = new WalletNewTransactionDTO();
+dto.setWalletId(walletId);
+dto.setAmount(amount);
+dto.setCategory(category);
+dto.setDescription(description);
+
+when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
+when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+when(transactionRepository.save(any(Transaction.class)))
+	.thenAnswer(inv -> inv.getArgument(0, Transaction.class));
+\end{lstlisting}
+
+Po procesie uczenia wywołujemy funkcję, która korzysta z wcześniej nauczonych metod oraz weryfikujemy, czy funkcja wykonała swoje zadanie. Odbywa się to za pomocą asercji oraz metod verify. Asercje polega na potwierdzeniu jakiegoś warunku, a verify sprawdza czy dane metoda była wywołana oraz ile razy ją wywołano (domyślnie jeden).
+
+\begin{lstlisting}[language={Java}, caption={Weryfikacja}, label={lst:arg-stream}]
+Transaction result = transactionService.walletNewTransaction(dto);
+assertThat(wallet.getBalance()).isEqualTo(expectedBalance);
+verify(walletService).updateWallet(wallet);
+verify(transactionRepository).save(any(Transaction.class));
+assertThat(result.getWalletId()).isEqualTo(walletId);
+assertThat(result.getUserId()).isEqualTo(userId);
+assertThat(result.getAmount()).isEqualTo(amount);
+assertThat(result.getCategory()).isEqualTo(category);
+assertThat(result.getDescription()).isEqualTo(description);
+\end{lstlisting}
+
+Ważnym aspektem testów jest również sprawdzanie, czy kontroler działa poprawnie. Udostępnia on endpointy, oraz przeprowadza walidację, więc sprawdzenie czy endpoint działa oraz czy podanie błędych danych jest obsłużone może być sprawdzone tylko na poziomie kontrolera. 
+
+Do tego rodzaju testów należy uruchomić część springa. Ładowanie części programu nazywa się testem wycinkowym (ang. \textit{Slice test}). Ładowana jest wyłącznie warstwa webowa, czyli kontrolery, walidatory i zabezpieczenia (listing \ref{lst:slice-test}). 
+
+\subsubsection*{Serwisy, a kontrolery}
+Podział na warstwę kontrolerów i warstwę serwisów umożliwia rozdzielenie obsługi ruchu od logiki biznesowej. Kontrolery przyjmują i walidują żądania oraz przesyłają odpowiedź (ang. \textit{Response entity}). Serwisy zawierają logikę, czyli opisuje działanie wszystkich metod. Metody te można wywołać z każdego miejsca, a nie tylko z przez REST API. Umożliwia to pisanie testów jednostkowych dla samej logiki bez uwzględniania protokołu HTTP. Takie rozwiązanie umożliwia też reużywalność kodu. Operacje na bazie danych są odizolowane od kontrolera. Odpowiada za nie serwis. 
 \subsubsection*{Konfiguracja i uruchamianie}
 Konfiguracja środowiska odbywa się w pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w różnych środowiskach.
-\subsection*{TODO: Przykładowe fragmenty kodu}
-\textbf{TODO: Najprawdopodobniej zmieni się trochę architektura endpointów. Będą wywoływane tylko serwisy, które mają dostęp do repozytoriów. W endpointach będą jedynie wstrzykiwane serwisy i wywoływane zawarte w nich metody}
+\subsection*{Przykładowe fragmenty kodu}
 \subsubsection*{rejestracja}
-Funkcja rejestracji przyjmuje jako argument obiekt klasy User, który posiada poprawnie uzupełnione ciało (login: String, password: String, role: UserRoles). Jeżeli podane dane są poprawne, zostaje wywołana funkcja szyfrująca hasło, a następnie użytkownik jest zapisywany w bazie danych.
+Funkcja rejestracji przyjmuje jako argument przygotowany model danych do autoryzacji, który posiada poprawnie uzupełnione ciało (String username, String passwrod). Jeżeli podane dane są poprawne, zostaje odpalona metoda w serwisie odpowiedzialna za rejestrację. Tworzy nowego użytkownika oraz szyfruje jego hasło.
 \begin{lstlisting}[language={Java}, caption={Rejestracja użytkownika}, label={lst:java-register}]
-@PostMapping("/register")
-public String register(@Valid @RequestBody User user) {
-	user.setPassword(passwordEncoder.encode(user.getPassword()));
-	userRepository.insert(user);
-	return "Rejestracja udana";
+// Metoda w serwisie
+public User signup(AuthDto authDto) {
+	User user = new User()
+	.setLogin(authDto.getUsername())
+	.setPassword(passwordEncoder.encode(authDto.getPassword()))
+	.setRole(UserRoles.USER);
+	return userRepository.save(user);}
+
+// Endpoint w kontrolerze	
+@PostMapping("/signup")
+public ResponseEntity<User> signup(@RequestBody AuthDto authDto) {
+	User registeredUser = authenticationService.signup(authDto);
+	return ResponseEntity.ok(registeredUser);
 }
 \end{lstlisting}
-\subsubsection*{Lista użytkowników}
-Funkcja \texttt{getUser()} wykorzystuję metodę z repozytorium, która umożliwia pobranie wszystkich dokumentów i zwraca je.
-\begin{lstlisting}[language={Java}, caption={Lista użytkowników}, label={lst:java-list}]
-@GetMapping("/list")
-public Iterable<User> getUser() {
-	return userRepository.findAll();
+\subsubsection*{Dane do wykresów}
+Odpowiednie przygotowanie danych do wykresów jest kluczową częścią projektu. Aby tego dokonać skorzystałem ze strumieni. Strumienie przetwarzają, filtrują i dokonują operacji na zbiorze danych.
+\begin{lstlisting}[language={Java}, caption={Wykorzystanie strumieni}, label={lst:java-register}]
+// Metoda w serwisie
+public List<WalletBarChartDto> getBarChartData(PeriodChangeDto wallet){
+	Collection<Transaction> transactions = transactionRepository.findByWalletIdAndDateBetween(
+	wallet.getId(),
+	wallet.getFrom(),
+	wallet.getTo()
+	);
+	
+	return getWalletBarChartDtos(wallet, transactions);
+}
+// fragment Metody pomocniczej 
+double income = dailyTransactions.stream()
+.filter(t -> t.getAmount() > 0)
+.mapToDouble(Transaction::getAmount)
+.sum();
+
+double expenses = Math.abs(dailyTransactions.stream()
+.filter(t -> t.getAmount() < 0)
+.mapToDouble(Transaction::getAmount)
+.sum());
+
+// Endpoint w kontrolerze	
+@PostMapping("/wallet/barChartData")
+public ResponseEntity<List<WalletBarChartDto>> getBarChartData (@RequestBody PeriodChangeDto periodData) {
+	List<WalletBarChartDto> barData = transactionService.getBarChartData(periodData);
+	return ResponseEntity.ok(barData);
 }
 \end{lstlisting}
-\subsubsection*{Usuwanie użytkownika}
-Funkcja \texttt{deleteUser} przyjmuję jako parametr podany w ścieżce identyfikator użytkownika. Następnie jeżeli istnieje usuwa dokument z bazy danych.
-\begin{lstlisting}[language={Java}, caption={Usuwanie użytkownika}, label={lst:java-delete}]
-@DeleteMapping("/delete/{id}")
-public void deleteUser(@PathVariable String id) {
-	userRepository.deleteById(id);
+
+\subsubsection*{Dane o transakcjach w przedziale czasu}
+Pobranie transakcji z zadanego przedziału czasu jest kluczową funkcją potrzebną do analizy sytuacji finansowej użytkownika.
+\begin{lstlisting}[language={Java}, caption={Wyświetlanie transakcji od do}, label={lst:java-register}]
+// Metoda w serwisie
+public Collection<Transaction> periodTransactions(String walletId, Date startDate, Date endDate){
+	return transactionRepository.findByWalletIdAndDateBetween(walletId, startDate, endDate);
+}
+
+// Endpoint w kontrolerze	
+@GetMapping("/wallet/periodTransactions")
+public ResponseEntity<List<Transaction>> getPeriodTransactions
+(@RequestParam String walletId,
+@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
+@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate) {
+	Date from = startDate;
+	Date to = endDate;
+	List<Transaction> transactions = (List<Transaction>)
+	transactionService.periodTransactions(walletId, from, to);
+	return ResponseEntity.ok(transactions);
 }
 \end{lstlisting}
-\subsubsection*{Edycja użytkownika}
-Funkcja \texttt{updateUser} pozwala zmienić login użytkownikowi. Jako parametr przyjmuję identyfikator podany w ścieżce oraz wymagany login. Jeżeli zostały podane poprawne dane aktualizuje dokument w bazie danych.
-\begin{lstlisting}[language={Java}, caption={Edycja użytkownika}, label={lst:java-update}]
-@PutMapping("/update/{id}")
-public void updateUser(@PathVariable String id, @RequestParam String login) {
-	User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-	user.setLogin(login);
-	userRepository.save(user);
+\subsubsection*{Usuwanie transakcji}
+Jeżeli użytkownik utworzy w portfelu transakcję, która nie powinna się tam znaleźć może ją usunąć 
+\begin{lstlisting}[language={Java}, caption={Usuwanie transakcji z portfela}, label={lst:java-delete}]
+// Metoda w serwisie
+public Transaction deleteWalletTransaction(String transactionId) {
+Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
+assert transaction != null;
+Wallet wallet = walletService.getWalletById(transaction.getWalletId());
+wallet.setBalance(wallet.getBalance() - (transaction.getAmount()));
+walletService.updateWallet(wallet);
+transactionRepository.delete(transaction);
+return transaction;
+}
+// Endpoint w kontrolerze	
+@DeleteMapping("/wallet/deleteTransaction")
+public ResponseEntity<Transaction> deleteTransaction(@RequestParam String id) {
+	Transaction deletedTransaction = transactionService.deleteWalletTransaction(id);
+	return ResponseEntity.ok(deletedTransaction);
 }
 \end{lstlisting}
-\subsubsection*{Test Jednostkowy}
-Podany poniżej kod testujący służy do sprawdzenia czy aplikacja jest zabezpieczona przed wysyłaniem przelewów, w których podano graniczną wartość, czyli kwotę 0.0 \$. Oczekiwany status odpowiedzi to 4xx, a zwracana odpowiedź to ,,amount: must be greater then 0''
-\begin{lstlisting}[language={Java}, caption={Przykładowy test}, label={lst:java-UnitTest}]
-@Test
-public void createTransferHandlesBorderTransferAmount() throws Exception {
-	this.mockMvc.perform(MockMvcRequestBuilders.post("/Transaction/create/transfer")
-	.contentType("application/json")
-	.content("{\"fromAccountNumber\":\"1234567890122234569012335\",\"toAccountNumber\":\"1234567890122234569012335\",\"amount\":0.0}"))
-	.andExpect(status().is4xxClientError())
-	.andExpect(content().string("amount: must be greater than 0"));
+\subsubsection*{Edycja transakcji}
+Podanie błędnych danych w transakcji może zostać poprawione dzięki funkcji edycji transakcji. 
+\begin{lstlisting}[language={Java}, caption={Edytowanie transakcji w portfelu}, label={lst:java-delete}]
+// Metoda w serwisie
+public Transaction updateWalletTransaction(Transaction transaction) {
+	Transaction existingTransaction = transactionRepository.findById(transaction.getId()).orElse(null);
+	if (existingTransaction == null) {
+		throw new RuntimeException("Transaction not found");
+	}
+	Wallet wallet = walletService.getWalletById(existingTransaction.getWalletId());
+	double balanceDifference = transaction.getAmount() - existingTransaction.getAmount();
+	wallet.setBalance(wallet.getBalance() + balanceDifference);
+	walletService.updateWallet(wallet);
+	existingTransaction.setAmount(transaction.getAmount());
+	existingTransaction.setDescription(transaction.getDescription());
+	existingTransaction.setCategory(transaction.getCategory());
+	return transactionRepository.save(existingTransaction);
 }
+	// Endpoint w kontrolerze	
+@PutMapping("/wallet/updateTransaction")
+public ResponseEntity<Transaction> updateTransaction(@Valid @RequestBody Transaction transaction){
+	Transaction updatedTransaction = transactionService.updateWalletTransaction(transaction);
+	return ResponseEntity.ok(updatedTransaction);
+}
+\end{lstlisting}
+\subsubsection*{Slice Test}
+Testowanie kontrolera z wykorzystaniem narzędzia MockMvc, które pozwala testować aplikację webowe oraz adnotacji @WithMockUser, która symuluje zalogowanego użytkownika.
+\begin{lstlisting}[language={Java}, caption={Test wycinkowy}, label={lst:slice-test}]
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@MockitoBean
+	private TransactionService transactionService;
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"{\"category\": null, \"amount\": 100.0, \"description\": \"Test transaction\"}",
+		"{\"category\": \"Groceries\", \"amount\": \"\", \"description\": null}",
+		"{\"category\": \"Groceries\", \"amount\": \"0\", \"description\": null}",
+		"{\"category\": \"Groceries\", \"amount\": null, \"description\": null}"
+	})
+	@WithMockUser
+	public void createTransactionNoCat(String content) throws Exception{
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/Transaction/wallet/newTransaction")
+		.contentType("application/json")
+		.content(content)
+		.param("walletId", "wallet123"))
+		.andExpect(status().isBadRequest());
+	}
 \end{lstlisting}
 \section{Frontend – interfejs użytkownika}
 Warstwa prezentacji została zrealizowana w oparciu o bibliotekę React oraz narzędzie budujące Vite. Vite zapewnia szybkie uruchamianie środowiska deweloperskiego oraz prostą integrację z TypeScript. React dostarcza deklaratywny model budowy, który pozwala opisać, jak powinien wyglądać interfejsu użytkownika w danym stanie \cite{Declarative}. 
 \subsection*{Struktura projektu}
 Struktura katalogów projektu została zaprojektowana w sposób pozwalający rozdzielić warstwy odpowiedzialności. Składa się z takich modułów jak:
 \begin{itemize}
-	\item Assets - przechowywanie statycznych elementów strony (np. ikony).
+	\item App - Przechowuje układ strony i trasy (ang. \textit{routes}).
+	\item Components - Zawiera elementy, które znajdują się na stronach.
 	\item Models - Zawiera typy utworzone na potrzeby działania funkcji.
-	\item Services - Odpowiada za komunikacje z backendem.
+	\item Pages - Widoki stron.
+	\item Services - Zawiera funkcję odpowiedzialne za komunikację z backendem
 	\item Styles - Przechowuje style w formacie .css.
-	\item Context - Obsługuje globalny stan aplikacji.
-	\item Components - Zawiera widoki stron i wszystkie elementy takie jak formularze.
 \end{itemize}
-\subsection*{TODO: Typescript}
-\textbf{TODO: Opisać tu dlaczego wykorzystałem ten język jakie ma ,,Plusy''
-Czy ten podrozdział jest nie potrzebny, bo opis języka jest w przeglądzie technologi? }
 \subsection*{Interfejs użytkownika}
-Interfejs użytkownika wykorzystuje komponenty z biblioteki Ant Design, która oferuje m.in. siatkę (ang. \textit{grid}), formularze (ang. \textit{form}), okna modalne (ang. \textit{modal}) oraz tabele (ang. \textit{table}). Elementy aplikacji pozwalają na spersonalizowanie motywów oraz tłumaczenie treści. Użytkownik może sprawdzić szczegóły profilu lub przejrzeć historię i dane swoich portfeli, które ma przypisane do konta.
+Warstwa prezentacji stanowi interfejs, za pośrednictwem którego użytkownik końcowy wchodzi w interakcje z systemem. To jedyna warstwa aplikacji widoczna bezpośrednio dla odbiorcy, dlatego kluczowe było zaprojektowanie jej w sposób intuicyjny i przejrzysty. 
+
+Aplikacja została zrealizowana w architekturze SPA (ang. \textit{Single Page application}). Dzięki temu interfejs nie wymaga pełnego odświeżana w przejściach między widokami. Stałe elementy są zdefiniowane w pliku AppLayout, a widoki stron są dynamicznie renderowane wewnątrz kontenera \texttt{Outlet} (listing \ref{lst:AppLayout}). 
+
+Elementy interfejsu użytkownika, które można wykorzystać ponownie znajdują się w katalogu components. Wykorzystują gotowe komponenty z biblioteki Ant Design. Dzięki takiemu rozwiązaniu aplikacja jest spójna, a zarządzanie kodem prostsze. Komponenty są używane w widokach (katalog pages), które odpowiadają za elementy wyświetlane użytkownikowi.
+
+Aplikacja oferuje również możliwość zmiany motywu z jasnego na ciemny oraz tłumaczenie treści strony internetowej.
+\begin{lstlisting}[caption={Układ strony}, label={lst:AppLayout}]
+export function AppLayout() {
+	return (
+	<Flex gap="middle" wrap>
+		<Layout className={"app-layout"}>
+			<Navbar/>
+			<Content className={"app-layout-content"}>
+				<Outlet />
+			</Content>
+			<MyFooter/>
+		</Layout>
+	</Flex>
+	);
+}
+\end{lstlisting}
+
+
 \subsection*{Komunikacja z API}
-Komunikacja z backendem odbywa się dzięki bibliotece axios, która wysyła żądania do serwera. 
+Komunikacja z backendem odbywa się dzięki bibliotece axios, która wysyła żądania do serwera. W pliku axios.ts zawarta jest configuracja zapytań. Opisuje jaki adres ma wykorzystywać oraz czy wysyłać uwierzytelnienie (ang. \textit{Credentials}).
+\begin{lstlisting}[caption={Konfiguracja biblioteki axios}, label={lst:TS-service1}]
+export const api = axios.create({
+	baseURL: 'http://localhost:8080',
+	withCredentials: true,
+	headers: {
+		'Content-Type': 'application/json',
+	},});
+\end{lstlisting}
+Następnie obiekt api możemy wykorzystać do wykonywania zapytań.
 \begin{lstlisting}[caption={Funkcja wyszukująca wszystkie konta użytkownika}, label={lst:TS-service1}]
-	export const fetchAccounts= async (): Promise<Accounts[]> =>{
-		const id = await fetchUserId();
-		try {
-			const response = await axios.get(`http://localhost:8080/Account/get/${id.id}`, {
-				withCredentials: true,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			return await response.data;
-		} catch (error: any) {
-			throw new Error(error.message || "Wystąpił błąd podczas pobierania kont");
-		}
+export const newWalletTransaction = async (data: payloadNewTransaction, id: String)=>{
+	try {
+		const response = await api.post(`/Transaction/wallet/newTransaction?walletId=${id}`, data);
+		return response.data;
+	} catch (error) {
+		throw error;
 	}
+}
 \end{lstlisting}
 
 \subsection*{Stan aplikacji i interakcje}
-Stany są jednym z kluczowych funkcji, które wykorzystuje się w aplikacjach opartych o React. Wykorzystują funkcję haków (ang. \textit{hook}), które pozwalają używać stanów bez konieczności posiadania klasy. Do zarządzania stanami możemy użyć funkcji useState lub useEffect. Funkcja useState pozwala nam ustawić jakiś status podczas działania strony. Użytkownik może przykładowo zmienić motyw, następuje zmiana statusu z ciemnego na jasny. Użycie efektu pozwala wykonać jakąś funkcję lub działanie i wpłynąć na to jaki status zostanie ustawiony. Poniżej znajdują się przykłady zastosowań dla obu funkcji.
+Stany są jednym z kluczowych funkcji, które wykorzystuje się w aplikacjach opartych o React. Wykorzystują funkcję haków (ang. \textit{hook}), które pozwalają używać stanów bez konieczności posiadania klasy. Do zarządzania stanami możemy użyć funkcji useState lub useEffect. Funkcja useState pozwala nam ustawić jakiś status podczas działania strony. Użytkownik może wybrać datę, następuje zmiana wartości pól date. Użycie efektu pozwala wykonać jakąś funkcję lub działanie i wpłynąć na to jaki status zostanie ustawiony. Pozwala również określić, od czego dany efekt jest zależny, w takim wypadku przy zmianie wartości zostanie ponownie wykonany.
 \begin{lstlisting}[caption={Wykorzystanie stanów}, label={lst:TS-states}]
-const [loginData, setLogin] = useState<string | null>(null);
+const [ExpensesAndIncomes, setExpensesAndIncomes] = useState<any>(null);
 	
-useEffect(() => {
-	const fetchLoginData = async () => {
+useEffect(() =>  {
+	if(!wallet.id || !timeFrom || !timeTo) return;
+	const fetchPeriod = async () => {
 		try {
-			const users = await fetchUsers();
-			setLogin(users.join('\n'));
-		} catch (err: any) {
-			message.error(err.response?.data?.error || err.message);
-		}
-	};
-	fetchLoginData();
-}, []);
+			const response = await periodWalletBalance({
+				walletId: id!,
+				startDate: timeFrom!,
+				endDate: timeTo!
+			});
+			setExpensesAndIncomes(response);
+		} catch (e: any) {
+			console.error(e?.message || "Error fetching period transactions");
+		}};
+	fetchPeriod();
+}, [timeFrom, timeTo, wallet.id]);
 \end{lstlisting}
 \section{Baza danych - implementacja i przepływ danych}
 Dane przechowywane nierelacyjnej bazie dokumentowej MongoDB. Wspiera ona wydajne zapytania pod typowe przypadki użycia aplikacji budżetowej na przykład: filtrowanie, agregacje po dacie, kategoriach lub użytkownikach. 
@@ -216,14 +411,14 @@ Dane wyświetlane użytkownikowi końcowemu muszą zostać pobrane z bazy, przet
 	\item Baza danych analizuje zapytanie oraz zwraca dokumenty w formacie BSON,
 	\item Dane są serializowane do JSON i zwracane do frontendu.
 \end{enumerate}
-\begin{lstlisting}[caption={Przykładowe dane zwracane z bazy}, label={lst:TS-service1}]
-[{
-	"fromAccountNumber": "3620457673958599558548379",
-	"toAccountNumber": "1234567890122234561012335",
-	"amount": 50.0,
-	"description": "opis",
-	"transactionId": "68dfb1d240d00a2221f78809"
-}]
+\begin{lstlisting}[caption={Przykładowy rekord z kolekcji portfeli}, label={lst:TS-service1}]
+{
+	"id": "6907778371da826d8bac2eb9",
+	"name": "Portfel_Codzienny",
+	"userId": "68d56ad95a544e07c8ebaa54",
+	"currency": "PLN",
+	"balance": 1367.99
+}
 \end{lstlisting}
 \section{Integracja warstw}
 Integracja trzech warstw systemu została zaprojektowana tak, aby zapewnić spójny przepływ danych, określić jednoznaczną specyfikację API oraz przewidywać zachowania w środowiskach deweloperskich.
@@ -232,22 +427,21 @@ Podstawą integracji jest stabilna specyfikacja API \cite{API}. Frontend korzyst
 \subsection*{Autoryzacja i pochodzenie żądań}
 Mechanizm bezpieczeństwa oparto o tokeny JWT, na których podstawie określana jest tożsamość użytkownika. W środowisku deweloperskim, gdzie frontend i backend działają pod różnymi portami zezwala się na połączenia z innych domen CORS (ang. \textit{Cross-Origin Resource Sharing}) w kontrolowanym zakresie.
 \begin{lstlisting}[language={java}, caption={Konfiguracja CROS}, label={lst:Java-CROS}]
-public WebMvcConfigurer corsConfigurer() {
-	return new WebMvcConfigurer() {
-		@Override
-		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/**")
-			.allowedOrigins("http://localhost:5173")
-			.allowedMethods("GET", "POST", "PUT", "DELETE")
-			.allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT)
-			.allowCredentials(true)
-			.maxAge(3600);
-		}
-	};
+CorsConfigurationSource corsConfigurationSource() {
+	CorsConfiguration configuration = new CorsConfiguration();
+	configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+	configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+	configuration.setAllowedHeaders(List.of("Content-Type"));
+	configuration.setAllowCredentials(true);
+	
+	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	source.registerCorsConfiguration("/**", configuration);
+	
+	return source;
 }
 \end{lstlisting}
-\subsection*{Wydajność i obsługa błędów}
-Wydajność integracji osiągnięto poprzez projektowanie zapytań pod konkretne wzorce dostępu z interfejsu użytkownika. Widoki otrzymują jedynie niezbędne pola. W przypadku wystąpienia błędu system zwróci komunikat w ujednoliconym formacie. Dzięki temu frontend może prezentować informacje o błędach w przewidywalny sposób.
+\subsection*{Obsługa błędów}
+Błędy, które występują w aplikacji są obsługiwane dzięki globalnemu plikowi z obsługą błędów. Zostają tam wysyłane wyjątki i zwracane stosowne odpowiedzi oraz kody błędów. Wszystkie komunikaty o wystąpieniu błędu mają ujednolicony format co pozwala łatwo prezentować informację o błędach po stronie klienta. 
 
 \subsection*{Konteneryzacja i uruchamianie wieloskładnikowe}
 Konteneryzacja umożliwia spójne uruchamianie wszystkich warstw niezależnie od systemu operacyjnego. Aplikacja backendowa posiada utworzony obraz pozwalający na jej płynne uruchamianie i edycję (listing \ref{lst:Docker-build}). Baza danych MongoDB działa w dedykowanym kontenerze z trwałym woluminem, w którym przechowywane są dokumenty. Połączenie kontenerów odbywa się dzięki konfiguracji zawartej w pliku \texttt{docker-compose.yml} (listing \ref{lst:Docker-compose}), który zawiera w sobie informację o obrazach, portach , sieciach, woluminach, zależnościach oraz zmiennych środowiskowych.

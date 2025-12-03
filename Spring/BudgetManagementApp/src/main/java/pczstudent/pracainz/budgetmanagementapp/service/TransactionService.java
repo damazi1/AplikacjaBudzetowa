@@ -1,6 +1,7 @@
 package pczstudent.pracainz.budgetmanagementapp.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pczstudent.pracainz.budgetmanagementapp.dto.*;
 import pczstudent.pracainz.budgetmanagementapp.model.*;
@@ -8,6 +9,9 @@ import pczstudent.pracainz.budgetmanagementapp.model.Currency;
 import pczstudent.pracainz.budgetmanagementapp.repository.AccountRepository;
 import pczstudent.pracainz.budgetmanagementapp.repository.TransactionRepository;
 import pczstudent.pracainz.budgetmanagementapp.model.PaymentAcc;
+import pczstudent.pracainz.budgetmanagementapp.repository.UserRepository;
+import pczstudent.pracainz.budgetmanagementapp.repository.WalletRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -21,12 +25,24 @@ public class TransactionService {
     private final WalletService walletService;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final WalletRepository walletRepository;
 
-    public Transaction walletNewTransaction(Transaction transaction){
-        Wallet wallet = walletService.getWalletById(transaction.getWalletId());
+    public Transaction walletNewTransaction(WalletNewTransactionDTO transaction){
+        assert transaction.getWalletId() != null;
+        Wallet wallet = walletRepository.findById(transaction.getWalletId()).orElseThrow(() -> new EntityNotFoundException("Nie znaleziono portfela"));
+        User user = userRepository.findById(wallet.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Nie znaleziono uzytkownika"));
         wallet.setBalance(wallet.getBalance()+(transaction.getAmount()));
         walletService.updateWallet(wallet);
-        return transactionRepository.save(transaction);
+        Transaction transactionRecord = new Transaction()
+                .setWalletId(wallet.getId())
+                .setUserId(user.getId())
+                .setAmount(transaction.getAmount())
+                .setDescription(transaction.getDescription())
+                .setCategory(transaction.getCategory())
+                .setDate(new Date());
+        return transactionRepository.save(transactionRecord);
     }
     public Collection<Transaction> periodTransactions(String walletId, Date startDate, Date endDate){
         return transactionRepository.findByWalletIdAndDateBetween(walletId, startDate, endDate);

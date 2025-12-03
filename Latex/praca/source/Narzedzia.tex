@@ -1,9 +1,7 @@
 \chapter{Narzędzia i metodyka pracy}
-W rozdziale przedstawiono zestaw narzędzi oraz metodykę pracy zastosowaną podczas tworzenia aplikacji webowej. Opisane rozwiązania pozwoliły na efektywne tworzenie, testowanie i wdrażanie aplikacji.
-\section{TODO: Metodyka pracy}
-\textbf{TODO: Jaka metodyka np. Zwinna (Agile/Scrum), opisać jak się używa, sprinty, taski itd.}
+W rozdziale przedstawiono zestaw narzędzi zastosowany podczas tworzenia aplikacji webowej. Opisane rozwiązania pozwoliły na efektywne tworzenie, testowanie i wdrażanie aplikacji.
 \section{Narzędzia stosowane w procesie wytwarzania aplikacji webowej}
-W procesie tworzenia aplikacji wykorzystuje się narzędzia, które usprawniają pracę programisty. Do takich narzędzi należą zintegrowane środowiska programistyczne (ang. \textit{Integrated Development Enviroment} - IDE), systemy kontroli wersji, narzędzia wspomagające testowanie oraz konteneryzacje.
+Stosowanie narzędzi usprawnia pracę programisty. Przykładowe narzędzia to np.: zintegrowane środowiska programistyczne (ang. \textit{Integrated Development Enviroment} - IDE), systemy kontroli wersji, narzędzia wspomagające testowanie oraz konteneryzacje.
 \subsection*{Środowiska programistyczne}
 Każdy deweloper potrzebuje narzędzi, które pozwolą mu na edycję kodu źródłowego. Jednym z najpopularniejszych rozwiązań są zintegrowane środowiska programistyczne, które składają się z edytora kodu, kompilatora lub interpretera oraz debuggera. W projekcie zostały wykorzystane takie edytory jak: Intellij IDEA Ultimate oraz WebStorm. Oba te narzędzia zostały wydane przez producenta oprogramowania JetBrains. 
 \subsection*{System kontroli wersji}
@@ -16,8 +14,11 @@ Poprawne komunikowanie się wszystkich warstw jest kluczowym aspektem tworzenia 
 \subsection*{Konteneryzacja}
 Możliwość pracy na różnych urządzeniach bez konieczności instalowania oprogramowania jest ciekawą perspektywą dla każdego dewelopera. Umożliwia to narzędzie Docker, którego głównym elementem jest silnik (ang. \textit{Docker Engine}) działający w formie usługi. Pozwala na budowanie, uruchamianie i zarządzanie kontenerami. Środowisko umożliwia tworzenie obrazów na bazie których powstają izolowane środowiska do wykonywania konkretnych zadań. Narzędzie pozwala na konteneryzacje zaawansowanych projektów, korzystające z wielu usług, dzięki plikowi \texttt{docker-compose.yml}, w którym definiuje się zależności między kontenerami, konfigurację sieci oraz woluminy.
 
-\subsection*{TODO: Testy funkcyjne}
-Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5. Testy są wykonywane przed uruchomieniem aplikacji, aby sprawdzić jej poprawne działanie. 
-\textbf{TODO: Tu należy dopisać zdecydowanie więcej. Zostanie to uzupełnione w momencie rozszerzenia mojej wiedzy w temacie testów jednostkowych i integracyjnych.}
-\subsection*{TODO: Lombok i devTools Spring}
-\textbf{TODO: Zależności które opisałem w sekcji SpringBoot teoretycznie są narzędziami. Czy należy je przenieść do sekcji narzędziowej?}
+\subsection*{Testowanie oprogramowania}
+Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5, która oferuje możliwość tworzenia testów parametryzowanych. Polega to na podaniu zbioru danych, na których będą wykonywanie operację. Najważniejsze dane, które należy sprawdzać w testach to wartości graniczne, puste ciągi lub wartości null. Testy są wykonywane przed uruchomieniem aplikacji, dla wszystkich plików, których nazwa kończy się na test. W przypadku gdy jakiś test zakończy się niepowodzenie zostanie wyświetlona stosowana informacja na ten temat.
+
+
+\subsection{TODO: Pomysły i plany}
+\textbf{TODO: Jaka metodyka np. Zwinna (Agile/Scrum), opisać jak się używa, sprinty, taski itd.}
+
+\textbf{TODO: Lombok i devTools Spring Zależności które opisałem w sekcji SpringBoot teoretycznie są narzędziami. Czy należy je przenieść do sekcji narzędziowej?}

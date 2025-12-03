@@ -11,5 +11,9 @@
   "Enter your password" : "Enter your password",
   "Password" : "Password",
   "Remember me": "Remember me",
-  "Created by": "Created by"
+  "Created by": "Created by",
+  "registerMessage": "<strong>Register</strong> to E-wallet",
+  "Have an account?": "Have an account?",
+  "Login here": "Login here",
+  "Confirm Password": "Confirm Password"
 }

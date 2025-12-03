@@ -5,8 +5,6 @@ Aplikacja webowa uruchamiana jest w środowisku deweloperskim. Urządzenie, na k
 
 \section{Formularze autoryzacji}
 Po pierwszym załadowaniu aplikacji www użytkownik zostanie przekierowany przez system do formularza logowania znajdującego się pod adresem \texttt{HOST/auth/login}. Zawiera on dwa pola wymagane, w których użytkownik powinien podać nazwę użytkownika oraz hasło, i pole wyboru umożliwiające zapisanie danych (rys. \ref{fig:login}). Użytkownik który nie posiada konta ma możliwość utworzenia go poprzez kliknięcie w odnośnik \textit{Zarejestruj się!}, który przenosi do formularza rejestracji.
-\section{Ustawienia użytkownika}
-Aplikacja webowa oferuje możliwość personalizacji strony poprzez zakładkę ustawień (rys. \ref{fig:ustawienia}) znajdującą się po prawej stronie na pasku nawigacyjnym (ang. \textit{navbar})(rys. \ref{fig:navbar}). Aplikacja pozwala na ustawienie ciemnego oraz jasnego wygląd interfejsu użytkownika (rys. \ref{fig:motywy}) oraz zmianę języka na polski lub angielski (rys. \ref{fig:login})
 \begin{figure}[H]
 \begin{minipage}{0.5\textwidth}
 	\centering
@@ -21,24 +19,35 @@ Aplikacja webowa oferuje możliwość personalizacji strony poprzez zakładkę u
 	\label{fig:login}
 \end{figure}
 \begin{figure}[H]
+	\begin{minipage}{0.5\textwidth}
 	\centering
-	\includegraphics[width=0.6\linewidth]{images/Navbar}
+	\includegraphics[width=\linewidth]{images/Rejestracja}
+	\caption{Formularz rejestracji}
+	\end{minipage}
+\hfill
+	\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{images/Navbar}
 	\caption{Pasek nawigacyjny}
 	\label{fig:navbar}
+\end{minipage}
 \end{figure}
 
+\section{Ustawienia}
+Aplikacja webowa oferuje możliwość personalizacji strony poprzez zakładkę ustawień (rys. \ref{fig:ustawienia}) znajdującą się po prawej stronie na pasku nawigacyjnym (ang. \textit{navbar})(rys. \ref{fig:navbar}). Aplikacja pozwala na ustawienie ciemnego oraz jasnego wygląd interfejsu użytkownika (rys. \ref{fig:motywJasny}, \ref{fig:motywCiemny}) oraz zmianę języka na polski lub angielski (rys. \ref{fig:login})
+
 \begin{figure}[H]
-    \begin{minipage}{0.5\textwidth}
+
 	\centering
-	\includegraphics[width=\linewidth]{images/MotywJasny}
-\end{minipage}
-\hfill
-\begin{minipage}{0.5\textwidth}
+	\includegraphics[width=0.9\linewidth]{images/MotywJasny}
+	\caption{Motyw Jasny}
+	\label{fig:motywJasny}
+\end{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{images/MotywCiemny}
-\end{minipage}
-	\caption{Motywy strony}
-	\label{fig:motywy}
+	\includegraphics[width=0.9\linewidth]{images/MotywCiemny}
+	\caption{Motywy Ciemny}
+	\label{fig:motywCiemny}
 \end{figure}
 
 \begin{figure}[H]
@@ -48,10 +57,51 @@ Aplikacja webowa oferuje możliwość personalizacji strony poprzez zakładkę u
 	\label{fig:ustawienia}
 \end{figure}
 \section{Funkcjonalność aplikacji udostępniona użytkownikowi zalogowanemu}
-Pomyślna próba logowania spowoduje przekierowanie do strony głównej. System powita użytkownika oraz wypiszę wszystkie portfele aktualnego klienta w postaci kafelków, po których kliknięciu nastąpi przekierowanie do strony danego portfela. Pojawi się również możliwość sprawdzenia szczegółów konta oraz wylogowania po prawej stronie paska nawigacyjnego. 
-\subsection*{Szczegóły konta}
-Użytkownik może wyświetlić informację o swoim koncie oraz dodać nowe portfele. Dodatkowo jeżeli użytkownik posiada rolę administratora może edytować konta innych użytkowników oraz nadawać uprawnienia.
-\\Adres pod którym znajduje się podstrona to \texttt{HOST/details/\{Nazwa\_Użytkownika\}}
+Pomyślna próba logowania spowoduje przekierowanie do strony głównej (rys. \ref{fig:homepage1}, \ref{fig:homepage2}). 
+Wyświetlone zostaną wszystkie portfele, konta bankowe i podsumowanie danych na wykresach. Z poziomu strony głównej można również utworzyć nowy portfel lub dodać konto bankowe (rys. \ref{fig:newwalletmodal}, \ref{fig:newaccountmodal}). 
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{images/HomePage1}
+	\caption{Portfele i konta}
+	\label{fig:homepage1}
+\end{figure}
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{images/HomePage2}
+	\caption{Podsumowanie danych użytkownika}
+	\label{fig:homepage2}
+\end{figure}
+
+
+\begin{figure}[H]
+	\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{images/newWalletModal}
+	\caption{Formularz utworzenia portfela}
+	\label{fig:newwalletmodal}
+\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{images/newAccountModal}
+	\caption{Formularz utworzenia konta bankowego}
+	\label{fig:newaccountmodal}
+\end{minipage}
+\end{figure}
+
+\subsection*{Ustawienia konta użytkownika}
+Klient ma możliwość dodania informacji kontaktowych do konta. Podanie danych jest opcjonalne. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{images/UserSettings}
+	\caption{Dane kontaktowe użytkownika}
+	\label{fig:usersettings}
+\end{figure}
+
 \subsection*{Portfel użytkownika}
 Klient ma możliwość zarządzania oraz wyświetlania szczegółu na temat portfela. Dane transakcji są przedstawione na wykresach, które umożliwiają wyświetlanie wszystkich transakcji lub podsumowania za każdy dzień (rys. \ref{fig:wykresy}). Użytkownik ma możliwość odczytania informacji o nazwie swojego portfela, ilości dostępnych środków i typie konta. Dostępne są również operację takie jak wpłata, wypłata i przelew (rys. \ref{fig:daneportfela}). Wybranie jednej z operacji otworzy okno modalne wymagające uzupełnienia danych. Ostatnim elementem jest historia wszystkich transakcji, która zawiera kwotę, datę, numer portfela, z którego została wykonana transakcja i numer odbiorcy transakcji oraz status (rys. \ref{fig:transakcjehistoria}). 
 \begin{figure}[H]
@@ -68,18 +118,36 @@ Klient ma możliwość zarządzania oraz wyświetlania szczegółu na temat port
 	\label{fig:wykresy}
 \end{figure}
 
+% TODO: \usepackage{graphicx} required
 \begin{figure}[H]
-		\begin{minipage}{0.5\textwidth}
 	\centering
-	\includegraphics[width=0.7\linewidth]{images/TransakcjeHistoria}
-	\caption{Historia transakcji}
-	\label{fig:transakcjehistoria}
-\end{minipage}
-\hfill
-		\begin{minipage}{0.5\textwidth}
-	\centering
-	\includegraphics[width=\linewidth]{images/DanePortfela}
-	\caption{Dane portfela}
-	\label{fig:daneportfela}
-\end{minipage}
+	\includegraphics[width=0.7\linewidth]{images/WalletDetails}
+	\caption{}
+	\label{fig:walletdetails}
 \end{figure}
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/WalletTransaction}
+	\caption{}
+	\label{fig:wallettransaction}
+\end{figure}
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/WalletHistory}
+	\caption{}
+	\label{fig:wallethistory}
+\end{figure}
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/WalletOverview}
+	\caption{}
+	\label{fig:walletoverview}
+\end{figure}
+
+\subsection*{Konta bankowe}

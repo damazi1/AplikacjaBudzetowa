@@ -22,11 +22,8 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("/wallet/newTransaction")
-    public ResponseEntity<Transaction> newTransaction(@Valid @RequestBody Transaction transaction, @RequestParam String walletId) {
+    public ResponseEntity<Transaction> newTransaction(@Valid @RequestBody WalletNewTransactionDTO transaction, @RequestParam String walletId) {
         transaction.setWalletId(walletId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        transaction.setUserId(currentUser.getId());
         Transaction savedTransaction = transactionService.walletNewTransaction(transaction);
         return ResponseEntity.ok(savedTransaction);
     }

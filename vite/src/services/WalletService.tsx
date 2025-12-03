@@ -38,7 +38,7 @@ export const newWalletTransaction = async (data: payloadNewTransaction, id: Stri
         const response = await api.post(`/Transaction/wallet/newTransaction?walletId=${id}`, data);
         return response.data;
     } catch (error) {
-        throw new Error(error instanceof Error ? error.message : "Unknown error");
+        throw error;
     }
 }
 

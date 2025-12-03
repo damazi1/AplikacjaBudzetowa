@@ -2,7 +2,6 @@ package pczstudent.pracainz.budgetmanagementapp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @AllArgsConstructor

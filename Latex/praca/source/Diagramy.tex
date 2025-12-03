@@ -10,14 +10,17 @@ Wymagania funkcjonalne określają zachowanie systemu i jego reakcji na określo
 	\textbf{Nr} & \textbf{Wymaganie funkcjonalne} & \textbf{Opis} \\ \hline
 	
 	1. & Rejestracja użytkownika & System umożliwia utworzenie konta użytkownika z danymi logowania. \\ \hline
-	2. & Logowanie do systemu & System weryfikuje dane użytkownika i umożliwia dostęp do panelu aplikacji. \\ \hline
-	3. & Sprawdzenie dostępnych środków & Użytkownik może sprawdzić ile posiada balansu na koncie. \\ \hline
-	4. & Wpłata pieniędzy na konto & Użytkownik może zasilić konto. \\ \hline
-	5. & Przegląd historii wydatków & Aplikacja wyświetla listę wszystkich wydatków. \\ \hline
-	6. & Tworzenie przelewu & System pozwala stworzyć przelew użytkownikowi. \\ \hline
-	7. & Podsumowanie finansów konta & Użytkownik może sprawdzić dane o swoich wydatkach dla danego konta. \\ \hline
-	8. & Kategoryzowanie transakcji & Użytkownik może podać kategorię dla wpłat i wypłat z konta. \\ \hline
-	9. & Prezentacja wydatków na wykresie & System wyświetla wykres z wydatkami za dzień, tydzień, miesiąc oraz rok. \\ \hline
+	2. & Logowanie do systemu & System weryfikuje dane użytkownika i przyznaje ciasteczko umożliwiające dostęp do aplikacji. \\ \hline
+	3. & Wylogowanie & Użytkownik usuwa swoje ciasteczko \\ \hline
+	4. & Sprawdzenie dostępnych środków & Użytkownik może sprawdzić balans w portfelach, kontach bankowych i łączny balans. \\ \hline
+	5. & Tworzenie transakcji  & Użytkownik może utworzyć wpłatę lub wypłatę z konta bankowego i portfelu. \\ \hline
+	6. & Historia transakcji & Aplikacja wyświetla listę wszystkich transakcji. \\ \hline
+	7. & Tworzenie przelewu & Użytkownik może przelać finanse na inne konto bankowe. \\ \hline
+	8. & Podsumowanie finansów & System wyświetla przychody i wydatki w określonym czasie. \\ \hline
+	9. & Kategoryzowanie transakcji & Użytkownik podaje kategorię dla swoich transakcji w portfelu. \\ \hline
+	10. & Prezentacja wydatków na wykresie & System wyświetla dane o transakcjach w postaci wykresów. \\ \hline
+	11. & Kantor walut & System przelicza finanse do innych walut. \\ \hline
+	12. & Uzupełnienie informacji o użytkowniku & Użytkownik może przypisać dane kontaktowe do konta. \\ \hline
 \end{longtable}
 
 \section{Wymagania niefunkcjonalne}
@@ -30,8 +33,8 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 	\textbf{Nr} & \textbf{Wymaganie niefunkcjonalne} & \textbf{Opis} \\ \hline
 	
 	1. & Niezawodność & System w krótkim czasie odzyskuje pełną funkcjonalność w przypadku wystąpienia błędu. \\ \hline
-	2. & Dostępność & System ma być dostępna przez 99.5\% czasu działania serwera.\\ \hline
-	3. & Wydajność & System reaguje na żądanie w czasie krótszym niż 1 sekunda. Może obsłużyć do 1000 użytkowników jednocześnie. System jest w stanie przetworzyć do 10 GB na godzinę.  System jest skalowalny.\\ \hline
+	2. & Dostępność & System ma być dostępna przez 99.9\% czasu działania serwera.\\ \hline
+	3. & Wydajność & System reaguje na żądanie w czasie krótszym niż 0.25 sekundy. Może obsłużyć do 1000 użytkowników jednocześnie. System jest w stanie przetworzyć do 10 GB na godzinę.  System jest skalowalny.\\ \hline
 	4. & Bezpieczeństwo & System zapewnia, że dane są dostępne tylko dla osób upoważnionych. Autoryzacja użytkowników odbywa się poprzez podanie odpowiedniego loginu oraz hasła. Hasła muszą być przechowywane w formie zaszyfrowanej. \\ \hline
 	5. & Wdrożenie & Aplikacja serwerowa musi być uruchomiona w środowisku JVM oraz korzystać z wersji Java 21 , Warstwa prezentacji uruchamiana w środowisku NodeJs z wykorzystaniem 9 wersji biblioteki React. Dane przechowywane w postaci dokumentów bazy danych MongoDB w wersji 8, Aplikacja uruchomiana jest w środowisku systemu operacyjnego Windows 11 oraz Linux \\ \hline
 	
@@ -40,34 +43,40 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 
 \section{Diagramy UML}
 Jednym z kluczowych etapów w procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
-\section{TODO:Diagramy przypadków użycia}
+\subsection{Tworzenie diagramów}
+Diagramy UML można utworzyć graficznie, na przykład przez strone draw.io, bądź tekstowo odpowiednim językiem takim jak PlantUML lub mermaid. Można też skorzystać z narzędzi takich jak enterprise architect, który posiada dodatkowe opcję takie jak tworzenie kodu programu na bazie diagramów. 
+\section{Diagramy przypadków użycia}
 Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi, które system świadczy aktorom, bez wskazywania rozwiązań technologicznych \cite{UML1}. Stanowi on podstawę do modelowania szczegółowych części systemu.
-\textbf{TODO: Diagram został utworzony na zajęciach laboratoryjnych i nie zostaną wykorzystane z niego wszystkie funkcjonalności. Dodatkowo jest duży i nieczytelny. Podmienie go w miarę możliwości na diagram bardziej czytelny i zwięzły. Pozostałe diagramy najprawdopodobniej mają taką samą pozycję.}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{images/DPU.jpg}
+	\includegraphics[width=1\textwidth]{images/PlantUML_useCase.png}
 	\caption{Diagram przypadków użycia}
 	\label{fig:UseCase}
 \end{figure}
-\section{Diagram stanów}
+\section{Diagram klas}
+Przedstawia klasy oraz zależności między nimi:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/Mermaid_ClassDiag}
+	\caption{Diagram klas}
+	\label{fig:mermaidclassdiag}
+\end{figure}
+
+\section{Diagramy sekwencji}
+Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/MermaidSeqDiag}
+	\caption{Diagram sekwencji - Nowa transakcja portfela}
+	\label{fig:Seq1}
+\end{figure}
+
+
+\subsection{TODO: Pomysły i nie użyte rzeczy}
 Diagram maszyny stanów (ang. \textit{state machine diagram}) ukazuje wszystkie stany, w których może znaleźć się obiekt oraz przejścia między nimi. Pozwala odczytać jakie akcje wpływają na zmianę stanu, a także akcję, które są wykonywane w momencie przejścia w inny stan.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/Wniosek.jpg}
 	\caption{Diagram stanów składania wniosku}
 	\label{fig:StateMachine}
-\end{figure}
-\section{Diagramy sekwencji}
-Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{images/Limit.png}
-	\caption{Diagram sekwencji Limit}
-	\label{fig:Seq1}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{images/Przelew.png}
-	\caption{Diagram sekwencji Przelew}
-	\label{fig:Seq2}
 \end{figure}

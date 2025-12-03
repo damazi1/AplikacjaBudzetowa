@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// Podstawowa instancja – zakładam że backend na tym samym origin (lub ustaw CORS + withCredentials)
 export const api = axios.create({
     baseURL: 'http://localhost:8080',
-    withCredentials: true, // potrzebne gdy ciasteczko HttpOnly z innego origin / lub w ogóle chcesz wysłać cookie
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },

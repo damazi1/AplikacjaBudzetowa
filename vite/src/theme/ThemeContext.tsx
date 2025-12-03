@@ -1,5 +1,5 @@
 import React from "react";
-import { ConfigProvider } from "antd";
+import {ConfigProvider, theme} from "antd";
 import plPL from "antd/locale/pl_PL";
 
 type ThemeMode = "light" | "dark";
@@ -74,26 +74,17 @@ export function ThemeProvider({ children, borderRadius = 12 }: Props) {
             <ConfigProvider
                 locale={plPL}
                 theme={{
+                    algorithm: mode === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
                     token: {
-                        colorPrimary: mode === "dark" ? "1d20b9" : "#22c55e", // zielony
                         borderRadius,
-                        colorBgBase: mode === "dark" ? "262626" : "#ffffff",
-                        colorText: mode === "dark" ? "#ffffff" : "rgba(0,0,0,0.88)",
+                        // ewentualnie zachowaj tylko te tokeny, które naprawdę chcesz nadpisać
+                        colorPrimary: "#22c55e",
+                        ...(mode === "dark" && {
+                            colorBgBase: "#1b222d",
+                            colorBgContainer: "#242c3a",
+                            colorBgElevated: "#2c3444",
+                        }),
                     },
-                    components: {
-                        Select: {
-                            // tekst w kontrolce i w opcjach
-                            colorText: mode === "dark" ? "#ffffff" : undefined,
-                            // tło zaznaczonej opcji w menu
-                            optionSelectedBg: mode === "dark" ? "#223043" : undefined,
-                            // kolor zaznaczonej opcji
-                            optionSelectedColor: mode === "dark" ? "#ffffff" : undefined,
-                            // tło opcji w hover/focus
-                            optionActiveBg: mode === "dark" ? "#1c2736" : undefined,
-                            // tło kontrolki (jeśli chcesz ją rozjaśnić/przyciemnić)
-                            selectorBg: mode === "dark" ? "#111827" : undefined,
-                        }
-                    }
                 }}
             >
                 {children}
