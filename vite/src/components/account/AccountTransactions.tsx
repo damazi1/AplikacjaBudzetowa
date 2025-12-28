@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Card, Col, Row} from "antd";
 import {fetchTransactions} from "@services/transactionService.tsx";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 type AccountTransactionsProps = {
     amount: number;
@@ -13,6 +14,7 @@ type AccountTransactionsProps = {
 export function AccountTransactions() {
     const [transactions, setTransactions] = useState<AccountTransactionsProps[]>([]);
     const {accountId} = useParams<{accountId: string}>();
+    const {t} = useTranslation();
     const fetchTrans = async () => {
         if (!accountId) return;
         try {
@@ -27,16 +29,16 @@ export function AccountTransactions() {
     }, []);
 
     return (
-        <Card title={"Historia transakcji"}>
+        <Card title={t("Transaction history")}>
             <Row>
                 <Col span={8}>
-                    <strong>Kwota</strong>
+                    <strong>{t("Amount")}</strong>
                 </Col>
                 <Col span={8}>
-                    <strong>Opis</strong>
+                    <strong>{t("Description")}</strong>
                 </Col>
                 <Col span={8}>
-                    <strong>Data</strong>
+                    <strong>{t("Date")}</strong>
                 </Col>
             </Row>
             {transactions.map((transaction, index) => (

@@ -2,6 +2,7 @@ import {Button, type ButtonProps, Form, Input, message, Modal, Select} from "ant
 import React from "react";
 import {currencies} from "@services/CurrencyService.tsx";
 import {createAccount} from "@services/accountService.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     onCreated?: () => void;              // wywołaj po sukcesie, np. do refetch portfeli
@@ -20,7 +21,7 @@ export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", butto
     const [options, setOptions] = React.useState<{ value: string; label: string }[]>([]);
     const [loadingCurrencies, setLoadingCurrencies] = React.useState(false);
     const [form] = Form.useForm<FormValues>();
-
+    const {t} = useTranslation();
     // pobierz waluty tylko gdy modal otwarty
     React.useEffect(() => {
         if (!open) return;
@@ -66,50 +67,53 @@ export function AccountCreate({ onCreated, label = "Utwórz nowy portfel", butto
             </Button>
 
             <Modal
-                title="Nowe konto bankowe"
+                title={t("Create new bank account")}
                 open={open}
                 onCancel={() => {
                     setOpen(false);
                     form.resetFields();
                 }}
                 onOk={() => form.submit()}
-                okText="Zapisz"
-                cancelText="Anuluj"
+                okText={t("Create")}
+                cancelText={t("Cancel")}
                 confirmLoading={saving}
                 destroyOnHidden={true}
             >
                 <Form form={form} layout="vertical" onFinish={handleSubmit} preserve={false}>
                     <Form.Item
                         name="name"
-                        label="Nazwa"
-                        rules={[{ required: true, message: "Podaj nazwę" }]}
+                        label={t("Name")}
+                        rules={[{ required: true, message: t("Enter a name") }]}
                     >
-                        <Input placeholder="np. Mój portfel" />
+                        <Input placeholder={t("e.g. Saving account")} />
                     </Form.Item>
 
                     <Form.Item
                         name="currency"
-                        label="Waluta"
-                        rules={[{ required: true, message: "Wybierz walutę" }]}
+                        label={t("Currency")}
+                        rules={[{ required: true, message: t("Choose currency") }]}
                     >
                         <Select
                             loading={loadingCurrencies}
-                            placeholder="Wybierz walutę"
+                            placeholder={t("Choose currency")}
                             options={options}
                         />
                     </Form.Item>
+                    {/*
+                    TODO: Dodać inne typy kont
+                    */}
                     <Form.Item
                         name="accountType"
-                        label="Typ konta"
-                        rules={[{ required: true, message: "Wybierz typ konta" }]}
+                        label={t("Account type")}
+                        rules={[{ required: true, message: t("Choose account type") }]}
                         initialValue="LOAN"
                     >
                         <Select
-                            placeholder="Wybierz typ konta"
+                            placeholder={t("Choose account type")}
                             options={[
-                                { value: "LOAN", label: "Kredytowe" },
-                                { value: "SAVINGS", label: "Oszczędnościowe" },
-                                { value: "CHECKING", label: "Rozliczeniowe" },
+                                { value: "LOAN", label: t("Loan") },
+                                { value: "SAVINGS", label: t("Savings") },
+                                { value: "CHECKING", label: t("Checking") },
                             ]}
                         />
                     </Form.Item>

@@ -4,12 +4,15 @@ import FormItem from "antd/es/form/FormItem";
 import {CategorySelect} from "./WalletCategorySelect.tsx";
 import {newWalletTransaction} from "../../services/WalletService.tsx";
 import TextArea from "antd/es/input/TextArea";
+import {useTranslation} from "react-i18next";
 
 interface WalletAddTransactionFormProps {
     walletId: string;
 }
 
 export function WalletAddTransactionForm({walletId}: WalletAddTransactionFormProps) {
+    const {t} = useTranslation();
+
     const onSubmit = async (values: { amount: number; description?: string; category: string }) => {
         if (!walletId) {return}
         try {
@@ -26,33 +29,33 @@ export function WalletAddTransactionForm({walletId}: WalletAddTransactionFormPro
                 "Błąd dodawania transakcji";
             message.error(description);        }
     }
-    return <Card title={"Add transaction"}>
+    return <Card title={t("Add transaction")}>
         <Form layout="horizontal" onFinish={onSubmit}>
             <FormItem
-                label="Amount"
+                label={t("Amount")}
                 name="amount"
                 rules={[
-                    { required: true, message: 'Kwota jest wymagana' }
+                    { required: true, message: t("Ammount is required") }
                         ]}
             >
-                <InputNumber style={{width: "100%"}} placeholder={"kwota"}/>
+                <InputNumber style={{width: "100%"}} placeholder={t("Amount")}/>
             </FormItem>
             <FormItem
-                label={"Description"}
+                label={t("Description")}
                 name="description"
             >
-                <TextArea placeholder={"Put description here..."}/>
+                <TextArea placeholder={t("Put description here")}/>
             </FormItem>
             <FormItem
-                label={"Category"}
+                label={t("Category")}
                 name={"category"}
                 rules={[
-                    { required: true, message: 'Wybierz kategorie' }
+                    { required: true, message: t("Choose category") }
                 ]}
             >
                 <CategorySelect/>
             </FormItem>
-            <Button style={{width: "100%"}} type="primary" htmlType="submit"> Add</Button>
+            <Button style={{width: "100%"}} type="primary" htmlType="submit"> {t("Add")}</Button>
         </Form>
     </Card>
 }

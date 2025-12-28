@@ -4,6 +4,7 @@ import {type Wallet} from "../../models/Wallet.ts";
 import  "../../styles/Wallet.css"
 import {getWalletById, periodWalletBalance} from "../../services/WalletService.tsx";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export type WalletBalanceProps = {
     timeFrom?: string;
@@ -17,7 +18,7 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
     const [ExpensesAndIncomes, setExpensesAndIncomes] = useState<any>(null);
     const [wallet, setWallet] = useState<Wallet>({} as Wallet);
     const {id} = useParams<{id: string}>();
-
+    const {t} = useTranslation();
     useEffect(() => {
         if (!id) return;
         const load = async () => {
@@ -46,7 +47,7 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
             }
         };
         fetchPeriod();
-        }, [timeFrom, timeTo, wallet.id]);
+    }, [timeFrom, timeTo, wallet.id]);
 
 
     // TODO: Funkcja odpowiedzialna z wyświetlanie 2 miejsc po przecinku
@@ -54,15 +55,15 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
         <div>
             <Row>
                 <Col span={6}>
-                    <Card style={{height: "80%"}} title={"Current wallet balance"}>
+                    <Card style={{height: "80%"}} title={t("Current wallet balance")}>
                         {wallet.balance > 0 ?
-                        <p className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</p>:
-                        <p className={"NegativeTransaction"}>{wallet.balance} {wallet.currency}</p>}
+                            <p className={"PositiveTransaction"}>{wallet.balance.toFixed(2)} {wallet.currency}</p>:
+                            <p className={"NegativeTransaction"}>{wallet.balance} {wallet.currency}</p>}
                     </Card>
                 </Col>
                 { ExpensesAndIncomes ?
                     <Col span={6}>
-                        <Card style={{height: "80%"}} title={"Period balance change"}>
+                        <Card style={{height: "80%"}} title={t("Period balance change")}>
                             {ExpensesAndIncomes.balanceChange >= 0 ?
                                 <p className={"PositiveTransaction"}>{ExpensesAndIncomes.balanceChange.toFixed(2)} {wallet.currency}</p>:
                                 <p className={"NegativeTransaction"}>{ExpensesAndIncomes.balanceChange.toFixed(2)} {wallet.currency}</p>
@@ -72,14 +73,14 @@ export function WalletBalance({timeFrom, timeTo}: WalletBalanceProps){
                 }
                 { ExpensesAndIncomes ?
                     <Col span={6} >
-                        <Card style={{height: "80%"}} title={"Period Expenses"}>
+                        <Card style={{height: "80%"}} title={t("Period Expenses")}>
                             <p className={"NegativeTransaction"}>{ExpensesAndIncomes.totalExpenses.toFixed(2)} {wallet.currency} </p>
                         </Card>
                     </Col> : <Spin/>
                 }
                 { ExpensesAndIncomes ?
                     <Col span={6}>
-                        <Card style={{height: "80%"}} title={"Period Income"}>
+                        <Card style={{height: "80%"}} title={t("Period Income")}>
                             <p className={"PositiveTransaction"}>{ExpensesAndIncomes.totalIncome.toFixed(2)} {wallet.currency} </p>
                         </Card>
                     </Col> : <Spin/>

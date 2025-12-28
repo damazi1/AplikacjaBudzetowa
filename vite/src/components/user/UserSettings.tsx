@@ -2,6 +2,7 @@ import React, {useState, type ChangeEvent, useEffect} from "react";
 import {Col, Input, Row, Button, message} from "antd";
 import "@styles/User.css";
 import {fetchUserId, updateUser} from "@services/userService.tsx";
+import {useTranslation} from "react-i18next";
 
 type UserSettingsData = {
     firstName?: string;
@@ -19,6 +20,7 @@ type UserSettingsProps = {
 };
 
 export function UserSettings({ initial}: UserSettingsProps) {
+    const {t} = useTranslation();
     useEffect(() => {
         const load = async () => {
             try {
@@ -68,12 +70,12 @@ export function UserSettings({ initial}: UserSettingsProps) {
     return (
         <Row gutter={[25, 25]}>
             <Col span={24}>
-                <h1>Ustawienia użytkownika</h1>
+                <h1>{t("Profile details")}</h1>
             </Col>
 
             <Col span={12}>
                 <div className={"field-container"}>
-                    <label htmlFor="firstName" className={"label-style"}>Imię:</label>
+                    <label htmlFor="firstName" className={"label-style"}>{t("First name")}:</label>
                     <Input
                         id="firstName"
                         name="firstName"
@@ -86,7 +88,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={12}>
                 <div className={"field-container"}>
-                    <label htmlFor="lastName" className={"label-style"}>Nazwisko:</label>
+                    <label htmlFor="lastName" className={"label-style"}>{t("Last name")}:</label>
                     <Input
                         id="lastName"
                         name="lastName"
@@ -99,7 +101,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={12}>
                 <div className={"field-container"}>
-                    <label htmlFor="email" className={"label-style"}>Email:</label>
+                    <label htmlFor="email" className={"label-style"}>{t("Email")}:</label>
                     <Input
                         id="email"
                         type="email"
@@ -113,7 +115,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={12}>
                 <div className={"field-container"}>
-                    <label htmlFor="phoneNumber" className={"label-style"}>Telefon:</label>
+                    <label htmlFor="phoneNumber" className={"label-style"}>{t("Phone number")}:</label>
                     <Input
                         id="phoneNumber"
                         type="tel"
@@ -127,7 +129,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={7}>
                 <div className={"field-container"}>
-                    <label htmlFor="city" className={"label-style"}>Miejscowość:</label>
+                    <label htmlFor="city" className={"label-style"}>{t("City")}:</label>
                     <Input
                         id="city"
                         name="city"
@@ -140,7 +142,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={7}>
                 <div className={"field-container"}>
-                    <label htmlFor="street" className={"label-style"}>Ulica:</label>
+                    <label htmlFor="street" className={"label-style"}>{t("Street")}:</label>
                     <Input
                         id="street"
                         name="street"
@@ -153,7 +155,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={5}>
                 <div className={"field-container"}>
-                    <label htmlFor="houseNumber" className={"label-style"}>Nr domu:</label>
+                    <label htmlFor="houseNumber" className={"label-style"}>{t("House number")}:</label>
                     <Input
                         id="houseNumber"
                         name="houseNumber"
@@ -168,7 +170,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
 
             <Col span={5}>
                 <div className={"field-container"}>
-                    <label htmlFor="postalCode" className={"label-style"}>Kod pocztowy:</label>
+                    <label htmlFor="postalCode" className={"label-style"}>{t("Postal code")}:</label>
                     <Input
                         id="postalCode"
                         name="postalCode"
@@ -180,7 +182,7 @@ export function UserSettings({ initial}: UserSettingsProps) {
             </Col>
 
             <Col span={24} style={{ marginTop: 20 }}>
-                <Button type="primary" onClick={handleSubmit}>Zapisz zmiany</Button>
+                <Button type="primary" onClick={handleSubmit}>{t("Save changes")}</Button>
             </Col>
         </Row>
     );

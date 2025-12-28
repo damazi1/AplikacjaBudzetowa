@@ -11,7 +11,7 @@
 
 \ProcessOptions
 
-\LoadClass{report}
+\LoadClass[a4paper,12pt,twoside,openright]{report}
 
 \usepackage{amssymb}
 % styl polskich dokumentow
@@ -19,6 +19,8 @@
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
 \selectlanguage{polish}
 \usepackage[polish]{varioref}
 \usepackage[chapter]{totalcount}
@@ -32,6 +34,7 @@
 	linkcolor=black,
 	urlcolor=black
 }
+\usepackage[expansion=true, protrusion=true]{microtype}
 \usepackage{nth}
 \usepackage{pgfplotstable}
 \usepackage{array}
@@ -73,33 +76,44 @@
 %\lstloadlanguages{C++, Java, [Sharp]C}
 
 \usepackage{color}
+\usepackage{listings}
+
+% Definicje kolorów
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
-\definecolor{red}{rgb}{0.6,0,0} 
-\definecolor{blue}{rgb}{0,0,0.6}
-\definecolor{green}{rgb}{0,0.8,0}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
-\usepackage{listings}
+
+% Ustawienia listingu
 \lstset{
-	language=c++,
-	basicstyle=\footnotesize\ttfamily,
-	numbers=left,
-	numberstyle=\tiny,
+	language=C++,
+	basicstyle=\footnotesize\ttfamily, % Czcionka maszynowa
+	numbers=left,               % Numeracja linii po lewej
+	numberstyle=\tiny\color{gray}, % Numery linii małe i szare (mniej rzucające się w oczy)
 	numbersep=5pt,
 	tabsize=2,
 	extendedchars=true,
-	breaklines=true,
-	frame=b,
-	stringstyle=\color{blue}\ttfamily,
+	breaklines=true,            % Łamanie długich linii
+	frame=single,               % <--- ZMIANA: Pełna ramka (box) zamiast tylko linii na dole
+	rulecolor=\color{black},    % <--- ZMIANA: Kolor ramki (czarny)
+	captionpos=b,
+	stringstyle=\color{bluekeywords}, % Kolor napisów (stringów)
 	showspaces=false,
 	showtabs=false,
-	xleftmargin=0pt,
-	framexleftmargin=17pt,
+	xleftmargin=17pt,           % Margines, aby ramka nie nachodziła na tekst
+	framexleftmargin=17pt,      % Wewnętrzny margines ramki
 	framexrightmargin=5pt,
 	framexbottommargin=4pt,
-	commentstyle=\color{green},
+	framextopmargin=4pt,        % Dodałem mały margines u góry dla estetyki
+	commentstyle=\color{greencomments}, % Kolor komentarzy
 	showstringspaces=false,
+	%
+	% ZMIANA PONIŻEJ: Zmieniłem identifierstyle na black (było red)
+	% Jeśli chcesz inny kolor dla zwykłego kodu, zmień 'black' np. na 'darkgray'
+	identifierstyle=\color{black}, 
+	keywordstyle=\color{cyan},
+	backgroundcolor=\color{white},
+	%
 	morekeywords={ abstract, event, new, struct,
 		as, explicit, null, switch,
 		base, extern, object, this,
@@ -122,19 +136,16 @@
 		enum, namespace, string,
 		move, List, Optional,
 		String },
-	keywordstyle=\color{cyan},
-	identifierstyle=\color{red},
-	backgroundcolor=\color{white},
-	   literate=
-		{ą}{{\k{a}}}1
-		{ć}{{\'c}}1
-		{ę}{{\k{e}}}1
-		{ł}{{\l{}}}1
-		{ń}{{\'n}}1
-		{ó}{{\'o}}1
-		{ś}{{\'s}}1
-		{ż}{{\.z}}1
-		{ź}{{\'z}}1,
+	literate=
+	{ą}{{\k{a}}}1
+	{ć}{{\'c}}1
+	{ę}{{\k{e}}}1
+	{ł}{{\l{}}}1
+	{ń}{{\'n}}1
+	{ó}{{\'o}}1
+	{ś}{{\'s}}1
+	{ż}{{\.z}}1
+	{ź}{{\'z}}1,
 }
 
 %\usepackage[pdftex]{graphicx}
@@ -169,7 +180,7 @@
 \usepackage{fancyhdr}
 %\usepackage{amsfonts}
 %\usepackage{times}
-\usepackage[left=3.5cm, top=2cm, right=2cm, bottom=2cm]{geometry}
+\usepackage[inner=3.5cm, outer=2cm, top=2cm, bottom=2cm]{geometry}
 
 %%
 %\setlength{\voffset}{-1in}
@@ -187,24 +198,30 @@
 %\setlength\arraycolsep{0.8ex}
 %\setlength\arraycolsep{1.4\p@}
 %\setlength\tabcolsep{1.4\p@}
+% --- KONTROLA WDÓW I SIEROT ---
+% Zapobiega pozostawianiu pojedynczych linii akapitu na początku lub końcu strony
+\widowpenalty=10000 
+\clubpenalty=10000 
+\displaywidowpenalty=10000 % Wdowy przed otoczeniami matematycznymi
+\brokenpenalty=10000       % Nie dziel wyrazów, jeśli podział wypadnie między stronami
+
+% --- RELAKSACJA REGUŁ ŁAMANIA ---
+% Pozwala LaTeXowi na minimalnie większe odstępy między wyrazami, 
+% aby uniknąć konieczności brzydkiego dzielenia wyrazów lub zostawiania "szewców".
+\emergencystretch=2em
 
 \renewcommand{\baselinestretch}{1.5}
 
 \pagestyle{fancy}
-\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead{} % clear all fields
 \fancyfoot{} % clear all fields
-\fancyfoot[LO]{\small{\slshape\nouppercase{\rightmark}}} 
-\fancyfoot[RE]{\small{\slshape\nouppercase{\leftmark}}}
-\fancyfoot[RO,LE]{\small{\thepage}} 
+\fancyfoot[RO,LE]{\rmfamily\fontsize{12pt}{14.4pt}\selectfont \thepage}
 \fancypagestyle{plain}{
   \fancyhf{} % clear all header and footer fields
-   \fancyfoot[RO,LE]{\small{\thepage}} % except the center
-  \fancyfoot[LO]{\small{\slshape\nouppercase{\rightmark}}} 
-  \fancyfoot[RE]{\small{\slshape\nouppercase{\leftmark}}}
   \renewcommand{\headrulewidth}{0pt} 
-  \renewcommand{\footrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
 }
 
 % formatowanie wielo (poziomowych) list wyliczeniowych
@@ -328,8 +345,14 @@
 % formatowanie odległości numeru punktu od jego nazwy
 \def\@seccntformat#1{\csname the#1\endcsname.\space}
 
+\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+	\clearpage
+	{\pagestyle{empty}\origdoublepage}%
+}
+
 \renewcommand\chapter{
-  \if@openright\cleardoublepage\else\clearpage\fi
+  \if@openright\clearemptydoublepage\else\clearpage\fi
   \thispagestyle{plain}
   \vspace*{1\p@}
   \@startsection{chapter}{0}{\z@}%
@@ -459,13 +482,13 @@
     \vfill
 
     \noindent
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cAutor} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Nr albumu: \cNumerAlbumu} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Kierunek: \cKierunek} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Studia: \cStudia} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{Poziom studiów: \cPoziomStudiow} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf Promotor pracy:} \\
-    \hspace*{0.515\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cPromotor}
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cAutor} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{Nr albumu: \cNumerAlbumu} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{Kierunek: \cKierunek} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{Forma studiów: \cStudia} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{Poziom studiów: \cPoziomStudiow} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{\large \bf Promotor pracy:} \\
+    \hspace*{0.465\textwidth} \makebox[0.5\textwidth][l]{\large \bf \cPromotor}
 
     \vfill
     \vfill
@@ -485,7 +508,7 @@
 \newpage
 }
 
-
+\setlength{\parfillskip}{0pt plus 0.5\textwidth}
 \endinput
 
 

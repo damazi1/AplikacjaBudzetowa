@@ -1,6 +1,6 @@
 \chapter{Architektura aplikacji}
-W rozdziale przedstawiono wymagania funkcjonalne i niefunkcjonalne, które zostały postawione aplikacji. Zaprezentowano również diagramy przypadków użycia, stanów oraz sekwencji.
-\section{wymagania funkcjonalne}
+W rozdziale przedstawiono wymagania funkcjonalne i niefunkcjonalne. Zilustrowano również klasy oraz funkcje programu na diagramach języka UML.
+\section{Wymagania funkcjonalne}
 Wymagania funkcjonalne określają zachowanie systemu i jego reakcji na określone zadania \cite{Wymagania}. Stanowią one podstawę dla wykonawcy oprogramowania do opracowania odpowiednich metod oraz funkcjonalności. Precyzyjne zdefiniowanie wymagań z perspektywy biznesowej pozwala na dopasowanie tworzonych rozwiązań do potrzeb organizacji oraz celów strategicznych projektu. Takie rozwiązanie umożliwia wdrożenie systemu zgodnego z oczekiwaniami zleceniodawcy.
 
 \begin{longtable}{|c|p{5cm}|p{8cm}|}
@@ -43,7 +43,7 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 
 \section{Diagramy UML}
 Jednym z kluczowych etapów w procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
-\subsection{Tworzenie diagramów}
+\subsection*{Tworzenie diagramów}
 Diagramy UML można utworzyć graficznie, na przykład przez strone draw.io, bądź tekstowo odpowiednim językiem takim jak PlantUML lub mermaid. Można też skorzystać z narzędzi takich jak enterprise architect, który posiada dodatkowe opcję takie jak tworzenie kodu programu na bazie diagramów. 
 \section{Diagramy przypadków użycia}
 Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi, które system świadczy aktorom, bez wskazywania rozwiązań technologicznych \cite{UML1}. Stanowi on podstawę do modelowania szczegółowych części systemu.
@@ -53,30 +53,21 @@ Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi,
 	\caption{Diagram przypadków użycia}
 	\label{fig:UseCase}
 \end{figure}
-\section{Diagram klas}
-Przedstawia klasy oraz zależności między nimi:
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/Mermaid_ClassDiag}
-	\caption{Diagram klas}
-	\label{fig:mermaidclassdiag}
-\end{figure}
-
 \section{Diagramy sekwencji}
 Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{images/MermaidSeqDiag}
+	\includegraphics[width=0.9\textwidth]{images/MermaidSeqDiag}
 	\caption{Diagram sekwencji - Nowa transakcja portfela}
 	\label{fig:Seq1}
 \end{figure}
-
-
-\subsection{TODO: Pomysły i nie użyte rzeczy}
-Diagram maszyny stanów (ang. \textit{state machine diagram}) ukazuje wszystkie stany, w których może znaleźć się obiekt oraz przejścia między nimi. Pozwala odczytać jakie akcje wpływają na zmianę stanu, a także akcję, które są wykonywane w momencie przejścia w inny stan.
+\section{Diagram klas}
+Przedstawia klasy oraz zależności między nimi:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{images/Wniosek.jpg}
-	\caption{Diagram stanów składania wniosku}
-	\label{fig:StateMachine}
+	\includegraphics[height=1\textheight, keepaspectratio]{images/testDiag}
+	\caption{Diagram klas}
+	\label{fig:mermaidclassdiag}
 \end{figure}
+
+

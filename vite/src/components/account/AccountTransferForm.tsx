@@ -4,6 +4,7 @@ import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
 import {newTransfer} from "@services/transactionService.tsx";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 type AccountTransferFormProps = {
     accountToNumber: string;
@@ -13,7 +14,7 @@ type AccountTransferFormProps = {
 
 export function AccountTransferForm() {
     const {accountId} = useParams<{accountId: string}>();
-
+    const {t} = useTranslation();
     const onSubmit = (values: AccountTransferFormProps) => {
         if (!accountId) return;
         newTransfer({
@@ -25,23 +26,25 @@ export function AccountTransferForm() {
         <Form onFinish={onSubmit}>
             <FormItem
                 name={"accountToNumber"}
-                label={"Numer konta odbiorcy"}>
+                label={t("Recipient account number")}
+                rules={[{required: true, message: t("Please input account number")}]}>
 
                 <Input></Input>
 
             </FormItem>
             <FormItem
                 name={"amount"}
-                label={"Kwota"}>
+                label={t("Amount")}
+                rules={[{required: true, message: t("Please input amount")}]}>
 
                 <InputNumber></InputNumber>
             </FormItem>
             <FormItem
                 name={"description"}
-                label={"Opis (opcjonalny)"}>
+                label={t("Description")}>
                 <TextArea></TextArea>
             </FormItem>
-            <Button type="primary" htmlType="submit">Utwórz przelew</Button>
+            <Button type="primary" htmlType="submit">{t("Create transfer")}</Button>
         </Form>
     )
 }

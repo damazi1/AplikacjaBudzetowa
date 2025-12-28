@@ -1,5 +1,6 @@
 import React from "react";
 import {BarChart, Bar, ResponsiveContainer, Legend, CartesianGrid, Tooltip, YAxis, XAxis} from 'recharts';
+import {useTranslation} from "react-i18next";
 
 const getYAxisDomain = (data: { income: number; expenses: number }[]) => {
     if (!data.length) return [0, 0];
@@ -18,7 +19,7 @@ export function BarCharts({
     data: { date: string; income: number; expenses: number }[];
 }) {
     const [yMin, yMax] = getYAxisDomain(data);
-
+    const { t } = useTranslation();
     return (
         <ResponsiveContainer width="100%" height={400}>
             <BarChart
@@ -30,8 +31,8 @@ export function BarCharts({
                 <YAxis domain={[yMin, yMax]} allowDecimals={false} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="income" fill="#008000" />
-                <Bar dataKey="expenses" fill="#FF2C2C" />
+                <Bar name={t("income")} dataKey="income" fill="#008000" />
+                <Bar name={t("expenses")} dataKey="expenses" fill="#FF2C2C" />
             </BarChart>
         </ResponsiveContainer>
     );

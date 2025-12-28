@@ -7,6 +7,7 @@ import {AccountNewTransaction} from "@components/account/AccountNewTransaction.t
 import {AccountTransactions} from "@components/account/AccountTransactions.tsx";
 import {AccountCharts} from "@components/account/AccountCharts.tsx";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 
 export function AccountPage() {
@@ -15,10 +16,11 @@ export function AccountPage() {
         dayjs().startOf("month"),
         dayjs().endOf("month"),
         ])
+    const {t} = useTranslation();
     return (
         <Row>
             <Col span={12}>
-                    <h1>Konto bankowe</h1>
+                    <h1>{t("Bank account")}</h1>
             </Col>
             <Col span={12} style={{textAlign:"right"}}>
                 <DateRangePicker value={dateRange} onChange={setDateRange}/>

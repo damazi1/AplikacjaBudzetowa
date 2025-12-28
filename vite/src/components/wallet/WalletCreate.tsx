@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input, Select, InputNumber, message } from "antd";
 import type { ButtonProps } from "antd";
 import { addWallet } from "@services/WalletService.tsx";
 import { currencies } from "@services/CurrencyService.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     onCreated?: () => void;              // wywołaj po sukcesie, np. do refetch portfeli
@@ -22,7 +23,7 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
     const [options, setOptions] = React.useState<{ value: string; label: string }[]>([]);
     const [loadingCurrencies, setLoadingCurrencies] = React.useState(false);
     const [form] = Form.useForm<FormValues>();
-
+    const {t} = useTranslation();
     // pobierz waluty tylko gdy modal otwarty
     React.useEffect(() => {
         if (!open) return;
@@ -67,15 +68,15 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
             </Button>
 
             <Modal
-                title="Nowy portfel"
+                title={t("Create new wallet")}
                 open={open}
                 onCancel={() => {
                     setOpen(false);
                     form.resetFields();
                 }}
                 onOk={() => form.submit()}
-                okText="Zapisz"
-                cancelText="Anuluj"
+                okText={t("Create")}
+                cancelText={t("Cancel")}
                 confirmLoading={saving}
                 destroyOnHidden={true}
 
@@ -83,27 +84,27 @@ export function WalletCreate({ onCreated, label = "Utwórz nowy portfel", button
                 <Form form={form} layout="vertical" onFinish={handleSubmit} preserve={false}>
                     <Form.Item
                         name="name"
-                        label="Nazwa"
-                        rules={[{ required: true, message: "Podaj nazwę" }]}
+                        label={t("Name")}
+                        rules={[{ required: true, message: t("Enter a name") }]}
                     >
-                        <Input placeholder="np. Mój portfel" />
+                        <Input placeholder={t("e.g. Daily wallet")} />
                     </Form.Item>
 
                     <Form.Item
                         name="currency"
-                        label="Waluta"
-                        rules={[{ required: true, message: "Wybierz walutę" }]}
+                        label={t("Currency")}
+                        rules={[{ required: true, message: t("Choose currency") }]}
                     >
                         <Select
                             loading={loadingCurrencies}
-                            placeholder="Wybierz walutę"
+                            placeholder={t("Choose currency")}
                             options={options}
                         />
                     </Form.Item>
 
                     <Form.Item
                         name="balance"
-                        label="Początkowy balans (opcjonalnie)"
+                        label={t("Initial balance")}
                     >
                         <InputNumber
                             style={{ width: "100%" }}

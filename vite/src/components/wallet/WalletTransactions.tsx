@@ -3,6 +3,7 @@ import {Card, Col, Row, Spin, Empty, Button, Modal} from "antd";
 import {deleteWalletById, periodWalletTransaction} from "../../services/WalletService";
 import dayjs from "dayjs";
 import {WalletUpdateTransaction} from "@components/wallet/WalletUpdateTransaction.tsx";
+import {useTranslation} from "react-i18next";
 
 type WalletTransactionsProps = {
     walletId: string;
@@ -31,6 +32,8 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInitials, setModalInitials] = useState<{id?: string; amount?: number; description?: string; category?: string }>({});
+
+    const {t} = useTranslation();
 
     const toggleExpand = (t: string) => {
         const id: string | null = t ?? null;
@@ -88,24 +91,24 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
     };
 
     return (
-        <Card title={`Historia transakcji od ${dateFrom ? dayjs(dateFrom).format("DD-MM-YYYY") : "-"} do ${dateTo ? dayjs(dateTo).format("DD-MM-YYYY") : "-"}`}>            {loading ? (
+        <Card title={`${t("Transaction history from")}  ${dateFrom ? dayjs(dateFrom).format("DD-MM-YYYY") : "-"} ${t("to")} ${dateTo ? dayjs(dateTo).format("DD-MM-YYYY") : "-"}`}>            {loading ? (
                 <div style={{ textAlign: "center", padding: 16 }}>
                     <Spin />
                 </div>
             ) : error ? (
                 <div style={{ color: "red" }}>{error}</div>
             ) : transactions.length === 0 ? (
-                <Empty description="Brak transakcji" />
+                <Empty description={t("No transaction")} />
             ) : (
                 <>
                     <Row style={{ fontWeight: 600, marginBottom: 8 }}>
-                        <Col span={6}>Kategoria</Col>
-                        <Col span={10} style={{ textAlign: "center" }}>Opis</Col>
-                        <Col span={4} style={{ textAlign: "right" }}>Kwota</Col>
-                        <Col span={4} style={{ textAlign: "right" }}>Data</Col>
+                        <Col span={6}>{t("Category")}</Col>
+                        <Col span={10} style={{ textAlign: "center" }}>{t("Description")}</Col>
+                        <Col span={4} style={{ textAlign: "right" }}>{t("Amount")}</Col>
+                        <Col span={4} style={{ textAlign: "right" }}>{t("Date")}</Col>
                     </Row>
-                    {transactions.map((t, i) => {
-                        const id = t.id ?? String(i);
+                    {transactions.map((tx, i) => {
+                        const id = tx.id ?? String(i);
                         const isExpanded = expandedId === id;
                         const isHovered = hoveredId === id;
                         return (
@@ -116,33 +119,33 @@ export const WalletTransactions: React.FC<WalletTransactionsProps> = ({
                                         setHoveredId((prev) => (prev === id ? null : prev))}
                                      style={{padding: "4px 0", borderBottom: "1px solid #f0f0f0", cursor: "pointer",
                                          backgroundColor: isExpanded ? "#DCDCDC" : isHovered ? "#D3D3D3" : "transparent"}}>
-                                    <Col span={6}>{t.category || "-"}</Col>
-                                    <Col span={10} style={{textAlign: "center"}}>{t.description || "-"}</Col>
+                                    <Col span={6}>{tx.category || "-"}</Col>
+                                    <Col span={10} style={{textAlign: "center"}}>{tx.description || "-"}</Col>
                                     <Col
                                         span={4}
                                         style={{
                                             textAlign: "right",
-                                            color: (t.amount ?? 0) < 0 ? "red" : "green",
+                                            color: (tx.amount ?? 0) < 0 ? "red" : "green",
                                             fontWeight: 500,
                                         }}
                                     >
-                                        {t.amount != null ? (t.amount < 0 ? "-" : "+") + Math.abs(t.amount).toFixed(2) + " PLN" : "-"}
+                                        {tx.amount != null ? (tx.amount < 0 ? "-" : "+") + Math.abs(tx.amount).toFixed(2) + " PLN" : "-"}
                                     </Col>
                                     <Col span={4} style={{textAlign: "right"}}>
-                                        {t.date ? dayjs(t.date).format("YYYY-MM-DD") : "-"}
+                                        {tx.date ? dayjs(tx.date).format("YYYY-MM-DD") : "-"}
                                     </Col>
                                 </Row>
                                 {isExpanded && (
                                     <Row>
                                         <Col span={12} style={{ display: "flex", justifyContent: "flex-start", padding: "10px"}}>
                                             <Button type={"primary"}  style={{background: "orange", width: "100%"}} onClick={() =>
-                                                openUpdateModalPrefilled(t)}>
-                                                Edytuj transakcję
+                                                openUpdateModalPrefilled(tx)}>
+                                                {t("Edit transaction")}
                                             </Button>
                                         </Col>
                                         <Col span={12} style={{ display: "flex", justifyContent: "flex-end", padding: "8px 0" }}>
                                                 <Button type={"primary"} style={{ width: "100%"}} danger={true} onClick={() => deleteTransaction(id!)}>
-                                                    Usuń transakcję
+                                                    {t("Delete transaction")}
                                                 </Button>
                                         </Col>
                                     </Row>

@@ -4,13 +4,14 @@ import React from "react";
 import {getWalletById} from "../../services/WalletService.tsx";
 import type { Wallet } from "../../models/Wallet.ts";
 import {Card, Col, Row, Spin} from "antd";
+import {useTranslation} from "react-i18next";
 
 
 export const WalletDetails =() => {
     const {id} = useParams<{id: string}>();
     const [wallet, setWallet] = useState<Wallet | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-
+    const {t} = useTranslation();
     useEffect(() => {
         if (!id) return;
         const loadData = async () => {
@@ -33,14 +34,14 @@ export const WalletDetails =() => {
                 <Card style={{textAlign: "center"}} title={"Dane o portfelu"}>
                     <Row style={{textAlign: "center"}}>
                         <Col span={12}>
-                            <strong>Nazwa portfela:</strong> {wallet.name}
+                            <strong>{t("Name")}:</strong> {wallet.name}
                         </Col>
                         <Col span={12}>
-                            <strong>Waluta:</strong> {wallet.currency}
+                            <strong>{t("Currency")}:</strong> {wallet.currency}
                         </Col>
                     </Row>
                 </Card>
-) : (<div>Brak danych</div>)
+) : (<div>{t("Not Found")}</div>)
 }
         </div>
 );

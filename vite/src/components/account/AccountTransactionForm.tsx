@@ -4,6 +4,7 @@ import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
 import {useParams} from "react-router-dom";
 import {newPayment} from "@services/transactionService.tsx";
+import {useTranslation} from "react-i18next";
 
 type AccountTransactionFormProps = {
     amount: number;
@@ -12,7 +13,7 @@ type AccountTransactionFormProps = {
 
 export function AccountTransactionForm({type}: {type: "deposit" | "withdrawal"}) {
     const {accountId} = useParams<{accountId: string}>();
-
+    const {t} = useTranslation();
 
     const onSubmit = (values: AccountTransactionFormProps) => {
         if (!accountId) return;
@@ -29,9 +30,9 @@ export function AccountTransactionForm({type}: {type: "deposit" | "withdrawal"})
         <Form onFinish={onSubmit}>
             <FormItem
                 name="amount"
-                label={"Kwota"}
+                label={t("Amount")}
                 rules={[
-                    { required: true, message: 'Kwota jest wymagana' },
+                    { required: true, message: t("Amount is required") },
                     {
                         validator: (_, value) => {
                             if (type === 'deposit' && value <= 0) {
@@ -49,11 +50,11 @@ export function AccountTransactionForm({type}: {type: "deposit" | "withdrawal"})
             </FormItem>
             <FormItem
                 name="description"
-                label={"opis (optional)"}>
+                label={t("Description")}>
                 <TextArea/>
             </FormItem>
             <Button type="primary" htmlType="submit">
-                {type === 'deposit' ? 'Utwórz wpłatę' : 'Utwórz wypłatę'}
+                {type === 'deposit' ? t("Create deposit") : t("Create withdrawal")}
             </Button>
         </Form>
     )

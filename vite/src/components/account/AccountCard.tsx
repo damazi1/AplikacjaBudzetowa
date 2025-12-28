@@ -5,12 +5,13 @@ import {fetchAccounts} from "@services/accountService.tsx";
 import {useNavigate} from "react-router-dom";
 import {Icon} from "@iconify/react";
 import "@styles/Home.css";
+import {useTranslation} from "react-i18next";
 
 export function AccountCard(){
     const [AccountData, setAccounts] = useState<Accounts [] | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
+    const {t} = useTranslation();
     useEffect(() => {
         const fetchAccountData = async () => {
             try {
@@ -28,7 +29,7 @@ export function AccountCard(){
         <Row>
             {isLoading ? (
                 <Card className="ant-home-card" variant="outlined">
-                    <strong>Ładowanie kont...</strong>
+                    <strong>{t("Loading")}</strong>
                 </Card>
             ) : AccountData && AccountData.length > 0 ? (
                 AccountData.map(account => (
@@ -44,9 +45,9 @@ export function AccountCard(){
                                     <Icon icon={"mdi:bank"} width={50} height={50} color={"blue"}/>
                                 </Col>
                                 <Col span={20}>
-                                    <h3><strong>Nazwa:</strong> {account.name}</h3>
-                                    <strong>balance:</strong> <span className={"PositiveTransaction"}> {account.balance.toFixed(2)} {account.currency}</span><br/>
-                                    <strong>Typ:</strong> {account.type}
+                                    <h3><strong>{t("Name")}:</strong> {account.name}</h3>
+                                    <strong>{t("Balance")}:</strong> <span className={"PositiveTransaction"}> {account.balance.toFixed(2)} {account.currency}</span><br/>
+                                    <strong>{t("Type")}:</strong> {account.type}
                                 </Col>
                             </Row>
                         </Card>

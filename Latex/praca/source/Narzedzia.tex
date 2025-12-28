@@ -9,16 +9,11 @@ System kontroli wersji to jedna z najważniejszych rzeczy podczas tworzenia dowo
 
 Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (ang. \textit{branches}), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone poleceniem \texttt{marge} z główną gałęzią.
 \subsection*{Testowanie komunikacji}
-Poprawne komunikowanie się wszystkich warstw jest kluczowym aspektem tworzenia aplikacji webowych. W celu sprawdzenia komunikacji wykorzystuje się narzędzie Postman, które umożliwia wysyłanie żądań HTTP do serwera i sprawdzanie otrzymanych odpowiedzi. Pozwala to na weryfikację punktów końcowych aplikacji. Narzędzie to daje możliwość tworzenia kolekcji z zapytaniami, które można używać wielokrotnie bez konieczności ponownego tworzenia zapytań wraz z danymi. Posiada również możliwość zapisywania ciasteczek.
+W celu sprawdzenia komunikacji wykorzystuje się narzędzie Postman, które umożliwia wysyłanie żądań HTTP do serwera i sprawdzanie otrzymanych odpowiedzi. Pozwala to na weryfikację punktów końcowych aplikacji. Narzędzie to daje możliwość tworzenia kolekcji z zapytaniami, które można używać wielokrotnie bez konieczności ponownego tworzenia zapytań wraz z danymi. Posiada również możliwość zapisywania ciasteczek.
 
 \subsection*{Konteneryzacja}
 Możliwość pracy na różnych urządzeniach bez konieczności instalowania oprogramowania jest ciekawą perspektywą dla każdego dewelopera. Umożliwia to narzędzie Docker, którego głównym elementem jest silnik (ang. \textit{Docker Engine}) działający w formie usługi. Pozwala na budowanie, uruchamianie i zarządzanie kontenerami. Środowisko umożliwia tworzenie obrazów na bazie których powstają izolowane środowiska do wykonywania konkretnych zadań. Narzędzie pozwala na konteneryzacje zaawansowanych projektów, korzystające z wielu usług, dzięki plikowi \texttt{docker-compose.yml}, w którym definiuje się zależności między kontenerami, konfigurację sieci oraz woluminy.
 
 \subsection*{Testowanie oprogramowania}
-Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5, która oferuje możliwość tworzenia testów parametryzowanych. Polega to na podaniu zbioru danych, na których będą wykonywanie operację. Najważniejsze dane, które należy sprawdzać w testach to wartości graniczne, puste ciągi lub wartości null. Testy są wykonywane przed uruchomieniem aplikacji, dla wszystkich plików, których nazwa kończy się na test. W przypadku gdy jakiś test zakończy się niepowodzenie zostanie wyświetlona stosowana informacja na ten temat.
+Testy jednostkowe są wykonywane przy pomocy biblioteki JUnit w wersji 5, która oferuje możliwość tworzenia testów parametryzowanych oraz narzędzie Mockito, które umożliwia tworzenie wirtualnych repozytoriów i klas. Najważniejsze dane, które należy sprawdzać w testach to wartości graniczne, puste ciągi lub wartości null. Testy są wykonywane przed uruchomieniem aplikacji, dla wszystkich plików, których nazwa kończy się na test. W przypadku gdy jakiś test zakończy się niepowodzenie zostanie wyświetlona stosowana informacja na ten temat.
 
-
-\subsection{TODO: Pomysły i plany}
-\textbf{TODO: Jaka metodyka np. Zwinna (Agile/Scrum), opisać jak się używa, sprinty, taski itd.}
-
-\textbf{TODO: Lombok i devTools Spring Zależności które opisałem w sekcji SpringBoot teoretycznie są narzędziami. Czy należy je przenieść do sekcji narzędziowej?}

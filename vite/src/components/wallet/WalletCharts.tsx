@@ -4,6 +4,7 @@ import { Card, Col, Row } from "antd";
 import {WalletPieChart} from "@components/wallet/WalletPieChart.tsx";
 import {WalletBarChart} from "@components/wallet/WalletBarChart.tsx";
 import {WalletLineChart} from "@components/wallet/WalletLineChart.tsx";
+import {useTranslation} from "react-i18next";
 
 type WalletTransactionsProps = {
     walletId: string;
@@ -16,10 +17,11 @@ export const WalletCharts: React.FC<WalletTransactionsProps> = ({
                                                                     dateFrom,
                                                                     dateTo,
                                                                 })=> {
+    const {t} = useTranslation();
     return (
         <Row>
             <Col span={12}>
-                <Card title = "Balans">
+                <Card title = {t("Line chart of balance")}>
                     <WalletLineChart
                         walletId={walletId}
                         from={dateFrom}
@@ -28,7 +30,7 @@ export const WalletCharts: React.FC<WalletTransactionsProps> = ({
                 </Card>
             </Col>
             <Col span={12}>
-                <Card title="Balans slupki">
+                <Card title={t("Bar chart of expenses and income")}>
                     <WalletBarChart
                         walletId={walletId}
                         from={dateFrom}
@@ -37,7 +39,7 @@ export const WalletCharts: React.FC<WalletTransactionsProps> = ({
                 </Card>
             </Col>
             <Col span={24}>
-                <Card title="Wydatki i przychody" style={{textAlign: "center", }} styles={{body: {placeItems: "center"}}}>
+                <Card title={t("Incomes and expenses")} style={{textAlign: "center", }} styles={{body: {placeItems: "center"}}}>
                     <WalletPieChart
                         walletId={walletId}
                         from={dateFrom}

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Card, Col, Row, Spin} from "antd";
 import {fetchAccountDetails} from "@services/accountService.tsx";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 type AccountDetailsProps = {
     name: string;
@@ -14,7 +15,7 @@ type AccountDetailsProps = {
 export function AccountDetails() {
     const [details, setDetails] = React.useState<AccountDetailsProps | null>(null);
     const {accountId} = useParams<{accountId: string}>();
-
+    const {t} = useTranslation();
     const fetchDetails = async () => {
         if (!accountId) return;
         const data = await fetchAccountDetails(accountId);
@@ -26,25 +27,25 @@ export function AccountDetails() {
     }, []);
 
     return (
-        <Card style={{textAlign: "center"}} title="Detale konta bankowego">
+        <Card style={{textAlign: "center"}} title={t("Bank account details")}>
             {details ? (
             <Row>
                 <Col span={6}>
-                    <strong>Nazwa:</strong> {details.name}
+                    <strong>{t("Name")}:</strong> {details.name}
                 </Col>
                 <Col span={6}>
-                    <strong>Numer:</strong> {details.number}
+                    <strong>{t("Number")}:</strong> {details.number}
                 </Col>
                 <Col span={6}>
-                    <strong>Balans: </strong> {details.balance} {details.currency}
+                    <strong>{t("Balance")}:</strong> {details.balance} {details.currency}
                 </Col>
                 <Col span={6}>
-                    <strong>Typ: </strong> {details.type}
+                    <strong>{t("Type")}:</strong> {details.type}
                 </Col>
             </Row>
                 ) : (
                     <Col>
-                        Ładowanie szczegółów konta / Nie odnaleziono konta <br/><Spin/>
+                        {t("Account not found")} <br/><Spin/>
                     </Col>
                 )}
 

@@ -3,6 +3,7 @@ import Select, { components, type GroupBase, type OptionProps, type SingleValueP
 import { Icon } from "@iconify/react";
 import { type Category } from "@models/Category.tsx";
 import { Categories } from "@services/CategoryService.tsx";
+import {useTranslation} from "react-i18next";
 
 //TODO: Tutaj można przejrzeć kod bo dużo z bota w tym pliku
 
@@ -76,7 +77,7 @@ const SingleValue = (props: SingleValueProps<CategoryOption, false, GroupBase<Ca
 
 export const CategorySelect: React.FC<CategorySelectProps> = ({ value, onChange }) => {
     const { categories, loading, error } = useCategories();
-
+    const {t} = useTranslation();
     const options: CategoryOption[] = useMemo(() => {
         const arr = Array.isArray(categories) ? categories : (categories ? [categories] : []);
         return arr.map(c => ({
@@ -97,7 +98,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({ value, onChange 
 
     return (
         <Select<CategoryOption, false>
-            placeholder="Wybierz kategorię..."
+            placeholder={t("Choose category")}
             options={options}
             value={selectedOption}
             onChange={opt => onChange?.(opt?.value ?? "")}

@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {HomeOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {HomeOutlined, SettingOutlined, UserOutlined, ProfileOutlined} from "@ant-design/icons";
 import {Drawer, Dropdown, Layout, theme} from "antd";
 import React, {useEffect, useState} from "react";
 import {fetchUserId, logoutUser} from "@services/userService.tsx";
@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [user, setUser] = useState<User|null>(null);
-
+    const {t} = useTranslation();
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
                     key: "details",
                     label: (
                         <span onClick={() => navigate(`details/${user?.login}`)}>
-                            Szczegóły konta
+                            <ProfileOutlined /> {t("Profile")}
                         </span>
                     ),
                 },
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                     key: 'logout',
                     label: (
                         <span onClick={handleLogout}>
-                            <UserOutlined /> Wyloguj
+                            <UserOutlined /> {t("Logout")}
                         </span>
                     ),
                 },
@@ -79,14 +79,14 @@ const Navbar: React.FC = () => {
     </Dropdown>
 )}
                 <Drawer
-                    title="Ustawienia"
+                    title={t("Settings")}
                     placement="right"
                     onClose={() => setSettingsOpen(false)}
                     open={settingsOpen}
                 >
-                    <p>Motyw: </p>
+                    <p>{t("Theme")}: </p>
                     <ThemeSwitch />
-                    <p>Język: </p>
+                    <p>{t("Language")}: </p>
                     <Select
                         defaultValue={i18n.language}
                         style={{ width: 120 }}

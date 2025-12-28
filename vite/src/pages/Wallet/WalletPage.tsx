@@ -9,6 +9,7 @@ import {WalletBalance} from "@components/wallet/WalletBalance.tsx";
 import {WalletCharts} from "@components/wallet/WalletCharts.tsx";
 import {WalletAddTransactionForm} from "@components/wallet/WalletAddTransactionForm.tsx";
 import {DateRangePicker} from "@components/common/DataRangePicker.tsx";
+import {useTranslation} from "react-i18next";
 
 export function WalletPage (){
     const { id } = useParams<{ id?: string }>();
@@ -17,11 +18,12 @@ export function WalletPage (){
         dayjs().endOf("month"),
     ]);
 
+    const {t} = useTranslation();
     return (
         <div>
             <Row>
                 <Col span={12} style={{padding: "10px"}}>
-                    <h1>Wallet</h1>
+                    <h1>{t("Wallet")}</h1>
                 </Col>
                 <Col span={12} style={{textAlign: "right", padding: "10px"}} >
                     <DateRangePicker value={dateRange} onChange={setDateRange}/>
