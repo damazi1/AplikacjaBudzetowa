@@ -6,10 +6,10 @@ Jednym ze sposobów projektowania aplikacji sieciowych jest model klient-serwer.
 Klient zleca serwerowi żądanie pewnej usługi, następnie serwer analizuje polecenia i~wysyła odpowiedź. Model ten jest powszechnie używany w~aplikacjach dostępnych za pośrednictwem internetu \cite{ArchKS}. 
 
 \subsection*{Przykładowe zastosowanie w~aplikacji webowej}
-Próba logowania na stronę WWW jest równoważna z~wysłaniem do serwera wiadomości z~typem operacji, oraz podanymi w~formularzu wartościami. Serwer otrzymując taką wiadomość wykonuje niezbędne testy, na przykład: sprawdza poprawność otrzymanych danych. Po pomyślnym dokonaniu sprawdzeń serwer wykonuje żądaną operację i~wysyła odpowiedź klientowi \cite{ArchKS}.
+Próba logowania na stronę WWW jest równoważna z~wysłaniem do serwera wiadomości z~typem operacji oraz podanymi w~formularzu wartościami. Serwer otrzymując taką wiadomość, wykonuje niezbędne testy, na przykład: sprawdza poprawność otrzymanych danych. Po pomyślnym dokonaniu sprawdzeń serwer wykonuje żądaną operację i~wysyła odpowiedź klientowi \cite{ArchKS}.
 
 \subsection*{Kody odpowiedzi HTTP}
-Odpowiedź serwera to numeryczna dana wysłana przez serwer, która ma na celu poinformowanie użytkownika o~realizacji pewnego zadania. Kody dzielą się na pięć klas, informacyjne które zaczynają się od 1xx, powodzenia zaczynające się od 2xx, przekierowania (3xx), błędu aplikacji klienta (4xx), błędu serwera HTTP (5xx) \cite{TempWiki}.
+Odpowiedź serwera to numeryczna dana wysłana przez serwer, która ma na celu poinformowanie użytkownika o~realizacji pewnego zadania. Kody dzielą się na pięć klas, informacyjne, które zaczynają się od 1xx, powodzenia zaczynające się od 2xx, przekierowania (3xx), błędu aplikacji klienta (4xx), błędu serwera HTTP (5xx) \cite{TempWiki}.
 \begin{longtable}{|c|p{2.1cm}|p{9.9cm}|}
 	\caption{Przykładowe opisy odpowiedzi serwera} 
 	\label{tab:Kody-HTTP} \\
@@ -38,14 +38,14 @@ Odpowiedź serwera to numeryczna dana wysłana przez serwer, która ma na celu p
 	\label{fig:KlientSerwer}
 \end{figure}
 \section{Java}
-Java jest obiektowym wieloplatformowym językiem programowania. Jest ona jednym z~najpopularniejszych języków dla deweloperów oprogramowania \cite{JavaMicrosoft}. Korzysta z~wirtualnej maszyny Java (JVM), która może zostać zainstalowane na większości komputerów i~urządzeń przenośnych. Została ona stworzony z~myślą ,,napisz raz, uruchamiaj w~dowolnym miejscu''. 
+Java jest obiektowym wieloplatformowym językiem programowania. Jest ona jednym z~najpopularniejszych języków dla deweloperów oprogramowania \cite{JavaMicrosoft}. Korzysta z~wirtualnej maszyny Java (JVM), która może zostać zainstalowane na większości komputerów i~urządzeń przenośnych. Została ona stworzona z~myślą ,,napisz raz, uruchamiaj w~dowolnym miejscu''. 
 W projekcie jest odpowiedzialna za logikę biznesową aplikacji, przetwarzanie danych oraz komunikację z~bazą danych \cite{JDK21Docs}.
 \subsection*{Spring Boot}
 Technologia, która pomaga utworzyć szkielet projektu. Umożliwia dołączenie skonfigurowanych frameworków Javy w~postaci zależności (ang. \textit{dependencies}). Upraszcza to sposób tworzenia aplikacji w~środowisku Java.
 
 Umożliwia dołączenie kodu odpowiedzialnego za budowanie aplikacji webowych, który zawiera m.in. REST API. Wspiera również takie mechanizmy jak Wstrzykiwanie zależności (ang. \textit{Dependency Injection}) oraz AOP (ang. \textit{Aspect-Oriented Programming}) \cite{SpringDocs}.
 \subsection*{Maven}
-W projekcie wykorzystano narzędzie Apache Maven, które pełni role automatyzacji budowy i~zarządzania zależnościami. Pozwala zdefiniować wszystkie wymagane biblioteki i~frameworki w~jednym centralnym pliku pom.xml (ang. \textit{Project Object Model}). Działa w~oparciu o~repozytoria, w~których przechowywane są biblioteki. Główny plik zawiera takie informacje jak:
+W projekcie wykorzystano narzędzie Apache Maven, które pełni role automatyzacji budowy i~zarządzania zależnościami. Pozwala zdefiniować wszystkie wymagane biblioteki i~frameworki w~jednym centralnym pliku pom.xml (ang. \textit{Project Object Model}). Wykorzystuje repozytoria, w~których przechowywane są biblioteki. Główny plik zawiera takie informacje jak:
 \begin{itemize}
 	\item groupId, artifactId, version -- identyfikatory projektu,
 	\item sekcję dependencies -- listę bibliotek, które mają zostać automatycznie pobrane,
@@ -54,7 +54,7 @@ W projekcie wykorzystano narzędzie Apache Maven, które pełni role automatyzac
 \end{itemize}
 W przypadku aplikacji opartej na Spring Boot, Maven pobiera również tzw. startery np.:
 \begin{itemize}
-	\item spring-boot-starter-web -- uruchamia aplikacje serwerową (np. Tomcat) i~pozwala tworzyć kontrolery REST,
+	\item spring-boot-starter-web -- uruchamia aplikację serwerową (np. Tomcat) i~pozwala tworzyć kontrolery REST,
 	\item spring-boot-starter-data-mongodb - umożliwia korzystanie z~bazy mongo,
 	\item spring-boot-starter-security -- dodaje mechanizmy autoryzacji i~uwierzytelniania,
 	\item spring-boot-starter-test -- pozwala na testowanie aplikacji.
@@ -67,9 +67,9 @@ Posiada również możliwość dodawania bibliotek oraz zestawów narzędzi jak:
 \end{itemize}
 Cała konfiguracja środowiska sprowadza się do utworzenia odpowiedniego pliku z~zależnościami, a~Spring Boot automatycznie na jego podstawie konfiguruje się przy uruchomieniu \cite{MavenDocs}.
 \section{React}
-React to jedna z~bibliotek JavaScript służąca do tworzenia interfejsów użytkownika (ang.\textit{User Interface}) w~aplikacjach webowych. Jest oparta na koncepcji komponentów, które można łatwo ze sobą łączyć i~w czytelny sposób wyświetlać na stronie. React pozwala renderować widoki na podstawie mechanizmu Virtual DOM (ang. \textit{Document Object Model}). Obiekt DOM umożliwia dostęp do struktury strony w~celu jej modyfikacji. W~przypadku modelu wirtualnego minimalizuje operacje na drzewie rzeczywistym. 
+React to jedna z~bibliotek JavaScript służąca do tworzenia interfejsów użytkownika (ang. \textit{User Interface}) w~aplikacjach webowych. Jest oparta na koncepcji komponentów, które można łatwo ze sobą łączyć i~w czytelny sposób wyświetlać na stronie. React pozwala renderować widoki na podstawie mechanizmu Virtual DOM (ang. \textit{Document Object Model}). Obiekt DOM umożliwia dostęp do struktury strony w~celu jej modyfikacji. W~przypadku modelu wirtualnego minimalizuje operacje na drzewie rzeczywistym. 
 \subsection*{Vite}
-W celu usprawnienia procesu tworzenia aplikacji zastosowano narzędzie Vite, które pełni rolę bundlera, czyli łączy ze sobą wiele plików m.in. kody źródłowe i~zależności. Rozwiązanie to oferuje szybkie uruchamianie środowiska, optymalizacja kodu oraz przeładowanie kodu na bieżąco (ang. \textit{Hot Module Replacement}), który pozwala wyświetlać zmiany bez konieczności ponownego budowania całej aplikacji. 
+W celu usprawnienia procesu tworzenia aplikacji zastosowano narzędzie Vite, które pełni funkcję bundlera, czyli łączy ze sobą wiele plików m.in. kody źródłowe i~zależności. Rozwiązanie to oferuje szybkie uruchamianie środowiska, optymalizacja kodu oraz przeładowanie kodu na bieżąco (ang. \textit{Hot Module Replacement}), który pozwala wyświetlać zmiany bez konieczności ponownego budowania całej aplikacji. 
 \subsection*{TypeScript}
 Komponenty oraz elementy interfejsu użytkownika są przygotowane w~języku TypeScript, który jest nadzbiorem języka JavaScript. Wprowadza on statyczne typowanie. Takie podejście pozwala określać i~sprawdzać typy w~czasie kompilacji. Umożliwia wprowadzanie typów dla zmiennych, funkcji i~obiektów. Dzięki temu kod jest bardziej czytelny i~zrozumiały. 
 \newline

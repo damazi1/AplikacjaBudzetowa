@@ -19,7 +19,8 @@
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage{helvet}
+\usepackage{tgheros}
+% \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 \selectlanguage{polish}
 \usepackage[polish]{varioref}
