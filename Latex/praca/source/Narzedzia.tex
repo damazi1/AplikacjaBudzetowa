@@ -1,13 +1,13 @@
 \chapter{Narzędzia i metodyka pracy}
 W rozdziale przedstawiono zestaw narzędzi zastosowany podczas tworzenia aplikacji webowej. Opisane rozwiązania pozwoliły na efektywne tworzenie, testowanie i wdrażanie aplikacji.
 \section{Narzędzia stosowane w procesie wytwarzania aplikacji webowej}
-Stosowanie narzędzi usprawnia pracę programisty. Przykładowe narzędzia to np.: zintegrowane środowiska programistyczne (ang. \textit{Integrated Development Enviroment} - IDE), systemy kontroli wersji, narzędzia wspomagające testowanie oraz konteneryzacje.
+Stosowanie narzędzi usprawnia pracę programisty. Przykładowe narzędzia to: zintegrowane środowiska programistyczne (ang. \textit{Integrated Development Enviroment} --- IDE), systemy kontroli wersji, narzędzia wspomagające testowanie oraz konteneryzacje.
 \subsection*{Środowiska programistyczne}
 Każdy deweloper potrzebuje narzędzi, które pozwolą mu na edycję kodu źródłowego. Jednym z najpopularniejszych rozwiązań są zintegrowane środowiska programistyczne, które składają się z edytora kodu, kompilatora lub interpretera oraz debuggera. W projekcie zostały wykorzystane takie edytory jak: Intellij IDEA Ultimate oraz WebStorm. Oba te narzędzia zostały wydane przez producenta oprogramowania JetBrains. 
 \subsection*{System kontroli wersji}
 System kontroli wersji to jedna z najważniejszych rzeczy podczas tworzenia dowolnej aplikacji. Oprogramowanie służące do obsługi kontroli wersji nazywa się Git. Pozwala na tworzenie lokalnych lub zdalnych repozytoriów do których zapisywane są zmiany w projekcie poprzez polecenie \texttt{commit}. W dowolnym momencie możemy śledzić modyfikacje plików lub powrócić do wcześniejszej wersji projektu przy pomocy komendy \texttt{rollback}. Aby przesłać zmiany do zdalnego repozytorium na stronie trzeciej (np.: github, bitbucket), należy wykorzystać opcję \texttt{push}, natomiast pobranie wymaga operacji \texttt{pull}. 
 
-Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (ang. \textit{branches}), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone poleceniem \texttt{marge} z główną gałęzią.
+Git umożliwia również pracę w grupach dzięki systemowi tworzenia gałęzi (ang. \textit{branches}), które pozwalają na równoległą prace całego zespołu. Zakończone części kodu mogą być scalone poleceniem \texttt{merge} z główną gałęzią.
 \subsection*{Testowanie komunikacji}
 W celu sprawdzenia komunikacji wykorzystuje się narzędzie Postman, które umożliwia wysyłanie żądań HTTP do serwera i sprawdzanie otrzymanych odpowiedzi. Pozwala to na weryfikację punktów końcowych aplikacji. Narzędzie to daje możliwość tworzenia kolekcji z zapytaniami, które można używać wielokrotnie bez konieczności ponownego tworzenia zapytań wraz z danymi. Posiada również możliwość zapisywania ciasteczek.
 

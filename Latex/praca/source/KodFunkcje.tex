@@ -20,7 +20,6 @@ Projekt posiada uporządkowaną strukturę katalogów składającą się z:
 Spring boot łączy biblioteki w~postaci starterów. Pozwala to zminimalizować ryzyko konfliktów wersji oraz skrócić czas konfiguracji. Kluczowe startery wykorzystywane w~aplikacji webowej to:
 \begin{itemize}
 	\item spring-boot-starter-web -- Warstwa HTTP/REST oparta na spring MVC, która udostępnia wbudowany serwer Tomcat. 
-	\item spring-boot-starter-data-jpa -- Umożliwia dostęp do relacyjnej bazy danych poprzez JPA (ang. \textit{Java Persistence API}).
 	\item spring-boot-starter-data-mongodb -- Pozwala na dostęp do nierelacyjnej bazy MongoDB. 
 	\item spring-boot-starter-validation -- Implementuje biblioteki do walidacji danych wejściowych.
 	\item spring-boot-starter-security -- Mechanizm uwierzytelniania, autoryzacji i~ochrony endpointów.
@@ -29,12 +28,13 @@ Spring boot łączy biblioteki w~postaci starterów. Pozwala to zminimalizować 
 \subsubsection*{Warstwa webowa}
 Umożliwia komunikację z~wykorzystywaniem standardu REST API (ang. \textit{Representational State Transfer Application Programing Interface}). W~warstwie kontrolerów tworzone są endpointy w~oparciu o~modele z~jakimi są związane. Kontroler może implementować obsługę żądań HTTP, takich jak:
 \begin{itemize}
-	\item POST -- Przesyłanie danych na serwer
-	\item GET -- Pobieranie danych z~serwera
-	\item PUT -- Aktualizowanie danych na serwerze
-	\item DELETE -- Usuwanie danych z~serwera
+	\item POST -- Przesyłanie danych na serwer i utworzenie zasobu po stronie serwera.
+	\item GET -- Pobieranie danych z~serwera.
+	\item PUT -- Aktualizowanie danych na serwerze.
+	\item DELETE -- Usuwanie danych z~serwera.
 \end{itemize}
 Mapowanie endpointów w~kontrolerze jest pokazane w~listingu \ref{lst:java-endpoints}.
+\newpage
 \begin{lstlisting}[language={Java}, caption={Przykładowe Endpointy}, label={lst:java-endpoints}]
 @RestController 
 
@@ -50,7 +50,7 @@ Połączenie z~bazą danych zostało zrealizowane z~wykorzystaniem \\ \texttt{sp
 
 Utworzenie klasy mapowanej do dokumentu wymaga oznaczenia adnotacją \texttt{@Document}, a~klucza głównego \texttt{@Id}. Identyfikator przeważnie określa się typem String (listing \ref{lst:java-Account}). 
 
-Warstwa repozytoriów opiera się na interfejsach rozszerzających \texttt{MongoRepository<T, ID>}. Repozytoria pozwalają na podstawie nazw generować implementację metod wyszukujących (listing \ref{lst:java-Repository}).
+Warstwa repozytoriów opiera się na interfejsach rozszerzających \texttt{MongoRepository\\<T, ID>}. Repozytoria pozwalają na podstawie nazw generować implementację metod wyszukujących (listing \ref{lst:java-Repository}).
 \begin{lstlisting}[language={Java}, caption={Fragment modelu Account}, label={lst:java-Account}]
 @Document
 public class Account {
@@ -94,10 +94,10 @@ Nagłówek (ang. \textit{Header}) &
  \\ \hline
   Podpis (ang. \textit{Signature}) &
 \texttt{HMACSHA256(} \newline
- \hspace*{1em}\texttt{base64UrlEncode(header)} \newline
- \hspace*{1em}\texttt{+ "."\space +} \newline
- \hspace*{1em}\texttt{base64UrlEncode(payload)} \newline
- \hspace*{1em}\texttt{, secretPassword)} &
+ \hspace*{0.2em}\texttt{base64UrlEncode(header)} \newline
+ \hspace*{0.2em}\texttt{+ "."\space +} \newline
+ \hspace*{0.2em}\texttt{base64UrlEncode(payload)} \newline
+ \hspace*{0.2em}\texttt{, secretPassword)} &
   Podpis składa się z~zaszyfrowanego nagłówka, ładunku i~hasła, które są później przetwarzane przez wybrany algorytm. 
  \\ \hline
 
@@ -106,7 +106,7 @@ Nagłówek (ang. \textit{Header}) &
 \subsubsection*{Testowanie}
 Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z~wykorzystaniem biblioteki JUnit, a~dane do testów są tworzone przy pomocy narzędzia Mockito. Mock to obiekt klasy, od której zależy część kodu, ale w~środku jest pusta. Aby wykorzystać tą pustą klasę używa się składni \texttt{when(...).thenReturn(...)}, w~której when oznacza ,,Kiedy zostanie wywołana ta metoda ...'', a~thenReturn ,, ... zwróć ten obiekt''.
 
-Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli argumentów które przyjmuje test. 
+Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli argumentów które przyjmuje test (listing \ref{lst:arg-stream}). 
 \begin{lstlisting}[language={Java}, caption={Strumień argumentów}, label={lst:arg-stream}]
  private static Stream<Arguments> walletTransactionsProvider() {
 	return Stream.of(
@@ -116,7 +116,7 @@ Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli 
 	);
 }
 \end{lstlisting}
-Aby wykonać wiele testów dla jednej metody należy skorzystać z~testów parametryzowanych, które są opisane adnotacją \texttt{@ParametrizedTest}. Pozwalają one określić zbiór na przykład podanie metody, która zwraca dane \texttt{@MethodSource("nazwa")} (listing \ref{lst:mocking}). Poniższy test sprawdza, czy dodanie nowej transakcji się powiodło. Wszystkie mocki, należy nauczyć zachowań (ang. \textit{stubbing}), czyli opisać im reakcję na wywołanie danych metod (listing \ref{lst:stubbing}). Gdy zachowania zostały opisane wywoływana jest funkcja, która korzysta z~tych metod. Po jej wykonaniu odbywa się sprawdzenie za pomocą asercji oraz metody verify, czy warunki zostału spełnione.
+Aby wykonać wiele testów dla jednej metody należy skorzystać z~testów parametryzowanych, które są opisane adnotacją \texttt{@ParametrizedTest}. Pozwalają one określić zbiór na przykład podanie metody, która zwraca dane \texttt{@MethodSource("nazwa")}. Poniższy test sprawdza, czy dodanie nowej transakcji się powiodło. Wszystkie mocki, należy nauczyć zachowań (ang. \textit{stubbing}), czyli opisać im reakcję na wywołanie danych metod. Gdy zachowania zostały opisane wywoływana jest funkcja, która korzysta z~tych metod. Po jej wykonaniu odbywa się sprawdzenie za pomocą asercji oraz metody verify, czy warunki zostału spełnione.
 \\
 \begin{lstlisting}[language={Java}, caption={Deklaracja testu}, label={lst:mocking}]
 @ParameterizedTest
@@ -128,7 +128,7 @@ Aby wykonać wiele testów dla jednej metody należy skorzystać z~testów param
 	String category,
 	String description
 )
-//stubbing
+//Stubbing
 String walletId = "Test_Wallet_ID";
 String userId = "Test_User_ID";
 Wallet wallet = new Wallet();
@@ -167,7 +167,7 @@ Podział na warstwę kontrolerów i~warstwę serwisów umożliwia rozdzielenie o
 \subsubsection*{Konfiguracja i~uruchamianie}
 Konfiguracja środowiska odbywa się w~pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w~różnych środowiskach.
 \subsection*{Przykładowe fragmenty kodu}
-\subsubsection*{rejestracja}
+\subsubsection*{Rejestracja}
 Funkcja rejestracji przyjmuje jako argument przygotowany model danych do autoryzacji, który posiada poprawnie uzupełnione ciało (String username, String passwrod). Jeżeli podane dane są poprawne, zostaje odpalona metoda w~serwisie odpowiedzialna za rejestrację. Tworzy nowego użytkownika oraz szyfruje jego hasło.
 \begin{lstlisting}[language={Java}, caption={Rejestracja użytkownika}, label={lst:java-register}]
 // Metoda w~serwisie
@@ -243,8 +243,7 @@ Jeżeli użytkownik utworzy w~portfelu transakcję, która nie powinna się tam 
 \begin{lstlisting}[language={Java}, caption={Usuwanie transakcji z~portfela}, label={lst:java-delete}]
 // Metoda w~serwisie
 public Transaction deleteWalletTransaction(String transactionId) {
-Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
-assert transaction != null;
+Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(()->new EntityNotFoundException("Nie znaleziono transakcji"));
 Wallet wallet = walletService.getWalletById(transaction.getWalletId());
 wallet.setBalance(wallet.getBalance() - (transaction.getAmount()));
 walletService.updateWallet(wallet);
@@ -413,7 +412,7 @@ Integracja trzech warstw systemu została zaprojektowana tak, aby zapewnić spó
 Podstawą integracji jest stabilna specyfikacja API \cite{API}. Frontend korzysta z~określonego punktu wejścia, a~żądania i~odpowiedzi wykorzystują obiekty klas w~javie oraz odpowiadające im typy w~TypeScript w~celu komunikacji. Dane wejściowe są walidowane w~kontrolerach i~zapisywane bądź odczytywane z~MongoDB. Takie podejście zapewnia jednoznaczność komunikacji między warstwami i~ułatwia wprowadzanie zmian. 
 \subsection*{Autoryzacja i~pochodzenie żądań}
 Mechanizm bezpieczeństwa oparto o~tokeny JWT, na których podstawie określana jest tożsamość użytkownika. W~środowisku deweloperskim, gdzie frontend i~backend działają pod różnymi portami zezwala się na połączenia z~innych domen CORS (ang. \textit{Cross-Origin Resource Sharing}) w~kontrolowanym zakresie.
-\begin{lstlisting}[language={java}, caption={Konfiguracja CROS}, label={lst:Java-CROS}]
+\begin{lstlisting}[language={java}, caption={Konfiguracja CORS}, label={lst:Java-CROS}]
 CorsConfigurationSource corsConfigurationSource() {
 	CorsConfiguration configuration = new CorsConfiguration();
 	configuration.setAllowedOrigins(List.of("http://localhost:5173"));
