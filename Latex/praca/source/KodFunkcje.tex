@@ -13,7 +13,7 @@ Projekt posiada uporządkowaną strukturę katalogów składającą się z:
 	\item Controller -- kontrolery udostępniające endpointy i~walidujące,
 	\item Dto -- modele danych do transferu (ang. \textit{Data Transfer Object}),
 	\item Model -- opisują strukturę dokumentów,
-	\item Repository -- obsługują zapytania z~bazą danych
+	\item Repository -- obsługują zapytania z~bazą danych,
 	\item Service -- logika biznesowa aplikacji.
 \end{itemize}
 \subsubsection*{Zarządzanie zależnościami i~startery}
@@ -33,7 +33,7 @@ Umożliwia komunikację z~wykorzystywaniem standardu REST API (ang. \textit{Repr
 	\item PUT -- Aktualizowanie danych na serwerze.
 	\item DELETE -- Usuwanie danych z~serwera.
 \end{itemize}
-Mapowanie endpointów w~kontrolerze jest pokazane w~listingu \ref{lst:java-endpoints}.
+Mapowanie endpointów w~kontrolerze zaprezentowano w~listingu \ref{lst:java-endpoints}.
 \newpage
 \begin{lstlisting}[language={Java}, caption={Przykładowe Endpointy}, label={lst:java-endpoints}]
 @RestController 
@@ -44,7 +44,7 @@ Mapowanie endpointów w~kontrolerze jest pokazane w~listingu \ref{lst:java-endpo
 @DeleteMapping("/wallet/deleteTransaction")	// Dostęp pod DELETE /Transaction/wallet/deleteTransaction
 \end{lstlisting}
 
-Implementacja powyższych endpointów znajduje się w~listingach (\ref{lst:java-register}, \ref{lst:java-period}, \ref{lst:java-delete}, \ref{lst:java-edit}).
+Implementacja powyższych endpointów przedstawiono w~listingach: \ref{lst:java-register}, \ref{lst:java-period}, \ref{lst:java-delete}, \ref{lst:java-edit}.
 \subsubsection*{Dostęp do danych}
 Połączenie z~bazą danych zostało zrealizowane z~wykorzystaniem \\ \texttt{spring-boot-starter-data-mongodb}, który udostępnia spójny model pracy z~dokumentową bazą MongoDB. Pozwala mapować obiekty klas na dokumenty i~tworzyć repozytoria oparte na interfejsach.
 
@@ -168,7 +168,7 @@ Podział na warstwę kontrolerów i~warstwę serwisów umożliwia rozdzielenie o
 Konfiguracja środowiska odbywa się w~pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w~różnych środowiskach.
 \subsection*{Przykładowe fragmenty kodu}
 \subsubsection*{Rejestracja}
-Funkcja rejestracji przyjmuje jako argument przygotowany model danych do autoryzacji, który posiada poprawnie uzupełnione ciało (String username, String passwrod). Jeżeli podane dane są poprawne, zostaje odpalona metoda w~serwisie odpowiedzialna za rejestrację. Tworzy nowego użytkownika oraz szyfruje jego hasło.
+Funkcja rejestracji przyjmuje jako argument przygotowany model danych do autoryzacji, który posiada poprawnie uzupełnione ciało (String username, String passwrod). Jeżeli podane dane są poprawne, zostaje wywołana metoda w~serwisie odpowiedzialna za rejestrację. Tworzy nowego użytkownika oraz szyfruje jego hasło.
 \begin{lstlisting}[language={Java}, caption={Rejestracja użytkownika}, label={lst:java-register}]
 // Metoda w~serwisie
 public User signup(AuthDto authDto) {
@@ -185,8 +185,29 @@ public ResponseEntity<User> signup(@RequestBody AuthDto authDto) {
 	return ResponseEntity.ok(registeredUser);
 }
 \end{lstlisting}
+\subsubsection*{Dane o~transakcjach w~przedziale czasu}
+Pobranie transakcji z~zadanego przedziału czasu jest potrzebne do analizy sytuacji finansowej użytkownika. Przygotowane dane z pewnego okresu można następnie zobrazować na wykresach oraz wyświetlić zmiany balansu portfeli lub kont bankowych.
+\begin{lstlisting}[language={Java}, caption={Wyświetlanie transakcji od do}, label={lst:java-period}]
+	// Metoda w~serwisie
+	public Collection<Transaction> periodTransactions(String walletId, Date startDate, Date endDate){
+		return transactionRepository.findByWalletIdAndDateBetween(walletId, startDate, endDate);
+	}
+	
+	// Endpoint w~kontrolerze	
+	@GetMapping("/wallet/periodTransactions")
+	public ResponseEntity<List<Transaction>> getPeriodTransactions
+	(@RequestParam String walletId,
+	@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
+	@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate) {
+		Date from = startDate;
+		Date to = endDate;
+		List<Transaction> transactions = (List<Transaction>)
+		transactionService.periodTransactions(walletId, from, to);
+		return ResponseEntity.ok(transactions);
+	}
+\end{lstlisting}
 \subsubsection*{Dane do wykresów}
-Odpowiednie przygotowanie danych do wykresów jest kluczową częścią projektu. Zostało to osiągnięte z wykorzystaniem mechanizmu strumieni. Strumienie przetwarzają, filtrują i~dokonują operacji na zbiorze danych.
+Otrzymane dane z pewnego okresu czasu są przygotowywane do prezentacji za pomocą mechanizmu strumieni. Strumienie przetwarzają, filtrują i~dokonują operacji na zbiorze danych.
 \begin{lstlisting}[language={Java}, caption={Wykorzystanie strumieni}, label={lst:java-register}]
 // Metoda w~serwisie
 public List<WalletBarChartDto> getBarChartData(PeriodChangeDto wallet){
@@ -216,30 +237,8 @@ public ResponseEntity<List<WalletBarChartDto>> getBarChartData (@RequestBody Per
 	return ResponseEntity.ok(barData);
 }
 \end{lstlisting}
-
-\subsubsection*{Dane o~transakcjach w~przedziale czasu}
-Pobranie transakcji z~zadanego przedziału czasu jest kluczową funkcją potrzebną do analizy sytuacji finansowej użytkownika.
-\begin{lstlisting}[language={Java}, caption={Wyświetlanie transakcji od do}, label={lst:java-period}]
-// Metoda w~serwisie
-public Collection<Transaction> periodTransactions(String walletId, Date startDate, Date endDate){
-	return transactionRepository.findByWalletIdAndDateBetween(walletId, startDate, endDate);
-}
-
-// Endpoint w~kontrolerze	
-@GetMapping("/wallet/periodTransactions")
-public ResponseEntity<List<Transaction>> getPeriodTransactions
-(@RequestParam String walletId,
-@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
-@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate) {
-	Date from = startDate;
-	Date to = endDate;
-	List<Transaction> transactions = (List<Transaction>)
-	transactionService.periodTransactions(walletId, from, to);
-	return ResponseEntity.ok(transactions);
-}
-\end{lstlisting}
 \subsubsection*{Usuwanie transakcji}
-Jeżeli użytkownik utworzy w~portfelu transakcję, która nie powinna się tam znaleźć może ją usunąć. 
+Transakcje które znalazły się w portfelu użytkownika mogą zostać usunięte przez klienta w dowolnym momencie.
 \begin{lstlisting}[language={Java}, caption={Usuwanie transakcji z~portfela}, label={lst:java-delete}]
 // Metoda w~serwisie
 public Transaction deleteWalletTransaction(String transactionId) {
@@ -439,6 +438,7 @@ COPY src ./src
 EXPOSE 8080
 CMD ["mvn", "spring-boot:run"]
 \end{lstlisting}
+\newpage
 \begin{lstlisting}[caption={Fragment pliku konfiguracyjnego compose.yml}, label={lst:Docker-compose}]
 app:						// nazwa kontenera
 	build:				// budowanie obrazu na podstawie dockerfile
