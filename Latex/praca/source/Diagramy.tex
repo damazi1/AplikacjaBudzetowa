@@ -1,7 +1,7 @@
 \chapter{Architektura aplikacji}
-W rozdziale przedstawiono wymagania funkcjonalne i niefunkcjonalne. Zilustrowano również klasy oraz funkcje programu na diagramach języka UML.
+W rozdziale przedstawiono wymagania funkcjonalne i~niefunkcjonalne. Zilustrowano również klasy oraz funkcje programu na diagramach języka UML.
 \section{Wymagania funkcjonalne}
-Wymagania funkcjonalne określają zachowanie systemu i jego reakcji na określone zadania \cite{Wymagania}. Stanowią one podstawę dla wykonawcy oprogramowania do opracowania odpowiednich metod oraz funkcjonalności. Precyzyjne zdefiniowanie wymagań z perspektywy biznesowej pozwala na dopasowanie tworzonych rozwiązań do potrzeb organizacji oraz celów strategicznych projektu. Takie rozwiązanie umożliwia wdrożenie systemu zgodnego z oczekiwaniami zleceniodawcy.
+Wymagania funkcjonalne określają zachowanie systemu i~jego reakcji na określone zadania \cite{Wymagania}. Stanowią one podstawę dla wykonawcy oprogramowania do opracowania odpowiednich metod oraz funkcjonalności. Precyzyjne zdefiniowanie wymagań z~perspektywy biznesowej pozwala na dopasowanie tworzonych rozwiązań do potrzeb organizacji oraz celów strategicznych projektu. Takie rozwiązanie umożliwia wdrożenie systemu zgodnego z~oczekiwaniami zleceniodawcy.
 
 \begin{longtable}{|c|p{5cm}|p{8cm}|}
 	\caption{Wymagania funkcjonalne systemu do zarządzania budżetem domowym}
@@ -10,21 +10,21 @@ Wymagania funkcjonalne określają zachowanie systemu i jego reakcji na określo
 	\textbf{Nr} & \textbf{Wymaganie funkcjonalne} & \textbf{Opis} \\ \hline
 	
 	1. & Rejestracja użytkownika & System umożliwia utworzenie konta użytkownika. \\ \hline
-	2. & Logowanie do systemu & System weryfikuje dane użytkownika i przyznaje ciasteczko umożliwiające dostęp do aplikacji. \\ \hline
+	2. & Logowanie do systemu & System weryfikuje dane użytkownika i~przyznaje ciasteczko umożliwiające dostęp do aplikacji. \\ \hline
 	3. & Wylogowanie & System usuwa ciasteczko użytkownika. \\ \hline
-	4. & Sprawdzenie dostępnych środków & Użytkownik może sprawdzić balans w portfelach, kontach bankowych i łączny balans. \\ \hline
-	5. & Tworzenie transakcji  & Użytkownik może utworzyć wpłatę lub wypłatę z konta bankowego i portfelu. \\ \hline
+	4. & Sprawdzenie dostępnych środków & Użytkownik może sprawdzić balans w~portfelach, kontach bankowych i~łączny balans. \\ \hline
+	5. & Tworzenie transakcji  & Użytkownik może utworzyć wpłatę lub wypłatę z~konta bankowego i~portfelu. \\ \hline
 	6. & Historia transakcji & Aplikacja wyświetla listę wszystkich transakcji. \\ \hline
 	7. & Tworzenie przelewu & Użytkownik może przelać finanse na inne konto bankowe. \\ \hline
-	8. & Podsumowanie finansów & System wyświetla przychody i wydatki w określonym czasie. \\ \hline
-	9. & Kategoryzowanie transakcji & Użytkownik podaje kategorię dla swoich transakcji w portfelu. \\ \hline
-	10. & Prezentacja wydatków na wykresie & System wyświetla dane o transakcjach w postaci wykresów. \\ \hline
+	8. & Podsumowanie finansów & System wyświetla przychody i~wydatki w~określonym czasie. \\ \hline
+	9. & Kategoryzowanie transakcji & Użytkownik podaje kategorię dla swoich transakcji w~portfelu. \\ \hline
+	10. & Prezentacja wydatków na wykresie & System wyświetla dane o~transakcjach w~postaci wykresów. \\ \hline
 	11. & Kantor walut & System przelicza finanse do innych walut. \\ \hline
-	12. & Uzupełnienie informacji o użytkowniku & Użytkownik może przypisać dane kontaktowe do konta. \\ \hline
+	12. & Uzupełnienie informacji o~użytkowniku & Użytkownik może przypisać dane kontaktowe do konta. \\ \hline
 \end{longtable}
 
 \section{Wymagania niefunkcjonalne}
-Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą się bezpośrednio do funkcjonalności produktu, lecz określają jego właściwości jakościowe \cite{Wymagania}. Dotyczą one m.in. takich zagadnień, jak: czas reakcji systemu, termin dostarczenia produktu, wyglądu interfejsu użytkownika, czy bezpieczeństwa. Stanowią kluczowy element dla wykonawcy oprogramowania, przy projektowaniu architektury, doborze technologii oraz planowaniu procesu wdrożenia. Mają istotne znaczenie z perspektywy biznesowej, ponieważ wpływają na satysfakcję użytkowników, konkurencyjność systemu oraz koszty jego utrzymania. Dla zamawiających gwarantują odpowiednią jakość, stabilność i wydajność oprogramowania. 
+Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą się bezpośrednio do funkcjonalności produktu, lecz określają jego właściwości jakościowe \cite{Wymagania}. Dotyczą one m.in. takich zagadnień, jak: czas reakcji systemu, termin dostarczenia produktu, wyglądu interfejsu użytkownika, czy bezpieczeństwa. Stanowią kluczowy element dla wykonawcy oprogramowania, przy projektowaniu architektury, doborze technologii oraz planowaniu procesu wdrożenia. Mają istotne znaczenie z~perspektywy biznesowej, ponieważ wpływają na satysfakcję użytkowników, konkurencyjność systemu oraz koszty jego utrzymania. Dla zamawiających gwarantują odpowiednią jakość, stabilność i~wydajność oprogramowania. 
 
 \begin{longtable}{|c|p{3.1cm}|p{9.9cm}|}
 		\caption{Wymagania niefunkcjonalne systemu do zarządzania budżetem domowym}
@@ -32,19 +32,19 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 	\hline
 	\textbf{Nr} & \textbf{Wymaganie niefunkcjonalne} & \textbf{Opis} \\ \hline
 	
-	1. & Niezawodność & System w krótkim czasie odzyskuje pełną funkcjonalność w przypadku wystąpienia błędu. \\ \hline
+	1. & Niezawodność & System w~krótkim czasie odzyskuje pełną funkcjonalność w~przypadku wystąpienia błędu. \\ \hline
 	2. & Dostępność & System ma być dostępna przez 99.9\% czasu działania serwera.\\ \hline
-	3. & Wydajność & System reaguje na żądanie w czasie krótszym niż 1 sekunda. Z systemu jednocześnie może korzystać więcej niż jeden użytkownik.\\ \hline
-	4. & Bezpieczeństwo & System zapewnia, że dane są dostępne tylko dla osób upoważnionych. Autoryzacja użytkowników odbywa się poprzez podanie odpowiedniego loginu oraz hasła. Hasła muszą być przechowywane w formie zaszyfrowanej. \\ \hline
-	5. & Wdrożenie & Aplikacja serwerowa musi być uruchomiona w środowisku JVM oraz korzystać z wersji Java 21, Warstwa prezentacji uruchamiana w środowisku NodeJs z wykorzystaniem 9 wersji biblioteki React. Dane przechowywane w postaci dokumentów bazy danych MongoDB w wersji 8, Aplikacja uruchomiana jest w środowisku systemu operacyjnego Windows 11 oraz Linux. \\ \hline
+	3. & Wydajność & System reaguje na żądanie w~czasie krótszym niż 1 sekunda. Z~systemu jednocześnie może korzystać więcej niż jeden użytkownik.\\ \hline
+	4. & Bezpieczeństwo & System zapewnia, że dane są dostępne tylko dla osób upoważnionych. Autoryzacja użytkowników odbywa się poprzez podanie odpowiedniego loginu oraz hasła. Hasła muszą być przechowywane w~formie zaszyfrowanej. \\ \hline
+	5. & Wdrożenie & Aplikacja serwerowa musi być uruchomiona w~środowisku JVM oraz korzystać z~wersji Java 21, Warstwa prezentacji uruchamiana w~środowisku NodeJs z~wykorzystaniem 9 wersji biblioteki React. Dane przechowywane w~postaci dokumentów bazy danych MongoDB w~wersji 8, Aplikacja uruchomiana jest w~środowisku systemu operacyjnego Windows 11 oraz Linux. \\ \hline
 	
 \end{longtable}
 
 
 \section{Diagramy UML}
-Jednym z kluczowych etapów w procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji, generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
+Jednym z~kluczowych etapów w~procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji, generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W~artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
 \subsection*{Tworzenie diagramów}
-Diagramy UML można utworzyć graficznie, na przykład przez stronę draw.io, bądź tekstowo odpowiednim językiem takim jak PlantUML lub mermaid. Można też skorzystać z narzędzi takich jak enterprise architect, które posiada dodatkowe opcje, takie jak tworzenie kodu programu na bazie diagramów. 
+Diagramy UML można utworzyć graficznie, na przykład przez stronę draw.io, bądź tekstowo odpowiednim językiem takim jak PlantUML lub mermaid. Można też skorzystać z~narzędzi takich jak enterprise architect, które posiada dodatkowe opcje, takie jak tworzenie kodu programu na bazie diagramów. 
 \section{Diagramy przypadków użycia}
 Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi, które system świadczy aktorom, bez wskazywania rozwiązań technologicznych \cite{UML1}. Stanowi on podstawę do modelowania szczegółowych części systemu.
 \begin{figure}[H]
@@ -54,7 +54,7 @@ Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi,
 	\label{fig:UseCase}
 \end{figure}
 \section{Diagramy sekwencji}
-Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
+Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w~dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/MermaidSeqDiag}

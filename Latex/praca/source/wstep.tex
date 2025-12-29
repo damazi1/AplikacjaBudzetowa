@@ -1,9 +1,9 @@
 \chapter{Wstęp}
 W gospodarstwach domowych jednym z~kluczowych obszarów decyzyjnych mających bezpośredni wpływ na poziom zaspokojenia potrzeb jest strefa finansowa. W~jej ramach podejmowane są decyzje związane z~konsumpcją, oszczędzaniem bądź inwestowaniem.
 
-Jednym z~celów wykorzystania aplikacji wspomagających zarządzanie budżetem domowym jest wspieranie procesów decyzyjnych konsumentów \cite{Robo-Advisory}. Aplikacje finansowe podnoszą świadomość społeczeństwa dotyczącą finansów oraz zwiększają chęć do planowania i~kontroli budżetu domowego. Usługi finansowe są dostępne w~każdym miejscu i~czasie niemalże dwadzieścia cztery godziny na dobę. Aplikacje te najczęściej cechują się interfejsem łatwym w obsłudze, kategoryzacją i~śledzeniem wydatków, możliwością przypominania o~rachunkach oraz zapewniają ochronę informacji personalnych.
+Jednym z~celów wykorzystania aplikacji wspomagających zarządzanie budżetem domowym jest wspieranie procesów decyzyjnych konsumentów \cite{Robo-Advisory}. Aplikacje finansowe podnoszą świadomość społeczeństwa dotyczącą finansów oraz zwiększają chęć do planowania i~kontroli budżetu domowego. Usługi finansowe są dostępne w~każdym miejscu i~czasie niemalże dwadzieścia cztery godziny na dobę. Aplikacje te najczęściej cechują się interfejsem łatwym w~obsłudze, kategoryzacją i~śledzeniem wydatków, możliwością przypominania o~rachunkach oraz zapewniają ochronę informacji personalnych.
 
-Wiele aplikacji jest tworzonych z~myślą o~użytkownikach, korzystających z~urządzeń mobilnych. Są to często aplikacje natywne, czyli stworzonymi dla konkretnej platformy mobilnej, ale istnieją również aplikację hybrydowe, które mogą działać zarówno na Androidzie, jak i iOS-ie \cite{native} oraz PWA (ang. \textit{Progressive Web Apps} --- Progresywne Aplikacje Internetowe), które pozwalają uruchomić aplikacje na każdym systemie operacyjnym oraz zapisać ją w pamięci podręcznej co umożliwia korzystanie z niej offline \cite{PWA}. Aplikacje bankowe potrzebują dostępu do wszystkich funkcji systemu operacyjnego, aby zapewnić bezpieczeństwo i~wydajność. Duża część banków znajdujących się aktualnie na rynku oferuje w~swoich aplikacjach narzędzia, które wspomagają zarządzanie finansami klienta. 
+Wiele aplikacji jest tworzonych z~myślą o~użytkownikach, korzystających z~urządzeń mobilnych. Są to często aplikacje natywne, czyli stworzonymi dla konkretnej platformy mobilnej, ale istnieją również aplikację hybrydowe, które mogą działać zarówno na Androidzie, jak i~iOS-ie \cite{native} oraz PWA (ang. \textit{Progressive Web Apps} --- Progresywne Aplikacje Internetowe), które pozwalają uruchomić aplikacje na każdym systemie operacyjnym oraz zapisać ją w~pamięci podręcznej co umożliwia korzystanie z~niej offline \cite{PWA}. Aplikacje bankowe potrzebują dostępu do wszystkich funkcji systemu operacyjnego, aby zapewnić bezpieczeństwo i~wydajność. Duża część banków znajdujących się aktualnie na rynku oferuje w~swoich aplikacjach narzędzia, które wspomagają zarządzanie finansami klienta. 
 
 Banki oferują też możliwość korzystania z~bankowości internetowej, która udostępnia podobne narzędzia co aplikacje natywne w~przeglądarce internetowej. Pierwszy bank internetowy pojawił się na rynku polskim w~październiku 1998 r. i~należał do Banku Gospodarczego S.A. \cite{bankowoscinternetowa}.
 
@@ -17,7 +17,7 @@ Dane zebrane przez stronę CoinLaw przedstawiają, że aplikacje do wspomagania 
 \section{Cel pracy}
 Celem pracy jest zbudowanie aplikacji do zarządzania budżetem domowym. Aplikacja ma za zadanie wspomagać użytkownika w~kontroli wydatków, analizie danych finansowych oraz zarządzaniu finansami osobistymi.
 \section{Zakres pracy}
-Niniejsza praca została utworzona z wykorzystaniem architektury klient-serwer, która umożliwia tworzenie aplikacji webowych. Aplikacja charakteryzuje się wysoką wydajnością, niezawodnością i~czytelnym interfejsem użytkownika. Strona udostępnia przyciski nawigujące do poszczególnych części interfejsu. Użytkownicy mogą dodawać transakcje dla swoich portfeli oraz kont bankowych. Transakcje dla portfeli dzielą się na kategorie, natomiast konta bankowe mają możliwość wykonywania przelewów między kontami. Podsumowanie danych finansowych przedstawiają wykresy liniowe, słupkowe i~kołowe.
+Niniejsza praca została utworzona z~wykorzystaniem architektury klient-serwer, która umożliwia tworzenie aplikacji webowych. Aplikacja charakteryzuje się wysoką wydajnością, niezawodnością i~czytelnym interfejsem użytkownika. Strona udostępnia przyciski nawigujące do poszczególnych części interfejsu. Użytkownicy mogą dodawać transakcje dla swoich portfeli oraz kont bankowych. Transakcje dla portfeli dzielą się na kategorie, natomiast konta bankowe mają możliwość wykonywania przelewów między kontami. Podsumowanie danych finansowych przedstawiają wykresy liniowe, słupkowe i~kołowe.
 
 Warstwa serwerowa została zaimplementowana w~języku Java z~wykorzystaniem frameworka Spring Boot. Zastosowano język Java w~wersji 21, który zapewnia obsługę logiki biznesowej, komunikację z~bazą danych oraz interfejs API w~technologii REST.
 
@@ -27,17 +27,17 @@ Dane są przechowywane w~nierelacyjnej bazie danych MongoDB, która zawiera doku
 
 Aplikacja uruchamiana jest z~poziomu platformy docker.
 \section{Struktura pracy}
-Pracę otwiera Wstęp, w którym uzasadniono istotność podejmowanego tematu. Przedstawiono w nim dane o aplikacjach wspomagających zarządzanie budżetem domowym oraz zakres zadań, jakie powinna spełniać aplikacja.
+Pracę otwiera Wstęp, w~którym uzasadniono istotność podejmowanego tematu. Przedstawiono w~nim dane o~aplikacjach wspomagających zarządzanie budżetem domowym oraz zakres zadań, jakie powinna spełniać aplikacja.
 
-W rozdziale drugim opisano architekturę aplikacji oraz technologie wykorzystane w~procesie jej tworzenia. Zaprezentowano biblioteki oraz frameworki wraz z~opisami ich zastosowań. Wytłumaczono, dlaczego aplikacja została zaimplementowana z~wykorzystaniem danych języków programowania oraz w jaki sposób odbywa się komunikacja poszczególnych części systemu.
+W rozdziale drugim opisano architekturę aplikacji oraz technologie wykorzystane w~procesie jej tworzenia. Zaprezentowano biblioteki oraz frameworki wraz z~opisami ich zastosowań. Wytłumaczono, dlaczego aplikacja została zaimplementowana z~wykorzystaniem danych języków programowania oraz w~jaki sposób odbywa się komunikacja poszczególnych części systemu.
 
 W rozdziale trzecim przedstawiono narzędzia, które zostały wykorzystane w~procesie tworzenia oprogramowania m.in.: środowiska programistyczne, system kontroli wersji, narzędzia do konteneryzacji i~testowania komunikacji. 
 
 W rozdziale czwartym skupiono się na wymaganiach, które musi spełnić projekt, na diagramach przedstawiających klasy oraz sposobie działania wybranych funkcji aplikacji. Opisano, czym są poszczególne diagramy, do czego służą oraz sposób, w~jaki powinno się czytać zawarte w~nich informację. 
 
-W rozdziale piątym zaprezentowano informację o sposobie implementacji systemu. Opisano działanie poszczególnych warstw aplikacji, w~jaki sposób odbywa się przepływ danych, funkcje oferowane przez system oraz komunikaty zwracane przez serwer. 
+W rozdziale piątym zaprezentowano informację o~sposobie implementacji systemu. Opisano działanie poszczególnych warstw aplikacji, w~jaki sposób odbywa się przepływ danych, funkcje oferowane przez system oraz komunikaty zwracane przez serwer. 
 
 W rozdziale szóstym zawarto informację, w~jaki sposób użytkownik powinien poruszać się po aplikacji.
 Przedstawiono proces uruchamiania systemu oraz kroki, jakie należy podjąć, by efektywnie poruszać się po interfejsie użytkownika. Opisano kluczowe elementy warstwy prezentacji takie jak formularze, ustawienia, portfele użytkownika i~funkcję systemu.
 
-W rozdziale siódmym opisano efekty pracy oraz wnioski. Zawarto w nim informację, czy system spełnia założone cele oraz co osiągnął autor. Przedstawiono możliwości przyszłego rozwoju aplikacji.
+W rozdziale siódmym opisano efekty pracy oraz wnioski. Zawarto w~nim informację, czy system spełnia założone cele oraz co osiągnął autor. Przedstawiono możliwości przyszłego rozwoju aplikacji.
