@@ -14,7 +14,7 @@ Wymagania funkcjonalne określają zachowanie systemu i~jego reakcji na określo
 	3. & Wylogowanie & System usuwa ciasteczko użytkownika. \\ \hline
 	4. & Sprawdzenie dostępnych środków & Użytkownik może sprawdzić balans w~portfelach, kontach bankowych i~łączny balans. \\ \hline
 	5. & Tworzenie transakcji  & Użytkownik może utworzyć wpłatę lub wypłatę z~konta bankowego i~portfelu. \\ \hline
-	6. & Historia transakcji & Aplikacja wyświetla listę wszystkich transakcji. \\ \hline
+	6. & Historia transakcji & Aplikacja wyświetla listę transakcji. \\ \hline
 	7. & Tworzenie przelewu & Użytkownik może przelać finanse na inne konto bankowe. \\ \hline
 	8. & Podsumowanie finansów & System wyświetla przychody i~wydatki w~określonym czasie. \\ \hline
 	9. & Kategoryzowanie transakcji & Użytkownik podaje kategorię dla swoich transakcji w~portfelu. \\ \hline
@@ -33,7 +33,7 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 	\textbf{Nr} & \textbf{Wymaganie niefunkcjonalne} & \textbf{Opis} \\ \hline
 	
 	1. & Niezawodność & System w~krótkim czasie odzyskuje pełną funkcjonalność w~przypadku wystąpienia błędu. \\ \hline
-	2. & Dostępność & System ma być dostępna przez 99.9\% czasu działania serwera.\\ \hline
+	2. & Dostępność & System ma być dostępna przez 99,9\% czasu działania serwera.\\ \hline
 	3. & Wydajność & System reaguje na żądanie w~czasie krótszym niż 1 sekunda. Z~systemu jednocześnie może korzystać więcej niż jeden użytkownik.\\ \hline
 	4. & Bezpieczeństwo & System zapewnia, że dane są dostępne tylko dla osób upoważnionych. Autoryzacja użytkowników odbywa się poprzez podanie odpowiedniego loginu oraz hasła. Hasła muszą być przechowywane w~formie zaszyfrowanej. \\ \hline
 	5. & Wdrożenie & Aplikacja serwerowa musi być uruchomiona w~środowisku JVM oraz korzystać z~wersji Java 21, Warstwa prezentacji uruchamiana w~środowisku NodeJs z~wykorzystaniem 9 wersji biblioteki React. Dane przechowywane w~postaci dokumentów bazy danych MongoDB w~wersji 8, Aplikacja uruchomiana jest w~środowisku systemu operacyjnego Windows 11 oraz Linux. \\ \hline
@@ -42,14 +42,14 @@ Wymaganiami niefunkcjonalnymi nazywamy wszystkie potrzeby, które nie odnoszą s
 
 
 \section{Diagramy UML}
-Jednym z~kluczowych etapów w~procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji, generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}. W~artykule T. Sobestańczyk diagram opisany jest słowami ,,Diagram jest schematem przedstawiającym zbiór bytów''.
+Jednym z~kluczowych etapów w~procesie tworzenia oprogramowanie jest wizualizacja systemu \cite{UML}. Język UML (ang. \textit{Unified Modeling Language}), czyli ujednolicony język modelowania nie jest językiem programowani, chociaż może uprościć proces tworzenia aplikacji, generując kod na podstawie diagramów. UML definiuje dwie podstawowe składowe: notację elementów na diagramach oraz ich semantykę \cite{UML1}.
 \subsection*{Tworzenie diagramów}
 Diagramy UML można utworzyć graficznie, na przykład przez stronę draw.io, bądź tekstowo odpowiednim językiem takim jak PlantUML lub mermaid. Można też skorzystać z~narzędzi takich jak enterprise architect, które posiada dodatkowe opcje, takie jak tworzenie kodu programu na bazie diagramów. 
 \section{Diagramy przypadków użycia}
 Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi, które system świadczy aktorom, bez wskazywania rozwiązań technologicznych \cite{UML1}. Stanowi on podstawę do modelowania szczegółowych części systemu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{images/PlantUML_useCase.png}
+	\includegraphics[width=0.87\textwidth]{images/PlantUML_useCase.png}
 	\caption{Diagram przypadków użycia}
 	\label{fig:UseCase}
 \end{figure}
@@ -57,15 +57,16 @@ Diagram przypadków użycia (ang. \textit{Use Case Diagram}) prezentuje usługi,
 Diagram sekwencji (ang. \textit{sequence diagram}) jest uzupełnieniem diagramu klas, który reprezentuje statyczną strukturę systemu. Diagram sekwencji w~dynamiczny sposób przedstawia zachowanie klas, interfejsów oraz możliwe zastosowanie metod.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/MermaidSeqDiag}
+	\includegraphics[width=0.87\textwidth]{images/MermaidSeqDiag}
 	\caption{Diagram sekwencji - Nowa transakcja portfela}
 	\label{fig:Seq1}
 \end{figure}
 \section{Diagram klas}
-Przedstawia klasy oraz zależności między nimi:
+Przedstawia strukturę klas oraz ich relacje. Relacje między klasami opisują w~jaki sposób klasy są ze sobą związane. Najbardziej podstawowa relacja to zależność. Jest to najsłabszy rodzaj relacji, który występuje w momencie, gdy zmiany jednego obiektu mogą powodować zmiany w drugim obiekcie. 
+Relacje możemy również podzielić na te związane z rozszerzeniem oraz interferencją klas. Do relacji związanych z~rozszerzeniem klas zalicza się implementacja (ang. \textit{implementation}) oraz dziedziczenie (ang. \textit{inheritance}), natomiast do relacji związanych z interferencją klas zaliczamy asocjację (ang. \textit{association}), agregację (ang. \textit{aggregation}) oraz kompozycję (ang. \textit{composition}). Każda relacja jest oznaczona w określony sposób \cite{UMLClass}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=1\textheight, keepaspectratio]{images/testDiag}
+	\includegraphics[height=0.9\textheight, keepaspectratio]{images/diagramKlas}
 	\caption{Diagram klas}
 	\label{fig:mermaidclassdiag}
 \end{figure}

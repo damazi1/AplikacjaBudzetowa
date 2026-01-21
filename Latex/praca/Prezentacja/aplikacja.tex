@@ -1,62 +1,60 @@
 \section{Prezentacja aplikacji}
 
 \begin{frame}{\insertsection}
-	\only<1>{
-		\begin{block}{Formularz logowania}
+\begin{block}{Formularz logowania i rejestracji}
 			Aplikacja webowa wymaga autoryzacji.
-		\end{block}
-	}
-	\only<2>{
-	\begin{block}<2>{Tłumaczenie}
-		Możliwość presonalizacji języka.
-	\end{block}
-	}
+\end{block}
 	\begin{columns}
-		\column{0.5\textwidth} 
-		\begin{figure}
-			\centering
-			\includegraphics[width=1\linewidth]{../images/login2.png}
-		\end{figure}
 		\column{0.5\textwidth} 
 		\begin{figure}
 			\centering
 			\includegraphics[width=1\linewidth]{../images/loginang.png}
 		\end{figure}
-	\end{columns}
-\end{frame}
-
-\begin{frame}{\insertsection}
-	\begin{columns}
-		\column{0.5\textwidth} 
-		\begin{block}{Formularz rejestracji}
-			Istnieje możliwość utworzenia konta.
-		\end{block}
 		\column{0.5\textwidth} 
 		\begin{figure}
 			\centering
 			\includegraphics[width=1\linewidth]{../images/Rejestracja}
-			\label{fig:rejestracja}
 		\end{figure}
 	\end{columns}
 \end{frame}
 
 \begin{frame}{\insertsection}
 	\begin{block}{Strona główna}
-		Umożliwia sprawdzanie informacji o kontach	
+		Informacje o stanie wszystkich kont.	
 	\end{block}
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.7\linewidth,keepaspectratio]{../images/HomePage}
+		\includegraphics[width=0.7\linewidth,keepaspectratio]{../images/HomePage1}
 	\end{figure}
 \end{frame}
-
 \begin{frame}{\insertsection}
-	\begin{block}{Wykresy podsumowujące}
-		Wyświetlają podsumowanie transakcji z wszystkich kont.
+	\begin{block}{Okna modalne do tworzenia kont bankowych i portfeli}
+		Użytkownik może otwierać nowe rachunki.
+	\end{block}
+	\begin{columns}[t] % kolumny wyrównane do góry
+		\column{0.49\textwidth}
+		% minipage o stałej wysokości (tu 4.5cm) - w środku obraz wycentrowany, podpis poniżej (na stałej pozycji)
+		\begin{minipage}[t][4.5cm][c]{\linewidth}
+			\centering
+			\adjustbox{valign=c}{\includegraphics[width=\linewidth,keepaspectratio]{../images/newAccountModal}}
+		\end{minipage}
+		\vspace{0.6ex}
+		
+		\column{0.49\textwidth}
+		\begin{minipage}[t][4.5cm][c]{\linewidth}
+			\centering
+			\adjustbox{valign=c}{\includegraphics[width=\linewidth,keepaspectratio]{../images/newWalletModal}}
+		\end{minipage}
+		
+	\end{columns}
+\end{frame}
+\begin{frame}{\insertsection}
+	\begin{block}{Podsumowanie finansowe wszystkich kont}
+		Przedstawienie w formie wykresów danych o transakcjach użytkownika.
 	\end{block}
 		\begin{figure}
 		\centering
-		\includegraphics[width=0.7\linewidth,keepaspectratio]{../images/HomeCharts}
+		\includegraphics[width=0.7\linewidth,keepaspectratio]{../images/HomePage2}
 	\end{figure}
 \end{frame}
 
@@ -69,14 +67,14 @@
 		\end{block}
 			\vfill
 			\centering
-			\includegraphics[height=0.75cm, keepaspectratio]{../images/Navbar}
+			\includegraphics[height=0.67cm, keepaspectratio]{../images/Navbar}
 			\vspace{0.6ex}
 
 		\end{minipage}
 		\column{0.48\textwidth}
 		\begin{minipage}[t][6cm][t]{\linewidth} % ta sama wysokość co po lewej
 			\begin{block}{Ustawienia}
-				Pozwala na wybór języka i motywu.
+				Umożliwia personalizację elementów aplikacji.
 			\end{block}
 			\vfill
 			\centering
@@ -84,84 +82,99 @@
 		\end{minipage}
 	\end{columns}
 \end{frame}
-
 \begin{frame}{\insertsection}
-	\begin{block}{Detale konta użytkownika}
-		Udostępnia informacje o użytkowniku
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\linewidth]{../images/polski}
+	
+	\end{figure}
+
+\end{frame}
+\begin{frame}{\insertsection}
+
+
+	\centering
+	\includegraphics[width=1\linewidth]{../images/angielski}
+\end{frame}
+\begin{frame}{\insertsection}
+	\begin{block}{Informacje o użytkowniku}
+		Klient może uzupełnić informację o swoim koncie.
 	\end{block}
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.7\linewidth]{../images/DetaleKonta}
+		\includegraphics[width=1\linewidth]{../images/UserSettings}
 		\label{fig:detalekonta}
 	\end{figure}
 \end{frame}
 
 \begin{frame}{\insertsection}
-\begin{columns}[t] % kolumny wyrównane do góry
-	\column{0.33\textwidth}
-	% minipage o stałej wysokości (tu 4.5cm) - w środku obraz wycentrowany, podpis poniżej (na stałej pozycji)
-	\begin{minipage}[t][4.5cm][c]{\linewidth}
-		\centering
-		\adjustbox{valign=c}{\includegraphics[width=\linewidth,keepaspectratio]{../images/AccountForm}}
-	\end{minipage}
-	\vspace{0.6ex}
-	
-	\column{0.33\textwidth}
-	\begin{minipage}[t][4.5cm][c]{\linewidth}
-		\centering
-		\adjustbox{valign=c}{\includegraphics[width=\linewidth,keepaspectratio]{../images/DodawanieUzytkownika}}
-	\end{minipage}
-	\vspace{0.6ex}
-	
-	\column{0.33\textwidth}
-	\begin{minipage}[t][4.5cm][c]{\linewidth}
-		\centering
-		\adjustbox{valign=c}{\includegraphics[width=\linewidth,keepaspectratio]{../images/UsuwanieUzytkownika}}
-	\end{minipage}
-	\vspace{0.6ex}
-\end{columns}
-\end{frame}
-
-\begin{frame}{\insertsection}
-	\begin{block}{Detale konta bankowego}
-		Balans konta, tworzenie transakcji, historia wpłat i możliwość wyboru okresu.
+	\begin{block}{Szczegóły portfela}
+		Portfele pozwalają nam na organizację wydatków z uwzględnieniem kategorii, sprawdzenie salda i różnicy w kwocie na okres czasu, utworzenie transakcji, wyświetlenie, edycję i usuwanie transakcji oraz analizę danych na wykresach.
 	\end{block}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.9\linewidth, keepaspectratio]{../images/AccountPage1}
-		\label{fig:daneportfela}
-	\end{figure}
-\end{frame}
-\begin{frame}{\insertsection}
-	\begin{block}{Wykresy konta bankowego}
-		Podsumowanie wszystkich transakcji z zadanego okresu.
-	\end{block}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth, keepaspectratio]{../images/AccountPage2}
-		\label{fig:transakcjehistoria}
-	\end{figure}
-\end{frame}
-
-
-\begin{frame}{\insertsection}
-	\begin{block}{Detale portfela}
-		Wyświetlanie skategoryzowanych przez użytkownika danych finansowych.
-	\end{block}
+\only<1>{
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\linewidth, keepaspectratio]{../images/walletPage}
+	\includegraphics[width=1\linewidth, keepaspectratio]{../images/walletDetails}
 	\label{fig:walletpage}
 \end{figure}
-\end{frame}
-\begin{frame}{\insertsection}
-	\begin{block}{Wykresy dla portfela}
-		Podsumowanie finansowe w określonym przedziale czasu.
-	\end{block}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth, keepaspectratio]{../images/walletCharts}
-		\label{fig:walletpage2}
-	\end{figure}
+}
+\only<2>{
+	\begin{columns}
+		\column{0.49\linewidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{../images/WalletModal}
+			\label{fig:walletmodal}
+		\end{figure}
+		\column{0.49\linewidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\linewidth]{../images/WalletCategory}
+			\label{fig:walletcategory}
+		\end{figure}	
+	\end{columns}
+}
+\only<3>{
+\begin{figure}
+	\centering
+	\includegraphics[width=0.45\linewidth]{../images/WalletHistory}
+	\caption{}
+	\label{fig:wallethistory}
+\end{figure}
+
+}
+\only<4>{
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{../images/WalletChart1}
+	\label{fig:walletchart1}
+\end{figure}
+}
+\only<5>{
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{../images/WalletChart2}
+	\label{fig:walletchart2}
+\end{figure}
+}
 \end{frame}
 
+\begin{frame}{\insertsection}
+	\begin{block}{Szczegóły konta bankowego}
+		Z poziomu konta bankowego użytkownik widzi informację o koncie, może utworzyć transakcję, sprawdzić historię transakcji oraz przeanalizować wydatki na wykresach.
+	\end{block}
+	\only<1>{
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\linewidth, keepaspectratio]{../images/AccountPage}
+			\label{fig:daneportfela}
+		\end{figure}
+	}
+	\only<2>{
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.69\linewidth, keepaspectratio]{../images/AccountCharts}
+			\label{fig:daneportfelaA}
+		\end{figure}
+	}
+\end{frame}

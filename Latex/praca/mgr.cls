@@ -46,8 +46,20 @@
 \usepackage{listings}
 \usepackage{placeins}
 \usepackage{float}
-
+\usepackage[style=numeric, backend=biber, maxbibnames=99]{biblatex}
+\addbibresource{zrodla.bib} % podaj nazwę swojego pliku .bib
+\renewcommand*{\nametitledelim}{\addcomma\space}
+% Separator między nazwiskami (dla listy 3+ autorów)
+\renewcommand*{\multinamedelim}{\addcomma\space}
+% Separator przed ostatnim nazwiskiem (zamiast "i" lub "and")
+\renewcommand*{\finalnamedelim}{\addcomma\space}
+% Separator wszędzie przecinek
+\renewcommand*{\newunitpunct}{\addcomma\space}
 %Set longtable caption to \textwidth (by default its 4in)
+\renewcommand*{\finentrypunct}{}
+\DefineBibliographyStrings{polish}{
+	urlseen = {stan na dzień:},
+}
 \LTcapwidth=\textwidth
 
 %%% Code from Dr. Christian ------ for not using headers.----------------------
@@ -151,6 +163,7 @@
 
 %\usepackage[pdftex]{graphicx}
 
+
 % efekt wcięcia w pierwszym akapicie po tytule rozdziału, podrozdziału itd.
 \usepackage{indentfirst}
 
@@ -171,7 +184,7 @@
 \newcommand{\dywiz}{\hyp{}}
 
 
-\bibliographystyle{plain}
+% \bibliographystyle{plain} % Klasyczna bibliografia
 
 %\usepackage{ifthen}
 %\RequirePackage[T1]{polski}
@@ -502,7 +515,7 @@
     \vfill
     \vfill
 
-    \begin{center}
+    \begin{center}\textbf{}
         {\it Częstochowa, \cRok}
     \end{center}
 }
@@ -511,8 +524,6 @@
 
 \setlength{\parfillskip}{0pt plus 0.5\textwidth}
 \endinput
-
-
 % Local Variables:
 % TeX-master: "mgr"
 % End:

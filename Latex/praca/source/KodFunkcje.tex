@@ -76,7 +76,7 @@ Spring Security zapewnia mechanizm uwierzytelniania JWT (ang. \textit{JSON Web T
 		\caption{Struktura tokenu JWT \cite{JWT}}
 		\label{tab:JWT} \\
 \hline
-\textbf{Nawza} & \textbf{struktura} & \textbf{Opis} \\ \hline
+\textbf{Nazwa} & \textbf{Struktura} & \textbf{Opis} \\ \hline
 
 Nagłówek (ang. \textit{Header}) &
  \texttt{\{} \newline
@@ -94,17 +94,17 @@ Nagłówek (ang. \textit{Header}) &
  \\ \hline
   Podpis (ang. \textit{Signature}) &
 \texttt{HMACSHA256(} \newline
- \hspace*{0.2em}\texttt{base64UrlEncode(header)} \newline
- \hspace*{0.2em}\texttt{+ "."\space +} \newline
- \hspace*{0.2em}\texttt{base64UrlEncode(payload)} \newline
- \hspace*{0.2em}\texttt{, secretPassword)} &
+ \hspace*{0.1em}\texttt{base64UrlEncode(header)} \newline
+ \hspace*{0.1em}\texttt{+ "."\space +} \newline
+ \hspace*{0.1em}\texttt{base64UrlEncode(payload)} \newline
+ \hspace*{0.1em}\texttt{, secretPassword)} &
   Podpis składa się z~zaszyfrowanego nagłówka, ładunku i~hasła, które są później przetwarzane przez wybrany algorytm. 
  \\ \hline
 
 \end{longtable}
 
 \subsubsection*{Testowanie}
-Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z~wykorzystaniem biblioteki JUnit, a~dane do testów są tworzone przy pomocy narzędzia Mockito. Mock to obiekt klasy, od której zależy część kodu, ale w~środku jest pusta. Podczs korzystania z~tej pustej klasy używa się składni \texttt{when(...).thenReturn(...)}, w~której when oznacza ,,Kiedy zostanie wywołana ta metoda ...'', a~thenReturn ,,... zwróć ten obiekt''.
+Narzędzia do wykonywania testów dostarcza \texttt{spring-boot-starter-test}. Testy jednostkowe wykonuje się z~wykorzystaniem biblioteki JUnit, a~dane do testów są tworzone przy pomocy narzędzia Mockito. Mock to obiekt klasy, od której zależy część kodu, ale w~środku jest pusta. Podczs korzystania z~tej pustej klasy używa się składni \texttt{when(\dots).thenReturn(\dots)}, w~której when oznacza ,,Kiedy zostanie wywołana ta metoda\dots'', a~thenReturn ,,\dots zwróć ten obiekt''.
 
 Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli argumentów, które przyjmuje test (listing \ref{lst:arg-stream}). 
 \begin{lstlisting}[language={Java}, caption={Strumień argumentów}, label={lst:arg-stream}]
@@ -116,7 +116,7 @@ Pierwszym krokiem podczas testowania jest przygotowanie danych testowych, czyli 
 	);
 }
 \end{lstlisting}
-Wykonywanie wielu testów dla jednej metody jest możliwe dzięki mechanizmowi testów parametryzowanych, które są opisane adnotacją \texttt{@ParametrizedTest}. Pozwalają one określić zbiór na przykład podanie metody, która zwraca dane \texttt{@MethodSource("nazwa")}. Poniższy test sprawdza, czy dodanie nowej transakcji się powiodło. Wszystkie mocki, należy nauczyć zachowań (ang. \textit{stubbing}), czyli opisać im reakcję na wywołanie danych metod. Gdy zachowania zostały opisane, wywoływana jest funkcja, która korzysta z~tych metod. Po jej wykonaniu odbywa się sprawdzenie za pomocą asercji oraz metody verify, czy warunki zostału spełnione.
+Wykonywanie wielu testów dla jednej metody jest możliwe dzięki mechanizmowi testów parametryzowanych, które są opisane adnotacją \texttt{@ParametrizedTest}. Pozwalają one określić zbiór na przykład podanie metody, która zwraca dane \texttt{@MethodSource("nazwa")}. Poniższy test sprawdza, czy dodanie nowej transakcji się powiodło. Każdemu mockowi należy zdefiniować zachowanie (ang. \textit{stubbing}), czyli opisać im reakcję na wywołanie danych metod. Gdy zachowania zostały opisane, wywoływana jest funkcja, która korzysta z~tych metod. Po jej wykonaniu odbywa się sprawdzenie za pomocą asercji oraz metody verify, czy warunki zostału spełnione.
 \\
 \begin{lstlisting}[language={Java}, caption={Deklaracja testu}, label={lst:mocking}]
 @ParameterizedTest
@@ -163,7 +163,7 @@ Ważnym aspektem testów jest również sprawdzanie, czy kontroler działa popra
 Do tego rodzaju testów należy uruchomić część springa. Ładowanie części programu nazywa się testem wycinkowym (ang. \textit{Slice test}). Ładowana jest wyłącznie warstwa webowa, czyli kontrolery, walidatory i~zabezpieczenia (listing \ref{lst:slice-test}). 
 
 \subsubsection*{Serwisy, a~kontrolery}
-Podział na warstwę kontrolerów i~warstwę serwisów umożliwia rozdzielenie obsługi ruchu od logiki biznesowej. Kontrolery przyjmują i~walidują żądania oraz przesyłają odpowiedź (ang. \textit{Response entity}). Serwisy zawierają logikę, czyli opisuje działanie wszystkich metod. Metody te można wywołać z~każdego miejsca, a~nie tylko z~przez REST API. Umożliwia to pisanie testów jednostkowych dla samej logiki bez uwzględniania protokołu HTTP. Takie rozwiązanie umożliwia też ponowne wykorzystanie kodu. Operacje na bazie danych są odizolowane od kontrolera. Odpowiada za nie serwis. 
+Podział na warstwę kontrolerów i~warstwę serwisów umożliwia rozdzielenie obsługi ruchu od logiki biznesowej. Kontrolery przyjmują i~walidują żądania oraz przesyłają odpowiedź (ang. \textit{Response entity}). Serwisy zawierają logikę, czyli opisuje działanie metod. Metody te można wywołać z~dowolnego miejsca, a~nie tylko z~przez REST API. Umożliwia to pisanie testów jednostkowych dla samej logiki bez uwzględniania protokołu HTTP. Takie rozwiązanie umożliwia też ponowne wykorzystanie kodu. Operacje na bazie danych są odizolowane od kontrolera. Odpowiada za nie serwis. 
 \subsubsection*{Konfiguracja i~uruchamianie}
 Konfiguracja środowiska odbywa się w~pliku \texttt{application.properties}. Definicja plików \texttt{Dockerfile} oraz \texttt{Docker-compose.yml} pozwala na spójne uruchamianie usług w~różnych środowiskach.
 \subsection*{Przykładowe fragmenty kodu}
@@ -426,10 +426,10 @@ CorsConfigurationSource corsConfigurationSource() {
 }
 \end{lstlisting}
 \subsection*{Obsługa błędów}
-Błędy, które występują w~aplikacji, są obsługiwane dzięki globalnemu plikowi z~obsługą błędów. Zostają tam wysyłane wyjątki i~zwracane stosowne odpowiedzi oraz kody błędów. Wszystkie komunikaty o~wystąpieniu błędu mają ujednolicony format, co pozwala łatwo prezentować informację o~błędach po stronie klienta. 
+Błędy, które występują w~aplikacji, są obsługiwane dzięki globalnemu plikowi z~obsługą błędów. Zostają tam wysyłane wyjątki i~zwracane stosowne odpowiedzi oraz kody błędów. Komunikaty o~wystąpieniu błędu mają ujednolicony format, co pozwala łatwo prezentować informację o~błędach po stronie klienta. 
 
 \subsection*{Konteneryzacja i~uruchamianie wieloskładnikowe}
-Konteneryzacja umożliwia spójne uruchamianie wszystkich warstw niezależnie od systemu operacyjnego. Aplikacja backendowa posiada utworzony obraz pozwalający na jej płynne uruchamianie i~edycję (listing \ref{lst:Docker-build}). Baza danych MongoDB działa w~dedykowanym kontenerze z~trwałym woluminem, w~którym przechowywane są dokumenty. Połączenie kontenerów odbywa się dzięki konfiguracji zawartej w~pliku \texttt{docker-compose.yml} (listing \ref{lst:Docker-compose}), który zawiera w~sobie informację o~obrazach, portach, sieciach, woluminach, zależnościach oraz zmiennych środowiskowych.
+Konteneryzacja umożliwia spójne uruchamianie wielu warstw niezależnie od systemu operacyjnego. Aplikacja backendowa posiada utworzony obraz pozwalający na jej płynne uruchamianie i~edycję (listing \ref{lst:Docker-build}). Baza danych MongoDB działa w~dedykowanym kontenerze z~trwałym woluminem, w~którym przechowywane są dokumenty. Połączenie kontenerów odbywa się dzięki konfiguracji zawartej w~pliku \texttt{docker-compose.yml} (listing \ref{lst:Docker-compose}), który zawiera w~sobie informację o~obrazach, portach, sieciach, woluminach, zależnościach oraz zmiennych środowiskowych.
 \begin{lstlisting}[caption={Budowanie obrazu - Dockerfile}, label={lst:Docker-build}]
 FROM maven:3.9.10-eclipse-temurin-21
 WORKDIR /app
